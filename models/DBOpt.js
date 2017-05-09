@@ -9,6 +9,7 @@ var settings = require('../settings');
 //后台管理用户
 var AdminUser = require('../models/AdminUser');
 var AdminGroup = require('../models/AdminGroup');
+var Patent = require('../models/Patent');
 //短id
 var shortid = require('shortid');
 //密码加密
@@ -103,6 +104,9 @@ var DBOpt = {
 
         if(obj === AdminUser){
             query.populate('group');
+        }
+        if(obj === Patent ){
+            query.populate('direction').populate('owner');
         }
         query.exec(function(err,docs){
             if(err){

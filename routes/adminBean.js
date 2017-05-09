@@ -8,6 +8,10 @@ var settings = require("../settings");
 var DBOpt = require("../models/DBOpt");
 var AdminUser = require("../models/AdminUser");
 var AdminGroup = require("../models/AdminGroup");
+var Patent = require("../models/Patent");
+var Direction = require("../models/Direction");
+var Person = require("../models/Person");
+
 var adminBean = {
 	getTargetObj : function(currentPage){
         var targetObj;
@@ -15,8 +19,13 @@ var adminBean = {
             targetObj = AdminUser;
         }else if(currentPage === settings.adminGroupList[0] ){
             targetObj = AdminGroup;
+        }else if(currentPage === 'sysTemManage_patent' ){
+            targetObj = Patent;
+        }else if(currentPage === 'sysTemManage_direction' ){
+            targetObj = Direction;
+        }else if(currentPage === 'sysTemManage_person' ){
+            targetObj = Person;
         }
-
         return targetObj
     },
     //权限校验

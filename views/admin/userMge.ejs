@@ -7,6 +7,7 @@
 	background-color: rgb(248, 248, 248);
 }
 </style>
+<script src="/angular/user_controller.js"></script>
 <div class="row" ng-controller="adminUserList">
 	<div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
 		<div class=" background-deloge widget am-cf">
@@ -19,7 +20,7 @@
 					<div class="am-form-group">
 						<div class="am-btn-toolbar">
 							<div class="am-btn-group am-btn-group-xs">
-								<a href="#addNewAdminUser" data-am-modal="{target: '#addNewAdminUser', dimmer:0,closeViaDimmer: 0, width: 800}" type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
+								<a data-am-modal="{target: '#addNewAdminUser'}" type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
 								
 							</div>
 						</div>
@@ -65,7 +66,7 @@
 								<td>{{user.createtime}}</td>
 								<td>
 									<div class="tpl-table-black-operation">
-										<a href="#addNewAdminUser" data-whatever="{{user._id}}" data-am-modal="{target: '#addNewAdminUser', dimmer:0,closeViaDimmer: 0, width: 800}">
+										<a data-whatever="{{user._id}}" data-am-modal="{target: '#addNewAdminUser'}">
 											<i class="am-icon-pencil"></i> 编辑
 										</a>
 										<a href="javascript:;" class="tpl-table-black-operation-del" ng-click="delOneItem(user._id)">
@@ -103,15 +104,13 @@
                             <input type="text" class="tpl-form-input" name="userName" ng-model="formData.userName" placeholder="请输入用户名">
                         </div>
                     </div>
-
-                    <div class="am-form-group">
-                        <label for="user-phone" class="am-u-sm-3 am-form-label">用户组<span class="tpl-form-line-small-title"></span></label>
+                     <div class="am-form-group">
+                        <label for="group" class="am-u-sm-3 am-form-label">用户组<span class="tpl-form-line-small-title"></span></label>
                         <div class="am-u-sm-9">
-                            <select data-am-selected-group="{btnSize: 'sm'}" ng-model="formData.group">
-							  <option value="{{_group._id}}" ng-repeat="_group in groups">{{_group.name}}</option>
-							</select>
+                            <select data-am-selected="{btnSize: 'sm',btnWidth:'100%'}" ng-model="formData.group">
+                               <option value="{{_group._id}}" ng-repeat="_group in groups">{{_group.name}}</option>
+                            </select>
                         </div>
-
                     </div>
 
                     <div class="am-form-group">

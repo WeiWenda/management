@@ -1,0 +1,110 @@
+<!-- 内容区域 -->
+<script src="/angular/person_controller.js"></script>
+<div class="row" ng-controller="adminPerson">
+	<div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+		<div class="widget am-cf">
+			<div class="widget-head am-cf">
+				<div class="widget-title  am-cf">研究人员列表</div>
+			</div>
+			<div class="widget-body  am-fr">
+
+				<div class="am-u-sm-12 am-u-md-6 am-u-lg-9">
+					<div class="am-form-group">
+						<div class="am-btn-toolbar">
+							<div class="am-btn-group am-btn-group-xs">
+								<a  data-am-modal="{target: '#addNewPerson'}" type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
+					<div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+						<input type="text" class="am-form-field ">
+						<span class="am-input-group-btn">
+						<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
+						</span>
+					</div>
+				</div>
+
+				<div class="am-u-sm-12">
+					<table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
+						<thead>
+							<tr>
+								<th>中文姓名</th>
+								<th>英文名或拼音</th>
+								<th>备注</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="gradeX" ng-repeat="person in data">
+								<td>{{person.name}}</td>
+								<td>{{person.english_name}}</td>
+								<td>{{person.comments}}</td>
+								<td>
+									<div class="tpl-table-black-operation">
+										<a data-whatever="{{person._id}}" data-am-modal="{target: '#addNewPerson'}">
+											<i class="am-icon-pencil"></i> 编辑
+										</a>
+										<a href="javascript:;" class="tpl-table-black-operation-del" ng-click="delOneItem(person._id)">
+											<i class="am-icon-trash"></i> 删除
+										</a>
+									</div>
+								</td>
+							</tr>
+							<!-- more data -->
+						</tbody>
+					</table>
+				</div>
+				<div class="am-u-lg-12 am-cf">
+					<% include pagination%>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--添加新用户模态窗口-->
+    <div class="am-modal" tabindex="-1" id="addNewPerson">
+	  <div class="am-modal-dialog">
+        <div class="widget am-cf">
+            <div class="widget-head am-cf">
+                <div class="widget-title am-fl">研究人员</div>
+                <div class="widget-function am-fr">
+                     <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                </div>
+            </div>
+            <div class="widget-body am-fr">
+                <form class="am-form tpl-form-border-form tpl-form-border-br" name="myForm" ng-submit="processForm(myForm.$valid)">
+                    <div class="am-form-group">
+                        <label for="name" class="am-u-sm-3 am-form-label">中文姓名<span class="tpl-form-line-small-title"></span></label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" name="name" ng-model="formData.name" placeholder="请输入中文姓名">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="english_name" class="am-u-sm-3 am-form-label">英文姓名<span class="tpl-form-line-small-title"></span></label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" name="english_name" ng-model="formData.english_name" placeholder="请输入英文姓名">
+                        </div>
+                    </div>
+                   
+ 					<div class="am-form-group">
+                        <label for="comments" class="am-u-sm-3 am-form-label">备注</label>
+                        <div class="am-u-sm-9">
+                            <textarea class="" rows="10" id="user-intro" placeholder="请输入备注内容" name="comments" ng-model="formData.comments"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                            <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success " >提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+	    </div>
+	  </div>
+	</div>
+	
+</div>

@@ -16,6 +16,7 @@ var DBOpt = require('../models/DBOpt');
 var AdminUser = require('../models/AdminUser');
 //后台管理用户组
 var AdminGroup = require("../models/AdminGroup");
+var Patent  = require("../models/Patent");
 //后台日志管理
 var SystemLog = require("../models/SystemLog");
 //密码加密
@@ -33,9 +34,19 @@ router.get('/manage', function(req, res) {
 router.get('/manage/userMge', function(req, res) {
     res.render('admin/userMge', setPageInfo(req,res,settings.adminUsersList));
 });
+router.get('/manage/patentMge',function(req,res){
+    res.render('admin/patentMge',setPageInfo(req,res,settings.patentList));
+});
+router.get('/manage/directionMge',function(req,res){
+    res.render('admin/directionMge',setPageInfo(req,res,settings.directionList));
+});
 //用户组管理界面
 router.get('/manage/groupMge', function(req, res) {
     res.render('admin/groupMge', setPageInfo(req,res,settings.adminGroupList));
+});
+//研究人员管理界面
+router.get('/manage/personMge', function(req, res) {
+    res.render('admin/personMge', setPageInfo(req,res,settings.personList));
 });
 //实时日志界面
 router.get('/manage/loging', function(req, res) {
@@ -205,8 +216,9 @@ router.post('/manage/:defaultUrl/modify',function(req,res){
             DBOpt.updateOneByID(targetObj,req, res,"update one obj success")
         });
         
+    }else{
+        DBOpt.updateOneByID(targetObj,req, res,"update one obj success")
     }
-    DBOpt.updateOneByID(targetObj,req, res,"update one obj success")
 });
 //-------------------------更新单条记录(执行更新)结束--------------------
 
@@ -220,10 +232,8 @@ router.get('/manage/:defaultUrl/findAll',function(req,res){
 //-------------------------获取所有数据结束--------------------
 //-------------------------对象新增开始-------------------------
 router.post('/manage/:defaultUrl/addOne',function(req,res){
-
     var currentPage = req.params.defaultUrl;
     var targetObj = adminBean.getTargetObj(currentPage);
-
     if(targetObj == AdminUser){
         addOneAdminUser(req,res);
     }else{
@@ -278,7 +288,9 @@ function setPageInfo(req,res,module){
         searchKey = params.query.searchKey;
         area = req.query.area;
     }
-
+    console.log("url:"+req.url)
+    console.log("originalUrl:"+req.originalUrl)
+    
     return {
         siteInfo : module[1],
         bigCategory : module[0],
