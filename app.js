@@ -22,7 +22,7 @@ app.use(session({
 
 app.use(log4js.connectLogger(log4js.getLogger("http"), { level: 'auto' }));
 app.use(bodyParser.json({limit: '50mb'})); // 限制上传5M
-app.use(bodyParser.urlencoded({ extended: false , limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true , limit: '50mb' }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));
