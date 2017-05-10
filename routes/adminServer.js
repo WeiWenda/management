@@ -41,6 +41,15 @@ router.get('/manage/patentMge',function(req,res){
 router.get('/manage/directionMge',function(req,res){
     res.render('admin/directionMge',setPageInfo(req,res,settings.directionList));
 });
+router.get('/manage/ccfMge',function(req,res){
+    res.render('admin/ccfMge',setPageInfo(req,res,settings.ccfList));
+});
+router.get('/manage/awardLevelMge',function(req,res){
+    res.render('admin/awardLevelMge',setPageInfo(req,res,settings.awardLevelList));
+});
+router.get('/manage/projectLevelMge',function(req,res){
+    res.render('admin/projectLevelMge',setPageInfo(req,res,settings.projectLevelList));
+});
 //用户组管理界面
 router.get('/manage/groupMge', function(req, res) {
     res.render('admin/groupMge', setPageInfo(req,res,settings.adminGroupList));

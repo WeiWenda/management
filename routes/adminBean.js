@@ -11,13 +11,18 @@ var AdminGroup = require("../models/AdminGroup");
 var Patent = require("../models/Patent");
 var Direction = require("../models/Direction");
 var Person = require("../models/Person");
+var CCFLevel = require("../models/CCFLevel");
+var AwardLevel = require("../models/AwardLevel");
+var ProjectLevel = require("../models/ProjectLevel");
+
+
 
 var adminBean = {
 	getTargetObj : function(currentPage){
         var targetObj;
-        if(currentPage === settings.adminUsersList[0] ){
+        if(currentPage === 'sysTemManage_user' ){
             targetObj = AdminUser;
-        }else if(currentPage === settings.adminGroupList[0] ){
+        }else if(currentPage === 'sysTemManage_uGroup' ){
             targetObj = AdminGroup;
         }else if(currentPage === 'sysTemManage_patent' ){
             targetObj = Patent;
@@ -25,6 +30,12 @@ var adminBean = {
             targetObj = Direction;
         }else if(currentPage === 'sysTemManage_person' ){
             targetObj = Person;
+        }else if(currentPage === 'sysTemManage_ccf' ){
+            targetObj = CCFLevel;
+        }else if(currentPage === 'sysTemManage_award_level' ){
+            targetObj = AwardLevel;
+        }else if(currentPage === 'sysTemManage_project_level' ){
+            targetObj = ProjectLevel;
         }
         return targetObj
     },
