@@ -72,7 +72,7 @@
 										<a href="javascript:;" class="tpl-table-black-operation-del" ng-click="delOneItem(patent._id)">
 											<i class="am-icon-trash"></i> 删除
 										</a>
-                                        <a> <i class="am-icon-paperclip"></i> 查看原件</a>
+                                        <a href="/admin/manage/patent/picture?id={{ patent.file_path}}" target="_blank" > <i class="am-icon-paperclip"></i> 查看原件</a>
 									</div>
 								</td>
 							</tr>
@@ -152,9 +152,13 @@
                         </div>
                     </div>
                     <div class="am-form-group am-form-file">
-                      <i class="am-icon-cloud-upload"></i> 上传原件
-                        <input type="file" name="file" ng-model="formData.file" multiple>
+                        <label for="file_path" class="am-u-sm-3 am-form-label">上传原件<span class="tpl-form-line-small-title"></span></label>
+                        <input id="doc-form-file" type="file" file-model="formData.file">
+                        <div class="am-u-sm-9">
+                        <input id="file-list" type="text" class="tpl-form-input" placeholder="点击选择文件">
+                        </div>
                     </div>
+                    
                     <div class="am-form-group">
                         <div class="am-u-sm-9 am-u-sm-push-3">
                             <button type="submit" class="am-btn am-btn-primary tpl-btn-bg-color-success " >提交</button>

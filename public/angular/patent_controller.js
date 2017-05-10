@@ -25,6 +25,13 @@
               $scope.formData.authorized_time =event.date;
                $scope.$apply();
             });
+
+        $('#doc-form-file').on('change', function() {
+          var fileNames = this.files[0].name;
+          // $scope.formData.file_path = this.files[0];
+          $('#file-list').val(fileNames);
+      });
+
         $('#addNewPatent').on('open.modal.amui', function (event) {
             console.log("弹出框");
             var obj = $(event.relatedTarget);
@@ -35,11 +42,7 @@
                     $scope.formData = result;
                     $scope.targetID = editId;
                 })
-            }else{
-                $scope.formData = {};
-                clearModalData($scope,$(this));
             }
-
         }).on('close.modal.amui', function (e) {
             console.log("关闭弹出框");
             // 清空数据
@@ -59,9 +62,10 @@
                 //     }
                 // });
             }else{
+                console.log($scope.formData);
                 angularHttpPost($http,isValid,getTargetPostUrl($scope,pageData.bigCategory),$scope.formData,function(data){
                     initPagination($scope,$http);
-                });
+                    });      
             }
 
         };

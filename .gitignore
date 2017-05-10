@@ -8,6 +8,7 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+tmp/
 log/
 node_modules/
 .Python

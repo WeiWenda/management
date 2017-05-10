@@ -4,6 +4,7 @@ router.caseSensitive = true;
 var url = require('url');
 var pass = require('../utils/pass');
 var log = require('log4js').getLogger("adminServer");
+
 //站点配置
 var settings = require("../settings");
 //数据校验
@@ -99,7 +100,13 @@ router.get('/logout', function(req, res) {
     req.session.adminUserInfo = '';
     res.redirect("/admin");
 });
-
+//-------------------------获取图片-------------------------
+router.get('/manage/:defaultUrl/picture',function(req,res){
+    var dir = req.params.defaultUrl;
+    var params = url.parse(req.url,true);
+    var name = params.query.id;
+    DBOpt.readFile(dir,name,res);
+});
 //-------------------------获取单个对象数据开始-------------------------
 router.get('/manage/:defaultUrl/item',function(req,res){
     var currentPage = req.params.defaultUrl;
@@ -217,6 +224,7 @@ router.post('/manage/:defaultUrl/modify',function(req,res){
         });
         
     }else{
+        req.body = req.query;
         DBOpt.updateOneByID(targetObj,req, res,"update one obj success")
     }
 });
@@ -236,7 +244,15 @@ router.post('/manage/:defaultUrl/addOne',function(req,res){
     var targetObj = adminBean.getTargetObj(currentPage);
     if(targetObj == AdminUser){
         addOneAdminUser(req,res);
+    }else if(targetObj == Patent){
+        // 保存文件到GridFS 
+        var file = req.files['file'];
+        DBOpt.loadToMongo(file.name,file.originalname,"patent",file.path);
+        req.body = req.query;
+        req.body["file_path"] = file.name;
+        DBOpt.addOne(targetObj,req, res);
     }else{
+        req.body = req.query;
         DBOpt.addOne(targetObj,req, res);
     }
 
@@ -288,8 +304,6 @@ function setPageInfo(req,res,module){
         searchKey = params.query.searchKey;
         area = req.query.area;
     }
-    console.log("url:"+req.url)
-    console.log("originalUrl:"+req.originalUrl)
     
     return {
         siteInfo : module[1],

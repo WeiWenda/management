@@ -2,7 +2,7 @@
  * Created by cbj on 2016/1/5.
  * cjs自定义控制器
  */
- var cjsApp = angular.module('adminApp', ["isteven-multi-select"]);
+ var cjsApp = angular.module('adminApp',[]);
  cjsApp.factory('pageData',function(){
     return {
         bigCategory : $("#currentCate").val()
@@ -41,3 +41,18 @@ cjsApp.factory('webSocketData', function () {
     };
     return methods;
 });  
+cjsApp.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);

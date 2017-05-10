@@ -3,6 +3,7 @@ var session = require('express-session');
 var path = require('path');
 var bodyParser = require('body-parser');
 //模板引擎
+var multer = require('multer');
 var partials = require('express-partials');
 
 var adminServer = require('./routes/adminServer');
@@ -11,6 +12,7 @@ var log4js = require('log4js');
 var log = log4js.getLogger("app");
 var io = require('socket.io')();
 var createLineReader = require('./utils/WatchFile');
+
 /*实例化express对象*/
 var app = express();
 //session配置
@@ -19,10 +21,11 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-
+ 
 app.use(log4js.connectLogger(log4js.getLogger("http"), { level: 'auto' }));
 app.use(bodyParser.json({limit: '50mb'})); // 限制上传5M
 app.use(bodyParser.urlencoded({ extended: true , limit: '50mb' }));
+app.use(multer());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, 'public')));

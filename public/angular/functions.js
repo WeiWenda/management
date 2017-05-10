@@ -106,11 +106,20 @@ function getPageInfos($scope,$http,url,reqType){
 function angularHttpPost($http,isValid,url,formData,callBack){
     //if(isValid){
     if(true){
+          var fd = new FormData(); //初始化一个FormData实例
+        fd.append('file', formData.file);
+        delete formData["file"];  
         $http({
             method  : 'POST',
             url     : url,
-            data    : $.param(formData),  // pass in data as strings
-            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+            // data    : $.param(formData),  // pass in data as strings
+            // headers : { 'Content-Type': 'application/x-www-form-urlencoded' },// set the headers so angular passing info as form data (not request payload)
+            headers: {
+                    'Content-Type': undefined
+                },
+            params:formData,
+            transformRequest: angular.identity,
+            data: fd
         })
         .success(function(data) {
             //  关闭所有模态窗口
@@ -212,6 +221,7 @@ function initCheckIfDo($scope,targetId,msg,callBack){
 function clearModalData($scope,modalObj){
     $scope.formData = {};
     $scope.targetID = "";
+    $scope.$apply();
     modalObj.find(".form-control").val("");
 }
 //获取用户组数据

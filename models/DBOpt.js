@@ -4,6 +4,8 @@
  **/
 var url = require('url');
 var mongoose = require('mongoose');
+var fs = require('fs');
+var Grid = require('gridfs-stream');
 mongoose.Promise = require('bluebird');
 var settings = require('../settings');
 //后台管理用户
@@ -14,12 +16,26 @@ var Patent = require('../models/Patent');
 var shortid = require('shortid');
 //密码加密
 var pass = require('../utils/pass');
+var path = require('path');
+var util = require('util');
+var urlencode = require('urlencode');
 
 mongoose.connect(settings.URL);
 var db = mongoose.connection;
+Grid.mongo = mongoose.mongo;
+
+var mongooseSchema = new mongoose.Schema({
+    filename: String,
+    metadata: String,
+    aliases: String
+}, {collection: "fs.files", versionKey: ""});
+var getFile = db.model('getFile', mongooseSchema);
+var gfs = Grid(db.db);
+
  //mongoose.connect('mongodb://'+settings.USERNAME+':'+settings.PASSWORD+'@'+settings.HOST+':'+settings.PORT+'/'+settings.DB+'');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
+    var gfs = Grid(db.db);
   	console.log("连接mongodb");
   	//初始化管理员用户信息
 	//验证用户名密码
@@ -190,6 +206,36 @@ var DBOpt = {
             }
         })
     },
+    findAllFiles : function (httpId, callback) {
+        getFile.find({metadata: httpId}, {"filename": '1'}, function (err, docs) {
+            if (err) {
+                callback(err);
+            } else {
+                callback(null, docs);
+            }
+        })
+    },
+    loadToMongo : function (name,originalname,httpId,path,callback) {
+        var writestream = gfs.createWriteStream({
+            filename: name,
+            metadata:httpId,
+            aliases:originalname
+        });
+        fs.createReadStream(path).pipe(writestream);
+        writestream.on('close', function (file) {
+        });
+    },
+    readFile : function (dir, name,res) {
+        var fs_write_stream = fs.createWriteStream("tmp/" + dir + "/" + name);
+        var readstream = gfs.createReadStream({
+            filename: name
+        });
+        readstream.pipe(fs_write_stream);
+        fs_write_stream.on('close', function () {
+            res.sendFile(path.resolve("tmp/" + dir + "/" + name));
+             //http://localhost:8888/admin/manage/patent/picture?id=79bcce41336c6f2cd4c4f64dd9faa45a.jpg
+        });
+    }
 };
 
 module.exports = DBOpt;
