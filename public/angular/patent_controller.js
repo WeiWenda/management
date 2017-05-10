@@ -17,12 +17,12 @@
         $('#addNewPatent').modal('toggle');
         $('#apply_time').datepicker().
             on('changeDate.datepicker.amui', function(event) {
-              $scope.formData.apply_time = event.date;
+              $scope.formData["apply_time"] = event.date;
             $scope.$apply();
             });
         $('#authorized_time').datepicker().
             on('changeDate.datepicker.amui', function(event) {
-              $scope.formData.authorized_time =event.date;
+              $scope.formData["authorized_time"] =event.date;
                $scope.$apply();
             });
 
@@ -43,6 +43,7 @@
                     $scope.targetID = editId;
                 })
             }
+            $scope.$apply();
         }).on('close.modal.amui', function (e) {
             console.log("关闭弹出框");
             // 清空数据

@@ -124,19 +124,19 @@
                     <div class="am-form-group">
                         <label for="apply_time" class="am-u-sm-3 am-form-label">申请日期<span class="tpl-form-line-small-title"></span></label>
                         <div class="am-u-sm-9">
-                            <input type="text"  class="am-form-field" id="apply_time" name="apply_time" ng-model="formData.apply_time| date:'yyyy-MM-dd'" placeholder="选择申请日期" data-am-datepicker readonly required />
+                            <input type="text"  class="am-form-field" id="apply_time"  ng-model="formData.apply_time"  placeholder="选择申请日期" date-format  readonly required />
                         </div>
                     </div>
                     <div class="am-form-group">
                         <label for="apply_number1" class="am-u-sm-3 am-form-label">申请号<span class="tpl-form-line-small-title"></span></label>
                         <div class="am-u-sm-9"> 
-                            <input type="text" class="tpl-form-input"name="apply_number" ng-model="formData.apply_number"  placeholder="请输入申请号">
+                            <input type="text" class="tpl-form-input"name="apply_number"  ng-model="formData.apply_number"  placeholder="请输入申请号">
                         </div>
                     </div>
                     <div class="am-form-group">
                         <label for="authorized_time" class="am-u-sm-3 am-form-label">授权日期<span class="tpl-form-line-small-title"></span></label>
                         <div class="am-u-sm-9">
-                            <input type="text" id="authorized_time" name="authorized_time" ng-model="formData.authorized_time| date:'yyyy-MM-dd'" class="am-form-field" placeholder="选择授权日期" data-am-datepicker readonly />
+                            <input type="text" id="authorized_time" ng-model="formData.authorized_time" format-date class="am-form-field" placeholder="选择授权日期" date-format readonly required/>
                         </div>
                     </div>
                     <div class="am-form-group">

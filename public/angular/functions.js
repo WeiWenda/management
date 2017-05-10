@@ -164,14 +164,13 @@ function getTargetPostUrl($scope,bigCategory){
     return url;
 }
 
-
 //初始化删除操作
 function initDelOption($scope,$http,info){
 
     // 单条记录删除
     $scope.delOneItem = function(id){
         initCheckIfDo($scope,id,info,function(currentID){
-            angularHttpGet($http,"/admin/manage/"+$('#currentCate').val()+"/del?uid="+id,function(){
+            angularHttpGet($http,"/admin/manage/"+$('#currentCate').val()+"/del?uid="+currentID,function(){
                 initPagination($scope,$http);
             });
         });
@@ -210,7 +209,7 @@ function initCheckIfDo($scope,targetId,msg,callBack){
     $('#checkIfDo').modal({dimmer:true,
         relatedTarget: this,
         onConfirm: function(e) {
-            callBack(targetId);
+            callBack($scope.targetID);
         },
         onCancel: function(e) {
         }
@@ -221,8 +220,8 @@ function initCheckIfDo($scope,targetId,msg,callBack){
 function clearModalData($scope,modalObj){
     $scope.formData = {};
     $scope.targetID = "";
-    $scope.$apply();
-    modalObj.find(".form-control").val("");
+    // modalObj.find(".form-control").val("");
+    modalObj.find("#file-list").val("");
 }
 //获取用户组数据
 function initGroups($scope,$http){
