@@ -8,12 +8,22 @@ var settings = require("../settings");
 var DBOpt = require("../models/DBOpt");
 var AdminUser = require("../models/AdminUser");
 var AdminGroup = require("../models/AdminGroup");
+
 var Patent = require("../models/Patent");
+var SoftwareCopyright = require("../models/SoftwareCopyright");
+var Project = require("../models/Project");
+var Award = require("../models/Award");
+var Paper = require("../models/Paper");
+
+
+
+
 var Direction = require("../models/Direction");
 var Person = require("../models/Person");
 var CCFLevel = require("../models/CCFLevel");
 var AwardLevel = require("../models/AwardLevel");
 var ProjectLevel = require("../models/ProjectLevel");
+
 
 
 
@@ -36,6 +46,14 @@ var adminBean = {
             targetObj = AwardLevel;
         }else if(currentPage === 'sysTemManage_project_level' ){
             targetObj = ProjectLevel;
+        }else if(currentPage === 'sysTemManage_software' ){
+            targetObj = SoftwareCopyright;
+        }else if(currentPage === 'sysTemManage_project' ){
+            targetObj = Project;
+        }else if(currentPage === 'sysTemManage_award' ){
+            targetObj = Award;
+        }else if(currentPage === 'sysTemManage_paper' ){
+            targetObj = Paper;
         }
         return targetObj
     },

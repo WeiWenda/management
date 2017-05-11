@@ -18,6 +18,11 @@ var AdminUser = require('../models/AdminUser');
 //后台管理用户组
 var AdminGroup = require("../models/AdminGroup");
 var Patent  = require("../models/Patent");
+var SoftwareCopyright  = require("../models/SoftwareCopyright");
+var Paper = require("../models/Paper");
+var Award  = require("../models/Award");
+
+
 //后台日志管理
 var SystemLog = require("../models/SystemLog");
 //密码加密
@@ -37,6 +42,18 @@ router.get('/manage/userMge', function(req, res) {
 });
 router.get('/manage/patentMge',function(req,res){
     res.render('admin/patentMge',setPageInfo(req,res,settings.patentList));
+});
+router.get('/manage/softwareMge',function(req,res){
+    res.render('admin/softwareMge',setPageInfo(req,res,settings.softwareList));
+});
+router.get('/manage/projectMge',function(req,res){
+    res.render('admin/projectMge',setPageInfo(req,res,settings.projectList));
+});
+router.get('/manage/awardMge',function(req,res){
+    res.render('admin/awardMge',setPageInfo(req,res,settings.awardList));
+});
+router.get('/manage/paperMge',function(req,res){
+    res.render('admin/paperMge',setPageInfo(req,res,settings.paperList));
 });
 router.get('/manage/directionMge',function(req,res){
     res.render('admin/directionMge',setPageInfo(req,res,settings.directionList));
@@ -253,10 +270,31 @@ router.post('/manage/:defaultUrl/addOne',function(req,res){
     var targetObj = adminBean.getTargetObj(currentPage);
     if(targetObj == AdminUser){
         addOneAdminUser(req,res);
-    }else if(targetObj == Patent){
+    }else if(targetObj == Patent ){
         // 保存文件到GridFS 
         var file = req.files['file'];
         DBOpt.loadToMongo(file.name,file.originalname,"patent",file.path);
+        req.body = req.query;
+        req.body["file_path"] = file.name;
+        DBOpt.addOne(targetObj,req, res);
+    }else if(targetObj == SoftwareCopyright ){
+        // 保存文件到GridFS 
+        var file = req.files['file'];
+        DBOpt.loadToMongo(file.name,file.originalname,"software",file.path);
+        req.body = req.query;
+        req.body["file_path"] = file.name;
+        DBOpt.addOne(targetObj,req, res);
+    }else if(targetObj == Award ){
+        // 保存文件到GridFS 
+        var file = req.files['file'];
+        DBOpt.loadToMongo(file.name,file.originalname,"award",file.path);
+        req.body = req.query;
+        req.body["file_path"] = file.name;
+        DBOpt.addOne(targetObj,req, res);
+    }else if(targetObj == Paper ){
+        // 保存文件到GridFS 
+        var file = req.files['file'];
+        DBOpt.loadToMongo(file.name,file.originalname,"paper",file.path);
         req.body = req.query;
         req.body["file_path"] = file.name;
         DBOpt.addOne(targetObj,req, res);

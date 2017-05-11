@@ -253,6 +253,46 @@ function initPersons($scope,$http){
         }
     });
 }
+//获取科研项目数据
+function initProjects($scope,$http){
+    $http.get("/admin/manage/sysTemManage_project/findAll").success(function(result){
+        if(result){
+            $scope.projects = result;
+        }else{
+            console.log("获取分页信息失败")
+        }
+    });
+}
+//获取论类型数据
+function initCCFLevels($scope,$http){
+    $http.get("/admin/manage/sysTemManage_ccf/findAll").success(function(result){
+        if(result){
+            $scope.types = result;
+        }else{
+            console.log("获取分页信息失败")
+        }
+    });
+}
+//获取项目类型数据
+function initProjectLevels($scope,$http){
+    $http.get("/admin/manage/sysTemManage_project_level/findAll").success(function(result){
+        if(result){
+            $scope.types = result;
+        }else{
+            console.log("获取分页信息失败")
+        }
+    });
+}
+//获取获奖类型数据
+function initAwardLevels($scope,$http){
+    $http.get("/admin/manage/sysTemManage_award_level/findAll").success(function(result){
+        if(result){
+            $scope.types = result;
+        }else{
+            console.log("获取分页信息失败")
+        }
+    });
+}
 //初始化管理员权限列表
 function initPowerList($scope){
     var setting = {

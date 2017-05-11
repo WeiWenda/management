@@ -12,6 +12,12 @@ var settings = require('../settings');
 var AdminUser = require('../models/AdminUser');
 var AdminGroup = require('../models/AdminGroup');
 var Patent = require('../models/Patent');
+var Project = require("../models/Project");
+var Paper = require("../models/Paper");
+var Award = require("../models/Award");
+
+var SoftwareCopyright = require("../models/SoftwareCopyright");
+
 //短id
 var shortid = require('shortid');
 //密码加密
@@ -123,6 +129,18 @@ var DBOpt = {
         }
         if(obj === Patent ){
             query.populate('direction').populate('owner');
+        }
+        if(obj === SoftwareCopyright){
+            query.populate('direction');
+        }
+        if(obj === Project){
+            query.populate('type').populate('principal');
+        }
+        if(obj === Award){
+            query.populate('type').populate('winner');
+        }
+        if(obj === Paper){
+            query.populate('type').populate('direction').populate('author');
         }
         query.exec(function(err,docs){
             if(err){
