@@ -16,6 +16,7 @@ var PatentSchema = new Schema({
     name: String,
     owner: [{type:String,ref:'Person'}],
     file_path: String,
+    file_name: String,
     apply_time: {type: Date, default: Date.now },
     apply_number:String,
     authorized_time:Date,

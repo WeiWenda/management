@@ -14,24 +14,24 @@
 
 
  	SYSTEMMANAGE : ['sysTemManage','cjs后台管理'],  // 后台模块(系统管理)
-    adminUsersList : ['sysTemManage_user','系统用户管理'],
-    adminGroupList : ['sysTemManage_uGroup','系统用户组管理'],
+    adminUsersList : ['sysTemManage_user','用户'],
+    adminGroupList : ['sysTemManage_uGroup','用户组'],
     adminLoging : ['sysTemManage_loging','实时日志'],
-    patentList : [ 'sysTemManage_patent','管理专利'], 
-    softwareList : [ 'sysTemManage_software','管理软件著作权'], 
-    projectList : [ 'sysTemManage_project','管理科研项目'], 
-    awardList : [ 'sysTemManage_award','管理科研获奖'], 
-    paperList : [ 'sysTemManage_paper','管理学术论文'], 
+    patentList : [ 'patent','专利'], 
+    softwareList : [ 'software','软件著作权'], 
+    projectList : [ 'project','科研项目'], 
+    awardList : [ 'award','科研获奖'], 
+    paperList : [ 'paper','学术论文'], 
 
 
 
 
 
-    directionList : [ 'sysTemManage_direction','管理研究方向'], 
-    personList : [ 'sysTemManage_person','管理研究人员'], 
-    ccfList : [ 'sysTemManage_ccf','管理会议级别'], 
-    awardLevelList : [ 'sysTemManage_award_level','管理奖项级别'], 
-    projectLevelList : [ 'sysTemManage_project_level','管理项目级别'], 
+    directionList : [ 'direction','管理研究方向'], 
+    personList : [ 'person','管理研究人员'], 
+    ccfList : [ 'ccf','管理会议级别'], 
+    awardLevelList : [ 'award_level','管理奖项级别'], 
+    projectLevelList : [ 'project_level','管理项目级别'], 
 
 
 
@@ -43,34 +43,34 @@
     "\"sysTemManage_uGroup:true\", \"sysTemManage_uGroup_add:true\",\"sysTemManage_uGroup_view:true\", "+
     "\"sysTemManage_uGroup_modify:true\", \"sysTemManage_uGroup_del:true\","+
 
-    "\"sysTemManage_patent:true\", \"sysTemManage_patent_add:true\", \"sysTemManage_patent_view:true\", "+
-    "\"sysTemManage_patent_modify:true\", \"sysTemManage_patent_del:true\","+
+    "\"patent:true\", \"patent_add:true\", \"patent_view:true\", "+
+    "\"patent_modify:true\", \"patent_del:true\","+
 
-     "\"sysTemManage_software:true\", \"sysTemManage_software_add:true\", \"sysTemManage_software_view:true\", "+
-    "\"sysTemManage_software_modify:true\", \"sysTemManage_software_del:true\","+
+     "\"software:true\", \"software_add:true\", \"software_view:true\", "+
+    "\"software_modify:true\", \"software_del:true\","+
 
-     "\"sysTemManage_project:true\", \"sysTemManage_project_add:true\", \"sysTemManage_project_view:true\", "+
-    "\"sysTemManage_project_modify:true\", \"sysTemManage_project_del:true\","+
+     "\"project:true\", \"project_add:true\", \"project_view:true\", "+
+    "\"project_modify:true\", \"project_del:true\","+
 
-         "\"sysTemManage_award:true\", \"sysTemManage_award_add:true\", \"sysTemManage_award_view:true\", "+
-    "\"sysTemManage_award_modify:true\", \"sysTemManage_award_del:true\","+
+         "\"award:true\", \"award_add:true\", \"award_view:true\", "+
+    "\"award_modify:true\", \"award_del:true\","+
 
-       "\"sysTemManage_paper:true\", \"sysTemManage_paper_add:true\", \"sysTemManage_paper_view:true\", "+
-    "\"sysTemManage_paper_modify:true\", \"sysTemManage_paper_del:true\","+
+       "\"paper:true\", \"paper_add:true\", \"paper_view:true\", "+
+    "\"paper_modify:true\", \"paper_del:true\","+
 
 
-    "\"sysTemManage_direction:true\", \"sysTemManage_direction_add:true\", \"sysTemManage_direction_view:true\", "+
-    "\"sysTemManage_direction_modify:true\", \"sysTemManage_direction_del:true\","+
+    "\"direction:true\", \"direction_add:true\", \"direction_view:true\", "+
+    "\"direction_modify:true\", \"direction_del:true\","+
 
-        "\"sysTemManage_ccf:true\", \"sysTemManage_ccf_add:true\", \"sysTemManage_ccf_view:true\", "+
-    "\"sysTemManage_ccf_modify:true\", \"sysTemManage_ccf_del:true\","+
+        "\"ccf:true\", \"ccf_add:true\", \"ccf_view:true\", "+
+    "\"ccf_modify:true\", \"ccf_del:true\","+
 
-          "\"sysTemManage_project_level:true\", \"sysTemManage_project_level_add:true\", \"sysTemManage_project_level_view:true\", "+
-    "\"sysTemManage_project_level_modify:true\", \"sysTemManage_project_level_del:true\","+
+          "\"project_level:true\", \"project_level_add:true\", \"project_level_view:true\", "+
+    "\"project_level_modify:true\", \"project_level_del:true\","+
 
-        "\"sysTemManage_award_level:true\", \"sysTemManage_award_level_add:true\", \"sysTemManage_award_level_view:true\", "+
-    "\"sysTemManage_award_level_modify:true\", \"sysTemManage_award_level_del:true\","+
+        "\"award_level:true\", \"award_level_add:true\", \"award_level_view:true\", "+
+    "\"award_level_modify:true\", \"award_level_del:true\","+
 
-    "\"sysTemManage_person:true\", \"sysTemManage_person_add:true\", \"sysTemManage_person_view:true\", "+
-    "\"sysTemManage_person_modify:true\", \"sysTemManage_person_del:true\"]"
+    "\"person:true\", \"person_add:true\", \"person_view:true\", "+
+    "\"person_modify:true\", \"person_del:true\"]"
  };

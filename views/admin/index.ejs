@@ -15,13 +15,24 @@
     <meta name="apple-mobile-web-app-title" content="Amaze UI" />
     
     <link rel="stylesheet" href="/assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/css/select2.min.css" />
+    <link rel="stylesheet" href="/assets/css/select.min.css" />
+    <link rel="stylesheet" href="/assets/css/ui-grid.min.css" />
+
     <link rel="stylesheet" href="/assets/css/amazeui.datatables.min.css" />
     <link rel="stylesheet" href="/assets/css/app.css">
     <link rel="stylesheet" href="/assets/css/zTreeStyle.css" type="text/css">
-    <link rel="stylesheet" href="/assets/css/isteven-multi-select.css">
+
     <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/angular.min.js"></script>
-    <script src="/assets/js/isteven-multi-select.js"></script>
+    <script src="/assets/js/angular.js"></script>
+    <script src="/assets/js/ui-bootstrap-tpls-2.5.0.js"></script>
+    <script src="/assets/js/angular-sanitize.js"></script>
+    <script src="/assets/js/select.min.js"></script>
+    <script src="/assets/js/ui-grid.min.js"></script>
+
+
+
     <script src="/angular/controller.js"></script>
 </head>
 <!-- ng-app="adminApp" -->
@@ -321,6 +332,8 @@
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
         <input type="hidden" id="currentCate" value="<%= bigCategory%>"/>
+        <input type="hidden" id="siteInfo" value="<%= siteInfo%>"/>
+        
             <!-- <div class="container-fluid am-cf">
                 <div class="row">
                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">

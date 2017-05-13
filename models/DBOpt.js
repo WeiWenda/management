@@ -241,7 +241,15 @@ var DBOpt = {
         });
         fs.createReadStream(path).pipe(writestream);
         writestream.on('close', function (file) {
+            callback();
         });
+    },
+    removeFile:function(name){
+        if(name != undefined){
+            gfs.remove({filename:name}, function (err) {
+          if (err) return handleError(err);
+            });
+        }
     },
     readFile : function (dir, name,res) {
         var fs_write_stream = fs.createWriteStream("tmp/" + dir + "/" + name);

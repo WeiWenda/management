@@ -190,6 +190,12 @@ router.get('/manage/:defaultUrl/del',function(req,res){
             DBOpt.del(targetObj,req,res,"del one obj success");
         // }
     }else{
+            targetObj.findOne({_id : params.query.uid},function(err,data){
+                if(data && ('file_path' in data)){
+                    console.log("delete file from mongo");
+                    DBOpt.removeFile(data.file_path);
+                }  
+            });
         DBOpt.del(targetObj,req,res,"del one obj success");
     }
 
@@ -251,7 +257,20 @@ router.post('/manage/:defaultUrl/modify',function(req,res){
         
     }else{
         req.body = req.query;
-        DBOpt.updateOneByID(targetObj,req, res,"update one obj success")
+        if('file' in req.files){
+            console.log("change file in mongo");
+            targetObj.findOne({_id : req.body._id},function(err,data){
+                DBOpt.removeFile(data.file_path);
+            });
+             // 保存文件到GridFS 
+            var file = req.files['file'];
+            req.body["file_path"] = file.name;
+            DBOpt.loadToMongo(file.name,file.originalname,req.body.bigCategory,file.path,function(){
+                DBOpt.updateOneByID(targetObj,req, res,"update one obj success");
+            });
+        }else{
+            DBOpt.updateOneByID(targetObj,req, res,"update one obj success");
+        }
     }
 });
 //-------------------------更新单条记录(执行更新)结束--------------------
@@ -270,39 +289,20 @@ router.post('/manage/:defaultUrl/addOne',function(req,res){
     var targetObj = adminBean.getTargetObj(currentPage);
     if(targetObj == AdminUser){
         addOneAdminUser(req,res);
-    }else if(targetObj == Patent ){
-        // 保存文件到GridFS 
-        var file = req.files['file'];
-        DBOpt.loadToMongo(file.name,file.originalname,"patent",file.path);
-        req.body = req.query;
-        req.body["file_path"] = file.name;
-        DBOpt.addOne(targetObj,req, res);
-    }else if(targetObj == SoftwareCopyright ){
-        // 保存文件到GridFS 
-        var file = req.files['file'];
-        DBOpt.loadToMongo(file.name,file.originalname,"software",file.path);
-        req.body = req.query;
-        req.body["file_path"] = file.name;
-        DBOpt.addOne(targetObj,req, res);
-    }else if(targetObj == Award ){
-        // 保存文件到GridFS 
-        var file = req.files['file'];
-        DBOpt.loadToMongo(file.name,file.originalname,"award",file.path);
-        req.body = req.query;
-        req.body["file_path"] = file.name;
-        DBOpt.addOne(targetObj,req, res);
-    }else if(targetObj == Paper ){
-        // 保存文件到GridFS 
-        var file = req.files['file'];
-        DBOpt.loadToMongo(file.name,file.originalname,"paper",file.path);
-        req.body = req.query;
-        req.body["file_path"] = file.name;
-        DBOpt.addOne(targetObj,req, res);
     }else{
         req.body = req.query;
-        DBOpt.addOne(targetObj,req, res);
+        if('file' in req.files){
+            console.log("save file to mongo");
+             // 保存文件到GridFS 
+            var file = req.files['file'];
+            req.body["file_path"] = file.name;
+            DBOpt.loadToMongo(file.name,file.originalname,req.body.bigCategory,file.path,function(){
+                DBOpt.addOne(targetObj,req,res);
+            });
+        }else{
+            DBOpt.addOne(targetObj,req, res);
+        }  
     }
-
 });
 
 //-------------------------对象新增结束-------------------------

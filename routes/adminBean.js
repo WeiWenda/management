@@ -34,25 +34,25 @@ var adminBean = {
             targetObj = AdminUser;
         }else if(currentPage === 'sysTemManage_uGroup' ){
             targetObj = AdminGroup;
-        }else if(currentPage === 'sysTemManage_patent' ){
+        }else if(currentPage === 'patent' ){
             targetObj = Patent;
-        }else if(currentPage === 'sysTemManage_direction' ){
+        }else if(currentPage === 'direction' ){
             targetObj = Direction;
-        }else if(currentPage === 'sysTemManage_person' ){
+        }else if(currentPage === 'person' ){
             targetObj = Person;
-        }else if(currentPage === 'sysTemManage_ccf' ){
+        }else if(currentPage === 'ccf' ){
             targetObj = CCFLevel;
-        }else if(currentPage === 'sysTemManage_award_level' ){
+        }else if(currentPage === 'award_level' ){
             targetObj = AwardLevel;
-        }else if(currentPage === 'sysTemManage_project_level' ){
+        }else if(currentPage === 'project_level' ){
             targetObj = ProjectLevel;
-        }else if(currentPage === 'sysTemManage_software' ){
+        }else if(currentPage === 'software' ){
             targetObj = SoftwareCopyright;
-        }else if(currentPage === 'sysTemManage_project' ){
+        }else if(currentPage === 'project' ){
             targetObj = Project;
-        }else if(currentPage === 'sysTemManage_award' ){
+        }else if(currentPage === 'award' ){
             targetObj = Award;
-        }else if(currentPage === 'sysTemManage_paper' ){
+        }else if(currentPage === 'paper' ){
             targetObj = Paper;
         }
         return targetObj

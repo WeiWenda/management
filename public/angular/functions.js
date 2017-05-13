@@ -2,13 +2,13 @@
 //初始化普通列表分页
 function initPagination($scope,$http){
 	console.log("初始化普通列表分页");
-    $("#loading").modal();
+    $("#dataLoading").modal('open');
     initPageInfo($scope);
     getPageInfos($scope,$http,"/admin/manage/getDocumentList/"+$('#currentCate').val(),'normalList');
+    console.log('getcontent');
 }
 
 function initPageInfo($scope){
-    $("#loading").modal();
     $scope.selectPage = [
         {name:'10',value : '10'},
         {name:'20',value : '20'},
@@ -68,7 +68,8 @@ function getPageInfos($scope,$http,url,reqType){
         getPageInfos($scope,$http,url);
     };
 
-    $http.get(url+"?limit="+$scope.limit+"&currentPage="+$scope.currentPage+"&searchKey="+$scope.keywords+"&area="+$scope.area).success(function(result){
+    $http.get(url+"?limit="+$scope.limit+"&currentPage="+$scope.currentPage+"&searchKey="+$scope.keywords+"&area="+$scope.area).then(function(result){
+        result = result.data
         console.log("getData success!");
         if(reqType == 'normalList'){
             $scope.data = result.docs;
@@ -77,6 +78,7 @@ function getPageInfos($scope,$http,url,reqType){
         }else{
             $scope.data = result.docs;
         }
+        // console.log(result);
         if(result.pageInfo){
             $scope.totalItems = result.pageInfo.totalItems;
             $scope.currentPage = result.pageInfo.currentPage;
@@ -96,9 +98,7 @@ function getPageInfos($scope,$http,url,reqType){
         }else{
             console.log("获取分页信息失败")
         }
-
-        $("#dataLoading").addClass("hide");
-
+        $("#dataLoading").modal('close');
     })
 }
 
@@ -107,8 +107,11 @@ function angularHttpPost($http,isValid,url,formData,callBack){
     //if(isValid){
     if(true){
           var fd = new FormData(); //初始化一个FormData实例
-        fd.append('file', formData.file);
-        delete formData["file"];  
+          if('file' in formData){
+            console.log('表单中有文件');
+            fd.append('file', formData.file);
+            delete formData["file"];  
+          }
         $http({
             method  : 'POST',
             url     : url,
@@ -121,14 +124,14 @@ function angularHttpPost($http,isValid,url,formData,callBack){
             transformRequest: angular.identity,
             data: fd
         })
-        .success(function(data) {
+        .then(function(data) {
             //  关闭所有模态窗口
             $('.am-modal').each(function(i){
                 $(this).modal("close");
             });
 
-            if(data == 'success'){
-                callBack(data);
+            if(data.data == 'success'){
+                callBack(data.data);
             }else{
                 console.log(data);
                 $("#my-alert").modal();
@@ -142,12 +145,12 @@ function angularHttpPost($http,isValid,url,formData,callBack){
 }
 //主要针对删除操作
 function angularHttpGet($http,url,callBack){
-    $http.get(url).success(function(result){
+    $http.get(url).then(function(result){
         $('.modal').each(function(i){
             $(this).modal("hide");
         });
-        if(result == 'success'){
-            callBack(result);
+        if(result.data == 'success'){
+            callBack(result.data);
         }else{
             //$.tipsShow({ message : result, type : 'warning' });
         }
@@ -158,8 +161,8 @@ function angularHttpGet($http,url,callBack){
 //获取添加或修改链接
 function getTargetPostUrl($scope,bigCategory){
     var url = "/admin/manage/"+bigCategory+"/addOne";
-    if($scope.targetID){
-        url = "/admin/manage/"+bigCategory+"/modify?uid="+$scope.targetID;
+    if($scope.formData._id){
+        url = "/admin/manage/"+bigCategory+"/modify?uid="+$scope.formData._id;
     }
     return url;
 }
@@ -215,19 +218,11 @@ function initCheckIfDo($scope,targetId,msg,callBack){
         }
     });
 }
-
-//关闭模态窗口初始化数据
-function clearModalData($scope,modalObj){
-    $scope.formData = {};
-    $scope.targetID = "";
-    // modalObj.find(".form-control").val("");
-    modalObj.find("#file-list").val("");
-}
 //获取用户组数据
 function initGroups($scope,$http){
-    $http.get("/admin/manage/sysTemManage_uGroup/findAll").success(function(result){
-        if(result){
-            $scope.groups = result;
+    $http.get("/admin/manage/sysTemManage_uGroup/findAll").then(function(result){
+        if(result.status = 200){
+            $scope.groups = result.data;
         }else{
             console.log("获取分页信息失败")
         }
@@ -235,9 +230,9 @@ function initGroups($scope,$http){
 }
 //获取研究方向数据
 function initDirections($scope,$http){
-    $http.get("/admin/manage/sysTemManage_direction/findAll").success(function(result){
-        if(result){
-            $scope.directions = result;
+    $http.get("/admin/manage/sysTemManage_direction/findAll").then(function(result){
+        if(result.status = 200){
+            $scope.directions = result.data;
         }else{
             console.log("获取分页信息失败")
         }
@@ -245,9 +240,9 @@ function initDirections($scope,$http){
 }
 //获取研究方向数据
 function initPersons($scope,$http){
-    $http.get("/admin/manage/sysTemManage_person/findAll").success(function(result){
-        if(result){
-            $scope.persons = result;
+    $http.get("/admin/manage/sysTemManage_person/findAll").then(function(result){
+        if(result.status = 200){
+            $scope.persons = result.data;
         }else{
             console.log("获取分页信息失败")
         }
@@ -255,9 +250,9 @@ function initPersons($scope,$http){
 }
 //获取科研项目数据
 function initProjects($scope,$http){
-    $http.get("/admin/manage/sysTemManage_project/findAll").success(function(result){
-        if(result){
-            $scope.projects = result;
+    $http.get("/admin/manage/sysTemManage_project/findAll").then(function(result){
+        if(result.status = 200){
+            $scope.projects = result.data;
         }else{
             console.log("获取分页信息失败")
         }
@@ -265,9 +260,9 @@ function initProjects($scope,$http){
 }
 //获取论类型数据
 function initCCFLevels($scope,$http){
-    $http.get("/admin/manage/sysTemManage_ccf/findAll").success(function(result){
-        if(result){
-            $scope.types = result;
+    $http.get("/admin/manage/sysTemManage_ccf/findAll").then(function(result){
+       if(result.status = 200){
+            $scope.types = result.data;
         }else{
             console.log("获取分页信息失败")
         }
@@ -275,9 +270,9 @@ function initCCFLevels($scope,$http){
 }
 //获取项目类型数据
 function initProjectLevels($scope,$http){
-    $http.get("/admin/manage/sysTemManage_project_level/findAll").success(function(result){
-        if(result){
-            $scope.types = result;
+    $http.get("/admin/manage/sysTemManage_project_level/findAll").then(function(result){
+         if(result.status = 200){
+            $scope.types = result.data;
         }else{
             console.log("获取分页信息失败")
         }
@@ -285,9 +280,9 @@ function initProjectLevels($scope,$http){
 }
 //获取获奖类型数据
 function initAwardLevels($scope,$http){
-    $http.get("/admin/manage/sysTemManage_award_level/findAll").success(function(result){
-        if(result){
-            $scope.types = result;
+    $http.get("/admin/manage/sysTemManage_award_level/findAll").then(function(result){
+         if(result.status = 200){
+            $scope.types = result.data;
         }else{
             console.log("获取分页信息失败")
         }
