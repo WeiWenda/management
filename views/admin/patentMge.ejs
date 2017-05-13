@@ -89,7 +89,7 @@
 </div>
 
 <!--添加新用户模态窗口-->
-<div class="am-modal" tabindex="-1" id="addNew" ng-controller="openModal">
+<div class="am-modal" tabindex="-1" id="addNew" ng-controller="openModal as modal">
    <div class="am-modal-dialog">
     <div class="widget am-cf">
         <div class="widget-head am-cf">
@@ -132,8 +132,8 @@
 
  <div class="am-form-group">
     <label for="apply_time" class="am-u-sm-3 am-form-label">申请日期<span class="tpl-form-line-small-title"></span></label>
-    <div class="am-u-sm-9" ng-controller="DatepickerPopupDemoCtrl">
-        <input ng-class="{'am-field-valid':myForm.apply_time.$valid,'am-field-error':myForm.apply_time.$invalid}" type="text" name="apply_time" ng-model="formData.apply_time"  placeholder="选择申请日期" uib-datepicker-popup is-open="popup.opened" datepicker-options="dateOptions" ng-click="open()" ng-required="true" clear-text="清空" close-text="关闭" current-text="今天" />
+    <div class="am-u-sm-9">
+        <input ng-class="{'am-field-valid':myForm.apply_time.$valid,'am-field-error':myForm.apply_time.$invalid}" type="text" name="apply_time"  ng-model="formData.apply_time" placeholder="选择申请日期" uib-datepicker-popup is-open="apply_time.popup.opened" datepicker-options="dateOptions" ng-click="apply_time.open()" ng-required="true" clear-text="清空" close-text="关闭" current-text="今天" date-picker="apply_time" />
     </div>
 </div>
 <div class="am-form-group">
@@ -144,8 +144,8 @@
 </div>
 <div class="am-form-group">
     <label for="authorized_time" class="am-u-sm-3 am-form-label">授权日期<span class="tpl-form-line-small-title"></span></label>
-    <div class="am-u-sm-9" ng-controller="DatepickerPopupDemoCtrl">
-        <input type="text" ng-model="formData.authorized_time"  placeholder="选择授权日期" uib-datepicker-popup is-open="popup.opened" datepicker-options="dateOptions" ng-click="open()" clear-text="清空" close-text="关闭" current-text="今天" />
+    <div class="am-u-sm-9">
+        <input type="text" ng-model="formData.authorized_time" placeholder="选择授权日期" uib-datepicker-popup is-open="authorized_time.popup.opened" datepicker-options="dateOptions" ng-click="authorized_time.open()" clear-text="清空" close-text="关闭" current-text="今天" date-picker="authorized_time"/>
     </div>
 </div>
 <div class="am-form-group">

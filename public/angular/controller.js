@@ -77,7 +77,7 @@ function($parse) {
         }
     };
 }]);
-cjsApp.controller('openModal', ['$scope', '$http', 'pageData', 'getItemService',
+cjsApp.controller('openModal', ['$scope', '$http', 'pageData','getItemService',
 function($scope, $http, pageData, getItemService) {
     $scope.processForm = function(isValid) {
         if (false) {
@@ -107,59 +107,53 @@ function($scope, $http, pageData, getItemService) {
         width: 600
     });
     $('#addNew').modal('toggle');
-
+    
     $('#addNew').bind('open.modal.amui',
     function(event) {
         console.log("弹出框");
-        $scope.formData = {};
         var obj = $(event.relatedTarget);
         var editId = obj.data('whatever');
         // 如果不为空则为编辑状态
         if (editId) {
             getItemService.itemInfo(pageData.bigCategory, editId).then(function(result) {
                 $scope.formData = result.data;
+                console.log($scope.formData);
             })
+        }else{
+            $scope.formData = {};
         }
         $scope.$apply();
     });
 }]);
-cjsApp.directive('dateFormat', ['$filter',
-function($filter) {
-    var dateFilter = $filter('date');
-    return {
+
+cjsApp.directive('datePicker',function() {
+    return{
         require: 'ngModel',
-        link: function(scope, elm, attrs, ctrl) {
-
+        restrict: 'A',
+        link: function(scope,element,attr,ctrl) {
             function formatter(value) {
-                return dateFilter(value, 'yyyy-MM-dd'); //format  
+                if(value)
+                    return new Date(value);
+                else
+                    return value;
             }
-
-            function parser() {
-                return ctrl.$modelValue;
-            }
-
             ctrl.$formatters.push(formatter);
-            ctrl.$parsers.unshift(parser);
 
+            scope.dateOptions = {
+                maxDate: new Date(2020, 5, 22),
+                startingDay: 1,
+                initDate : new Date()
+            };
+
+            scope[attr.datePicker]={
+                open : function() {
+                scope[attr.datePicker].popup.opened = true;
+                },popup : {
+                opened: false
+            }
+            }
         }
-    };
-}]);
-
-cjsApp.controller('DatepickerPopupDemoCtrl',
-function($scope) {
-
-    $scope.dateOptions = {
-        maxDate: new Date(2020, 5, 22),
-        startingDay: 1
-    };
-
-    $scope.open = function() {
-        $scope.popup.opened = true;
-    };
-
-    $scope.popup = {
-        opened: false
-    };
+    }
 });
 cjsApp.filter('propsFilter',
 function() {
