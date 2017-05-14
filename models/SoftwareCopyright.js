@@ -14,6 +14,7 @@ var SoftwareCopyrightSchema = new Schema({
         'default': shortid.generate
     },
     name: String,
+    file_name:String,
     file_path: String,
     finish_time:{type: Date, default: Date.now },
     register_number:String,

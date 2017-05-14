@@ -77,54 +77,7 @@ function($parse) {
         }
     };
 }]);
-cjsApp.controller('openModal', ['$scope', '$http', 'pageData','getItemService',
-function($scope, $http, pageData, getItemService) {
-    $scope.processForm = function(isValid) {
-        if (false) {
-            //if(!$scope.formData.group){
-            // $.tipsShow({
-            //     message : '请选择用户组',
-            //     type : 'warning' ,
-            //     callBack : function(){
-            //         return;
-            //     }
-            // });
-        } else {
-            //用于向Mongo中保存图片的metadata
-            $scope.formData['bigCategory']=pageData.bigCategory;
-            console.log($scope.formData);
-            angularHttpPost($http, isValid, getTargetPostUrl($scope, pageData.bigCategory), $scope.formData,
-            function(data) {
-                initPagination($scope, $http);
-                // $scope.$apply();
-            });
-        }
 
-    };
-    $('#addNew').modal({
-        dimmer: 0,
-        closeViaDimmer: 0,
-        width: 600
-    });
-    $('#addNew').modal('toggle');
-    
-    $('#addNew').bind('open.modal.amui',
-    function(event) {
-        console.log("弹出框");
-        var obj = $(event.relatedTarget);
-        var editId = obj.data('whatever');
-        // 如果不为空则为编辑状态
-        if (editId) {
-            getItemService.itemInfo(pageData.bigCategory, editId).then(function(result) {
-                $scope.formData = result.data;
-                console.log($scope.formData);
-            })
-        }else{
-            $scope.formData = {};
-        }
-        $scope.$apply();
-    });
-}]);
 
 cjsApp.directive('datePicker',function() {
     return{
@@ -187,14 +140,6 @@ function() {
         return out;
     };
 });
-
-cjsApp.controller("adminList", ['$scope', '$http', '$filter', 'pageData', 'getItemService',
-function($scope, $http, $filter, pageData, getItemService) {
-    //获取管理员列表信息
-    initPagination($scope, $http);
-    initDelOption($scope, $http, '您确认要删除选中的'+pageData.siteInfo+'吗？');
-
-}]);
 cjsApp.directive("initSelects", ['initSelect',
     function(initSelect) {
         return {
@@ -211,4 +156,69 @@ cjsApp.directive("initSelects", ['initSelect',
                 })
             }
         }
+}]);
+cjsApp.controller("adminLoging",['$scope','webSocketData',function($scope,webSocketData){
+    $scope.logarrays = webSocketData.logArray();
+}]);
+cjsApp.controller("adminList", ['$scope', '$rootScope','$http', '$filter', 'pageData', 'getItemService',
+function($scope, $rootScope,$http, $filter, pageData, getItemService) {
+    //获取管理员列表信息
+    $rootScope.$on("SomeChangeUp",function(event,msg){
+        console.log("parent"+msg);
+        $rootScope.$broadcast("SomeChangeDown",msg);
+    });
+    $scope.$on("SomeChangeDown",function(event,msg){
+        initPagination($scope, $http);
+    });
+    initPagination($scope, $http);
+    initDelOption($scope, $http, '您确认要删除选中的'+pageData.siteInfo+'吗？');
+
+
+}]);
+cjsApp.controller('openModal', ['$scope', '$http', 'pageData','getItemService',
+function($scope, $http, pageData, getItemService) {
+    $scope.processForm = function(isValid) {
+        if (false) {
+            //if(!$scope.formData.group){
+            // $.tipsShow({
+            //     message : '请选择用户组',
+            //     type : 'warning' ,
+            //     callBack : function(){
+            //         return;
+            //     }
+            // });
+        } else {
+            //用于向Mongo中保存图片的metadata
+            $scope.formData['bigCategory']=pageData.bigCategory;
+            console.log($scope.formData);
+            angularHttpPost($http, isValid, getTargetPostUrl($scope, pageData.bigCategory), $scope.formData,
+            function(data) {
+                $scope.$emit("SomeChangeUp", data);
+            });
+        }
+
+    };
+    $('#addNew').modal({
+        dimmer: 0,
+        closeViaDimmer: 0,
+        width: 600
+    });
+    $('#addNew').modal('toggle');
+    
+    $('#addNew').bind('open.modal.amui',
+    function(event) {
+        console.log("弹出框");
+        var obj = $(event.relatedTarget);
+        var editId = obj.data('whatever');
+        // 如果不为空则为编辑状态
+        if (editId) {
+            getItemService.itemInfo(pageData.bigCategory, editId).then(function(result) {
+                $scope.formData = result.data;
+                console.log($scope.formData);
+            })
+        }else{
+            $scope.formData = {};
+        }
+        $scope.$apply();
+    });
 }]);

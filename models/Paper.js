@@ -16,6 +16,7 @@ var PaperSchema = new Schema({
     name: String,
     author: [{type:String,ref:'Person'}],
     project:[{type:String,ref:'Project'}],
+    file_name:String,
     file_path: String,
     publish_time: {type: Date, default: Date.now },
     wos_number:String,

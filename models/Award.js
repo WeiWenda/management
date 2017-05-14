@@ -15,6 +15,7 @@ var AwardSchema = new Schema({
     },
     name: String,
     winner: [{type:String,ref:'Person'}],
+    file_name:String,
     file_path: String,
     time: {type: Date, default: Date.now },
     comments: {type:String,default:""},

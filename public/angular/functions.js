@@ -218,76 +218,7 @@ function initCheckIfDo($scope,targetId,msg,callBack){
         }
     });
 }
-//获取用户组数据
-function initGroups($scope,$http){
-    $http.get("/admin/manage/sysTemManage_uGroup/findAll").then(function(result){
-        if(result.status = 200){
-            $scope.groups = result.data;
-        }else{
-            console.log("获取分页信息失败")
-        }
-    });
-}
-//获取研究方向数据
-function initDirections($scope,$http){
-    $http.get("/admin/manage/sysTemManage_direction/findAll").then(function(result){
-        if(result.status = 200){
-            $scope.directions = result.data;
-        }else{
-            console.log("获取分页信息失败")
-        }
-    });
-}
-//获取研究方向数据
-function initPersons($scope,$http){
-    $http.get("/admin/manage/sysTemManage_person/findAll").then(function(result){
-        if(result.status = 200){
-            $scope.persons = result.data;
-        }else{
-            console.log("获取分页信息失败")
-        }
-    });
-}
-//获取科研项目数据
-function initProjects($scope,$http){
-    $http.get("/admin/manage/sysTemManage_project/findAll").then(function(result){
-        if(result.status = 200){
-            $scope.projects = result.data;
-        }else{
-            console.log("获取分页信息失败")
-        }
-    });
-}
-//获取论类型数据
-function initCCFLevels($scope,$http){
-    $http.get("/admin/manage/sysTemManage_ccf/findAll").then(function(result){
-       if(result.status = 200){
-            $scope.types = result.data;
-        }else{
-            console.log("获取分页信息失败")
-        }
-    });
-}
-//获取项目类型数据
-function initProjectLevels($scope,$http){
-    $http.get("/admin/manage/sysTemManage_project_level/findAll").then(function(result){
-         if(result.status = 200){
-            $scope.types = result.data;
-        }else{
-            console.log("获取分页信息失败")
-        }
-    });
-}
-//获取获奖类型数据
-function initAwardLevels($scope,$http){
-    $http.get("/admin/manage/sysTemManage_award_level/findAll").then(function(result){
-         if(result.status = 200){
-            $scope.types = result.data;
-        }else{
-            console.log("获取分页信息失败")
-        }
-    });
-}
+
 //初始化管理员权限列表
 function initPowerList($scope){
     var setting = {
