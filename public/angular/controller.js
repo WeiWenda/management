@@ -37,28 +37,28 @@ function($http) {
         }
     }
 }]);
-cjsApp.factory('webSocketData',
-function() {
-    var ws = io.connect('/');
-    ws.on('connect',
-    function(msg) {});
-    var logs = [];
-    ws.on('logChange',
-    function(msg) {
-        // logs.push(msg);
-        $('#loging').append("<span class=\"am-text-success\" >" + msg.time + "  </span>" + "<span class=\"am-text-secondary\" >" + msg.level + "  </span>" + "<span class=\"am-text-primary\" >" + msg.type + "  </span>" + "<span class=\"am-text-default\" >" + msg.msg + "  </span>");
-        $('#scroll').animate({
-            scrollTop: $('#loging').height()
-        },
-        50);
-    });
-    var methods = {
-        logArray: function() {
-            return logs;
-        }
-    };
-    return methods;
-});
+// cjsApp.factory('webSocketData',
+// function() {
+//     var ws = io.connect('/');
+//     ws.on('connect',
+//     function(msg) {});
+//     var logs = [];
+//     ws.on('logChange',
+//     function(msg) {
+//         // logs.push(msg);
+//         $('#loging').append("<span class=\"am-text-success\" >" + msg.time + "  </span>" + "<span class=\"am-text-secondary\" >" + msg.level + "  </span>" + "<span class=\"am-text-primary\" >" + msg.type + "  </span>" + "<span class=\"am-text-default\" >" + msg.msg + "  </span>");
+//         $('#scroll').animate({
+//             scrollTop: $('#loging').height()
+//         },
+//         50);
+//     });
+//     var methods = {
+//         logArray: function() {
+//             return logs;
+//         }
+//     };
+//     return methods;
+// });
 cjsApp.directive('fileModel', ['$parse',
 function($parse) {
     return {
@@ -153,9 +153,9 @@ cjsApp.directive("initSelects", ['initSelect',
             }
         }
 }]);
-cjsApp.controller("adminLoging",['$scope','webSocketData',function($scope,webSocketData){
-    $scope.logarrays = webSocketData.logArray();
-}]);
+// cjsApp.controller("adminLoging",['$scope','webSocketData',function($scope,webSocketData){
+//     $scope.logarrays = webSocketData.logArray();
+// }]);
 cjsApp.controller("adminList", ['$scope', '$rootScope','$http', '$filter', 'pageData', 'getItemService',
 function($scope, $rootScope,$http, $filter, pageData, getItemService) {
     //获取管理员列表信息
