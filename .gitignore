@@ -10,7 +10,6 @@ __pycache__/
 # Distribution / packaging
 tmp/
 log/
-*.log
 node_modules/
 .Python
 env/
