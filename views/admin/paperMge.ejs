@@ -136,9 +136,9 @@
         <label for="type" class="am-u-sm-3 am-form-label">会议/刊物<span class="tpl-form-line-small-title"></span></label>
         <div class="am-u-sm-9" init-selects="ccf">
             <ui-select  ng-model="formData.type" theme="bootstrap" >
-                <ui-select-match placeholder="请选择会议/刊物">{{$select.selected.name}}</ui-select-match>
-                <ui-select-choices repeat="type._id as type in selects | propsFilter: {name: $select.search}">
-                  <div ng-bind-html="type.name | highlight: $select.search"></div>
+                <ui-select-match placeholder="请选择会议/刊物">{{$select.selected.abbreviation+" "+$select.selected.name}}</ui-select-match>
+                <ui-select-choices repeat="type._id as type in selects | propsFilter: {name: $select.search ,abbreviation:$select.search}">
+                  <div ng-bind-html="type.abbreviation+' '+type.name | highlight: $select.search"></div>
               </ui-select-choices>
           </ui-select>
       </div>
