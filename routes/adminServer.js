@@ -358,6 +358,7 @@ function setPageInfo(req,res,module){
         searchKey = params.query.searchKey;
         area = req.query.area;
     }
+    console.log(req.originalUrl);
     
     return {
         siteInfo : module[1],
