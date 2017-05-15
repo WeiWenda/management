@@ -92,8 +92,7 @@ router.post('/doLogin', function(req, res){
                 }
                 if(user){
                     pass.hash(password, user.salt, function(err, hash){
-                        console.log(user.password);
-                        console.log(hash);
+                        // console.log(user);
                         if(user.password == hash){
                             req.session.adminlogined = true;
                             req.session.adminUserInfo = user;
@@ -142,6 +141,7 @@ router.get('/manage/:defaultUrl/item',function(req,res){
 
     if(targetObj == AdminUser){
         AdminUser.getOneItem(res,targetId,function(user){
+            user.group = user.group._id;
             user.password = "";
             return res.json(user);
         });
@@ -248,6 +248,7 @@ router.post('/manage/:defaultUrl/modify',function(req,res){
     var params = url.parse(req.url,true);
 
     if(targetObj == AdminUser){
+        req.body = req.query;
         // req.body.password = DbOpt.encrypt(req.body.password,settings.encrypt_key);
         pass.hash(req.body.password, function(err, salt, hash){
             req.body.password = hash;
@@ -288,6 +289,7 @@ router.post('/manage/:defaultUrl/addOne',function(req,res){
     var currentPage = req.params.defaultUrl;
     var targetObj = adminBean.getTargetObj(currentPage);
     if(targetObj == AdminUser){
+        req.body = req.query;
         addOneAdminUser(req,res);
     }else{
         req.body = req.query;
@@ -309,14 +311,18 @@ router.post('/manage/:defaultUrl/addOne',function(req,res){
 
 //添加系统用户
 function addOneAdminUser(req,res){
+
     var errors;
     var userName = req.body.userName;
     if(validator.isUserName(userName)){
+
         AdminUser.findOne({userName:req.body.userName},function(err,user){
+
             if(user){
                 errors = "该用户名已存在！";
                 res.end(errors);
             }else{
+
                 // if(!req.body.group){
                 //     errors = "请选择用户组！";
                 // }
@@ -335,7 +341,8 @@ function addOneAdminUser(req,res){
             }
         })
     }else{
-        res.end(settings.system_illegal_param)
+
+        res.end(settings.system_illegal_param);
     }
 
 }

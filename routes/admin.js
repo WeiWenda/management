@@ -46,7 +46,7 @@ router.get('/manage/getDocumentList/:defaultUrl', function(req, res, next){
     if(adminBean.checkAdminPower(req,currentPage + '_view')){
         next();
     }else{
-        return res.json({});
+        res.status(401).end(settings.system_noPower);
     }
 });
 
@@ -56,7 +56,7 @@ router.get('/manage/:defaultUrl/findAll', function(req, res, next){
     if(adminBean.checkAdminPower(req,currentPage + '_view')){
         next();
     }else{
-        return res.json({});
+        res.status(401).end(settings.system_noPower);
     }
 });
 
@@ -67,7 +67,7 @@ router.post('/manage/:defaultUrl/addOne',function(req,res,next){
     if(adminBean.checkAdminPower(req,currentPage + '_add')){
         next();
     }else{
-        res.end(settings.system_noPower);
+        res.status(401).end(settings.system_noPower);
     }
 });
 
@@ -83,7 +83,7 @@ router.post('/manage/:defaultUrl/modify',function(req,res,next){
             res.end(settings.system_illegal_param);
         }
     }else{
-        res.end(settings.system_noPower);
+        res.status(401).end(settings.system_noPower);
     }
 });
 
@@ -100,7 +100,7 @@ router.get('/manage/:defaultUrl/del',function(req,res,next){
         }
 
     }else{
-        res.end(settings.system_noPower);
+        res.status(401).end(settings.system_noPower);
     }
 });
 
@@ -116,7 +116,7 @@ router.get('/manage/:defaultUrl/item',function(req,res,next){
             res.end(settings.system_illegal_param);
         }
     }else{
-        return res.json({});
+        res.status(401).end(settings.system_noPower);
     }
 
 });

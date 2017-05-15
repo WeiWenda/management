@@ -100,7 +100,7 @@
                     <div class="am-form-group">
                         <label for="user-name" class="am-u-sm-3 am-form-label">用户名<span class="tpl-form-line-small-title"></span></label>
                         <div class="am-u-sm-9">
-                            <input type="text" class="tpl-form-input" name="userName" ng-model="formData.userName" placeholder="请输入用户名">
+                         <input type="text" name="userName" ng-class="{'am-field-valid':myForm.userName.$valid,'am-field-error':myForm.userName.$invalid}" class="tpl-form-input" ng-model="formData.userName" placeholder="请输入用户名" required>
                         </div>
                     </div>
                     <div class="am-form-group">
@@ -118,41 +118,27 @@
                     <div class="am-form-group">
                         <label class="am-u-sm-3 am-form-label">姓名 <span class="tpl-form-line-small-title"></span></label>
                         <div class="am-u-sm-9">
-                            <input type="text" placeholder="输入姓名" name="name" ng-minlength="2" ng-maxlength="6" ng-pattern="/[\u4e00-\u9fa5]/" ng-model="formData.name" required>
+                        <input type="text" name="name" ng-class="{'am-field-valid':myForm.name.$valid,'am-field-error':myForm.name.$invalid}" class="tpl-form-input" ng-model="formData.name" placeholder="输入姓名" required>
                         </div>
                     </div>
 
                     <div class="am-form-group">
                         <label class="am-u-sm-3 am-form-label">密码 <span class="tpl-form-line-small-title"></span></label>
                         <div class="am-u-sm-9">
-                            <input type="text" placeholder="输入密码" id="userPassword" name="password" ng-pattern="/(?!^\\d+$)(?!^[a-zA-Z]+$)(?!^[_#@]+$).{5,}/" ng-maxlength="12" ng-model="formData.password" required>
+                            <input type="text" name="password" ng-class="{'am-field-valid':myForm.password.$valid,'am-field-error':myForm.password.$invalid}" placeholder="输入密码" id="userPassword" ng-pattern="/(?!^\\d+$)(?!^[a-zA-Z]+$)(?!^[_#@]+$).{5,}/" ng-maxlength="12" ng-model="formData.password" required>
                         </div>
                     </div>
                     <div class="am-form-group">
                         <label class="am-u-sm-3 am-form-label">Email <span class="tpl-form-line-small-title"></span></label>
                         <div class="am-u-sm-9">
-                            <input type="text" placeholder="输入Email" name="email" ng-model="formData.email" ng-pattern="/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/" required>
+                            <input type="text" placeholder="输入Email" name="email" ng-model="formData.email">
                         </div>
                     </div>
 
                     <div class="am-form-group">
                         <label class="am-u-sm-3 am-form-label">电话 <span class="tpl-form-line-small-title"></span></label>
                         <div class="am-u-sm-9">
-                            <input type="text" placeholder="输入电话" name="phoneNum" ng-model="formData.phoneNum" ng-pattern="/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/" required>
-                        </div>
-                    </div>
-
-                    <div class="am-form-group">
-                        <label for="user-intro" class="am-u-sm-3 am-form-label">账号冻结</label>
-                        <div class="am-u-sm-9">
-                            <div class="tpl-switch">
-                                <input type="checkbox" class="ios-switch bigswitch tpl-switch-btn" checked="">
-                                <div class="tpl-switch-btn-view">
-                                    <div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            <input type="text" placeholder="输入电话" name="phoneNum" ng-model="formData.phoneNum">
                         </div>
                     </div>
 

@@ -17,6 +17,7 @@
     adminUsersList : ['sysTemManage_user','用户'],
     adminGroupList : ['sysTemManage_uGroup','用户组'],
     adminLoging : ['sysTemManage_loging','实时日志'],
+
     patentList : [ 'patent','专利'], 
     softwareList : [ 'software','软件著作权'], 
     projectList : [ 'project','科研项目'], 
@@ -24,20 +25,19 @@
     paperList : [ 'paper','学术论文'], 
 
 
+    directionList : [ 'direction','研究方向'], 
+    personList : [ 'person','研究人员'], 
+    ccfList : [ 'ccf','会议级别'], 
+    awardLevelList : [ 'award_level','奖项级别'], 
+    projectLevelList : [ 'project_level','项目级别'], 
 
 
 
-    directionList : [ 'direction','管理研究方向'], 
-    personList : [ 'person','管理研究人员'], 
-    ccfList : [ 'ccf','管理会议级别'], 
-    awardLevelList : [ 'award_level','管理奖项级别'], 
-    projectLevelList : [ 'project_level','管理项目级别'], 
-
-
-
-    
+    system_illegal_param:'传入参数不合法',
     system_noPower : '用户没有权限',
-    system_Power : "[\"sysTemManage:true\", \"sysTemManage_user:true\", \"sysTemManage_user_add:true\", "+
+    system_Power : "[\"sysTemManage:true\",\"outcomeManage:true\",\"dimensionManage:true\","+
+
+    "\"sysTemManage_user:true\", \"sysTemManage_user_add:true\", "+
     "\"sysTemManage_user_view:true\", \"sysTemManage_user_modify:true\", \"sysTemManage_user_del:true\", "+
 
     "\"sysTemManage_uGroup:true\", \"sysTemManage_uGroup_add:true\",\"sysTemManage_uGroup_view:true\", "+

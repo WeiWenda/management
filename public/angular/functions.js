@@ -69,36 +69,41 @@ function getPageInfos($scope,$http,url,reqType){
     };
 
     $http.get(url+"?limit="+$scope.limit+"&currentPage="+$scope.currentPage+"&searchKey="+$scope.keywords+"&area="+$scope.area).then(function(result){
-        result = result.data
-        console.log("getData success!");
-        if(reqType == 'normalList'){
-            $scope.data = result.docs;
-        }else if(reqType == 'themeShop'){
-            $scope.themeShop = result.docs;
-        }else{
-            $scope.data = result.docs;
-        }
-        // console.log(result);
-        if(result.pageInfo){
-            $scope.totalItems = result.pageInfo.totalItems;
-            $scope.currentPage = result.pageInfo.currentPage;
-            $scope.limit = result.pageInfo.limit;
-            $scope.startNum = result.pageInfo.startNum;
-            //获取总页数
-            $scope.totalPage = Math.ceil($scope.totalItems / $scope.limit);
-
-            var pageArr = [];
-            var page_start = $scope.currentPage - 2 > 0 ? $scope.currentPage - 2 : 1;
-            var page_end = page_start + 4 >= $scope.totalPage ? $scope.totalPage : page_start + 4;
-            for(var i=page_start;i<=page_end;i++){
-                pageArr.push(i);
+             result = result.data
+            console.log("getData success!");
+            if(reqType == 'normalList'){
+                $scope.data = result.docs;
+            }else if(reqType == 'themeShop'){
+                $scope.themeShop = result.docs;
+            }else{
+                $scope.data = result.docs;
             }
-            $scope.pages = pageArr;
+            // console.log(result);
+            if(result.pageInfo){
+                $scope.totalItems = result.pageInfo.totalItems;
+                $scope.currentPage = result.pageInfo.currentPage;
+                $scope.limit = result.pageInfo.limit;
+                $scope.startNum = result.pageInfo.startNum;
+                //获取总页数
+                $scope.totalPage = Math.ceil($scope.totalItems / $scope.limit);
 
-        }else{
-            console.log("获取分页信息失败")
+                var pageArr = [];
+                var page_start = $scope.currentPage - 2 > 0 ? $scope.currentPage - 2 : 1;
+                var page_end = page_start + 4 >= $scope.totalPage ? $scope.totalPage : page_start + 4;
+                for(var i=page_start;i<=page_end;i++){
+                    pageArr.push(i);
+                }
+                $scope.pages = pageArr;
+
+            }else{
+                console.log("获取分页信息失败")
         }
+       
         $("#dataLoading").modal('close');
+    },function(result){
+        // console.log(result);
+        $("#my-alert").modal();
+        $("#alert-modal-msg").text(result.data);
     })
 }
 
@@ -133,10 +138,14 @@ function angularHttpPost($http,isValid,url,formData,callBack){
             if(data.data == 'success'){
                 callBack(data.data);
             }else{
-                console.log(data);
+                console.log(data.data);
                 $("#my-alert").modal();
-                $("#alert-modal-msg").text(data);
+                $("#alert-modal-msg").text(data.data);
             }
+        },function(result){
+             // console.log(result);
+            $("#my-alert").modal();
+            $("#alert-modal-msg").text(result.data);
         });
     }
     else{
@@ -271,17 +280,87 @@ function cancelTreeCheckBoxSelect(id){
 function setAdminPowerTreeData(){
     return [
         { id:'sysTemManage', pId:0, name:"系统管理", open:false},
+
+
         { id:'sysTemManage_user', pId:'sysTemManage', name:"系统用户管理", open:false},
         { id:'sysTemManage_user_add', pId:'sysTemManage_user', name:"新增"},
         { id:'sysTemManage_user_view', pId:'sysTemManage_user', name:"查看"},
         { id:'sysTemManage_user_modify', pId:'sysTemManage_user', name:"修改"},
         { id:'sysTemManage_user_del', pId:'sysTemManage_user', name:"删除"},
 
+
         { id:'sysTemManage_uGroup', pId:'sysTemManage', name:"系统用户组管理", open:false},
         { id:'sysTemManage_uGroup_add', pId:'sysTemManage_uGroup', name:"新增"},
         { id:'sysTemManage_uGroup_view', pId:'sysTemManage_uGroup', name:"查看"},
         { id:'sysTemManage_uGroup_modify', pId:'sysTemManage_uGroup', name:"修改"},
         { id:'sysTemManage_uGroup_del', pId:'sysTemManage_uGroup', name:"删除"},
+        
+
+
+        { id:'outcomeManage', pId:1, name:"成果管理", open:false},
+
+        { id:'patent', pId:'outcomeManage', name:"专利管理", open:false},
+        { id:'patent_add', pId:'patent', name:"新增"},
+        { id:'patent_view', pId:'patent', name:"查看"},
+        { id:'patent_modify', pId:'patent', name:"修改"},
+        { id:'patent_del', pId:'patent', name:"删除"},
+
+        { id:'software', pId:'outcomeManage', name:"软件著作权管理", open:false},
+        { id:'software_add', pId:'software', name:"新增"},
+        { id:'software_view', pId:'software', name:"查看"},
+        { id:'software_modify', pId:'software', name:"修改"},
+        { id:'software_del', pId:'software', name:"删除"},
+
+        { id:'project', pId:'outcomeManage', name:"科研项目管理", open:false},
+        { id:'project_add', pId:'project', name:"新增"},
+        { id:'project_view', pId:'project', name:"查看"},
+        { id:'project_modify', pId:'project', name:"修改"},
+        { id:'project_del', pId:'project', name:"删除"},
+
+        { id:'award', pId:'outcomeManage', name:"科研获奖管理", open:false},
+        { id:'award_add', pId:'award', name:"新增"},
+        { id:'award_view', pId:'award', name:"查看"},
+        { id:'award_modify', pId:'award', name:"修改"},
+        { id:'award_del', pId:'award', name:"删除"},
+
+        { id:'paper', pId:'outcomeManage', name:"学术论文管理", open:false},
+        { id:'paper_add', pId:'paper', name:"新增"},
+        { id:'paper_view', pId:'paper', name:"查看"},
+        { id:'paper_modify', pId:'paper', name:"修改"},
+        { id:'paper_del', pId:'paper', name:"删除"},
+
+        { id:'dimensionManage', pId:2, name:"维度管理", open:false},
+
+        { id:'direction', pId:'dimensionManage', name:"研究方向管理", open:false},
+        { id:'direction_add', pId:'direction', name:"新增"},
+        { id:'direction_view', pId:'direction', name:"查看"},
+        { id:'direction_modify', pId:'direction', name:"修改"},
+        { id:'direction_del', pId:'direction', name:"删除"},
+
+        { id:'person', pId:'dimensionManage', name:"研究人员管理", open:false},
+        { id:'person_add', pId:'person', name:"新增"},
+        { id:'person_view', pId:'person', name:"查看"},
+        { id:'person_modify', pId:'person', name:"修改"},
+        { id:'person_del', pId:'person', name:"删除"},
+
+        { id:'ccf', pId:'dimensionManage', name:"会议级别管理", open:false},
+        { id:'ccf_add', pId:'ccf', name:"新增"},
+        { id:'ccf_view', pId:'ccf', name:"查看"},
+        { id:'ccf_modify', pId:'ccf', name:"修改"},
+        { id:'ccf_del', pId:'ccf', name:"删除"},
+
+        { id:'award_level', pId:'dimensionManage', name:"奖项级别管理", open:false},
+        { id:'award_level_add', pId:'award_level', name:"新增"},
+        { id:'award_level_view', pId:'award_level', name:"查看"},
+        { id:'award_level_modify', pId:'award_level', name:"修改"},
+        { id:'award_level_del', pId:'award_level', name:"删除"},
+
+        { id:'project_level', pId:'dimensionManage', name:"项目级别管理", open:false},
+        { id:'project_level_add', pId:'project_level', name:"新增"},
+        { id:'project_level_view', pId:'project_level', name:"查看"},
+        { id:'project_level_modify', pId:'project_level', name:"修改"},
+        { id:'project_level_del', pId:'project_level', name:"删除"}
+
     ]
 }
 

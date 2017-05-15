@@ -147,12 +147,8 @@ cjsApp.directive("initSelects", ['initSelect',
             scope: true,
             link: function(scope, element, attrs) {
                 initSelect.itemInfo(attrs.initSelects).then(function(result) {
-                    if(result.status = 200){
                     scope.selects = result.data;
-                    // console.log(result);
-                    }else{
-                        console.log("获取分页信息失败")
-                    }
+                },function(result){
                 })
             }
         }
@@ -218,6 +214,73 @@ function($scope, $http, pageData, getItemService) {
             })
         }else{
             $scope.formData = {};
+        }
+        $scope.$apply();
+    });
+}]);
+cjsApp.controller('openTreeModal', ['$scope', '$http', 'pageData','getItemService',
+function($scope, $http, pageData, getItemService) {
+    initPowerList($scope);
+    $scope.processForm = function(isValid) {
+        if (false) {
+            //if(!$scope.formData.group){
+            // $.tipsShow({
+            //     message : '请选择用户组',
+            //     type : 'warning' ,
+            //     callBack : function(){
+            //         return;
+            //     }
+            // });
+        } else {
+            var groupData = {
+            // _id ： $scope.formData._id,
+            name : $scope.formData.name,
+            power : JSON.stringify($scope.formData.power),
+            comments: $scope.formData.comments
+            };
+            angularHttpPost($http, isValid, getTargetPostUrl($scope, pageData.bigCategory),groupData,
+            function(data) {
+                $scope.$emit("SomeChangeUp", data);
+            });
+        }
+
+    };
+    $('#addNewAdminGroup').modal({
+        dimmer: 0,
+        closeViaDimmer: 0,
+        width: 600
+    });
+    $('#addNewAdminGroup').modal('toggle');
+    
+    $('#addNewAdminGroup').bind('open.modal.amui',
+    function(event) {
+        console.log("弹出框");
+        $scope.formData = {};
+        cancelTreeCheckBoxSelect("groupPowerTree");
+        var obj = $(event.relatedTarget);
+        var editId = obj.data('whatever');
+        // 如果不为空则为编辑状态
+        if (editId) {
+            getItemService.itemInfo(pageData.bigCategory, editId).then(function(result) {
+                result = result.data;
+                console.log(result);
+
+                $scope.formData = result;
+                if(result.power){
+                    $scope.formData.power = JSON.parse(result.power);
+                    // 回选checkbox
+                    var powerTreeObj = eval(result.power);
+                    for(var i=0;i<powerTreeObj.length;i++){
+                        var checkedId = powerTreeObj[i].split(':')[0];
+                        var treeObj = $.fn.zTree.getZTreeObj("groupPowerTree");
+                        var node = treeObj.getNodeByParam("id", checkedId, null);
+                        if(node){
+                            node.checked = true;
+                            treeObj.updateNode(node);
+                        }
+                    }
+                }
+            })
         }
         $scope.$apply();
     });
