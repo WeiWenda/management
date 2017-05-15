@@ -39,7 +39,7 @@ function($http) {
 }]);
 cjsApp.factory('webSocketData',
 function() {
-    var ws = io.connect('http://127.0.0.1:8888');
+    var ws = io.connect('/');
     ws.on('connect',
     function(msg) {});
     var logs = [];
