@@ -73,11 +73,6 @@ var adminBean = {
         }
         return power;
     },
-    setQueryByArea : function(req,keyPr,targetObj,area){
-        var newKeyPr = keyPr;
-       
-        return newKeyPr;
-    },
     getClienIp : function(req){
         return req.headers['x-forwarded-for'] ||
             req.connection.remoteAddress ||

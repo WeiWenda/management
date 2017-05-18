@@ -2,7 +2,7 @@
  * Created by cbj on 2016/1/5.
  * cjs自定义控制器
  */
-var cjsApp = angular.module('adminApp', ['ngSanitize', 'ui.bootstrap', 'ui.select', 'ui.grid']);
+var cjsApp = angular.module('adminApp', ['ngSanitize', 'ui.bootstrap', 'ui.select', 'ui.grid','ui.grid.exporter','ui.grid.selection','ui.grid.pagination','ui.grid.pinning','ui.grid.resizeColumns', 'ui.grid.moveColumns','ui.grid.grouping']);
 cjsApp.factory('pageData',
 function() {
     return {
@@ -37,6 +37,20 @@ function($http) {
         }
     }
 }]);
+cjsApp.factory('initList', ['$http',
+function($http) { 
+    //获取单个对象信息
+    var getListRequest = function(request) {
+        var requestPath = "/admin/manage/getDocumentList/"+request
+        return $http.get(requestPath)
+    };
+    return {
+        itemInfo: function(request) {
+            return getListRequest(request);
+        }
+    }
+}]);
+
 // cjsApp.factory('webSocketData',
 // function() {
 //     var ws = io.connect('/');
@@ -108,6 +122,7 @@ cjsApp.directive('datePicker',function() {
         }
     }
 });
+
 cjsApp.filter('propsFilter',
 function() {
     return function(items, props) {
@@ -155,20 +170,23 @@ cjsApp.directive("initSelects", ['initSelect',
 // cjsApp.controller("adminLoging",['$scope','webSocketData',function($scope,webSocketData){
 //     $scope.logarrays = webSocketData.logArray();
 // }]);
-cjsApp.controller("adminList", ['$scope', '$rootScope','$http', '$filter', 'pageData', 'getItemService',
-function($scope, $rootScope,$http, $filter, pageData, getItemService) {
-    //获取管理员列表信息
+cjsApp.controller("adminList", ['$scope', '$rootScope','$http', 'uiGridConstants', 'pageData','initSelect','$interval','$q','initList',
+function($scope, $rootScope,$http,uiGridConstants,pageData,initSelect,$interval,$q,initList) {
+    window.pdfMake.fonts = {微软雅黑: {normal: 'msyh.ttf', bold: 'msyh.ttf', italics: 'msyh.ttf', bolditalics: 'msyh.ttf'} }; 
     $rootScope.$on("SomeChangeUp",function(event,msg){
         console.log("parent"+msg);
         $rootScope.$broadcast("SomeChangeDown",msg);
     });
     $scope.$on("SomeChangeDown",function(event,msg){
-        initPagination($scope, $http);
+        refreshPage($scope,pageData,initList);
     });
-    initPagination($scope, $http);
+    refreshPage($scope,pageData,initList);
+
     initDelOption($scope, $http, '您确认要删除选中的'+pageData.siteInfo+'吗？');
+    initSelectOptions($scope,initSelect,2,'direction','name');
 
-
+    initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
+    
 }]);
 cjsApp.controller('openModal', ['$scope', '$http', 'pageData','getItemService',
 function($scope, $http, pageData, getItemService) {

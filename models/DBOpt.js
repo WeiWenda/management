@@ -96,33 +96,10 @@ var DBOpt = {
             }
         });
     },
-    pagination : function(obj,req,res,conditions){
-        var params = url.parse(req.url,true);
-        var startNum = (params.query.currentPage - 1)*params.query.limit + 1;
-        var currentPage = Number(params.query.currentPage);
-        var limit = Number(params.query.limit);
-        var pageInfo;
-
-//    根据条件查询记录(如果有条件传递，则按条件查询)
-        var query;
-        if(conditions && conditions.length > 1){
-            query=obj.find().or(conditions);
-        }
-        else if(conditions){
-            query=obj.find(conditions);
-        }
-        else{
-            query=obj.find({});
-        }
+    pagination : function(obj,req,res){
+       
+        query=obj.find({});
         query.sort({'date': -1});
-
-        // if(obj === Message){
-        //     query.populate('author').populate('replyAuthor').populate('adminAuthor');
-        // }else if(obj === AdminUser){
-        //     //query.populate('group');
-        // }else if(obj === UserNotify){
-        //     query.populate('user').populate('notify');
-        // }
 
         if(obj === AdminUser){
             query.populate('group');
@@ -145,18 +122,9 @@ var DBOpt = {
         query.exec(function(err,docs){
             if(err){
                 console.log(err)
-
             }else {
-                pageInfo = {
-                    "totalItems" : docs.length,
-                    "currentPage" : currentPage,
-                    "limit" : limit,
-                    "startNum" : Number(startNum)
-                };
-
                 return res.json({
-                    docs : docs.slice(startNum - 1,startNum + limit -1),
-                    pageInfo : pageInfo
+                    docs:docs,
                 });
             }
         })

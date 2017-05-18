@@ -131,6 +131,7 @@ router.get('/manage/:defaultUrl/picture',function(req,res){
     var params = url.parse(req.url,true);
     var name = params.query.id;
     DBOpt.readFile(dir,name,res);
+    
 });
 //-------------------------获取单个对象数据开始-------------------------
 router.get('/manage/:defaultUrl/item',function(req,res){
@@ -158,12 +159,7 @@ router.get('/manage/:defaultUrl/item',function(req,res){
 
 router.get('/manage/getDocumentList/:defaultUrl',function(req,res){
     var targetObj = adminBean.getTargetObj(req.params.defaultUrl);
-    var params = url.parse(req.url,true);
-    var keywords = params.query.searchKey;
-    var area = params.query.area;
-    var keyPr = [];
-    keyPr = adminBean.setQueryByArea(req,keyPr,targetObj,area);
-    DBOpt.pagination(targetObj,req, res,keyPr);
+    DBOpt.pagination(targetObj,req, res);
 
 });
 
