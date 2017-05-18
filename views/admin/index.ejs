@@ -23,16 +23,8 @@
     <link rel="stylesheet" href="/assets/css/amazeui.datatables.min.css" />
     <link rel="stylesheet" href="/assets/css/app.css">
     <link rel="stylesheet" href="/assets/css/zTreeStyle.css" type="text/css">
-
     <script src="/assets/js/jquery.min.js"></script>
     <script src="/assets/js/angular.js"></script>
-    <script src="/assets/js/ui-bootstrap-tpls-2.5.0.js"></script>
-    <script src="/assets/js/angular-sanitize.js"></script>
-    <script src="/assets/js/select.min.js"></script>
-    <script src="/assets/js/ui-grid.min.js"></script>
-    <script src="/assets/js/pdfmake.min.js"></script>
-
-
     <script src="/angular/controller.js"></script>
 </head>
 <!-- ng-app="adminApp" -->
@@ -51,7 +43,7 @@
                 <div class="am-fl tpl-header-switch-button am-icon-list">
                     <span>
 
-                </span>
+                    </span>
                 </div>
                 <!-- 搜索 -->
                 <div class="am-fl tpl-header-search">
@@ -318,9 +310,9 @@
 
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
-        <input type="hidden" id="currentCate" value="<%= bigCategory%>"/>
-        <input type="hidden" id="siteInfo" value="<%= siteInfo%>"/>
-        
+            <input type="hidden" id="currentCate" value="<%= bigCategory%>"/>
+            <input type="hidden" id="siteInfo" value="<%= siteInfo%>"/>
+            
             <!-- <div class="container-fluid am-cf">
                 <div class="row">
                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
@@ -343,7 +335,15 @@
     </div>
     <!--通用模态框-->
     <% include public/model%>
+
+    <script src="/assets/js/ui-bootstrap-tpls-2.5.0.js"></script>
+    <script src="/assets/js/angular-sanitize.js"></script>
+    <script src="/assets/js/select.min.js"></script>
+    <script src="/assets/js/ui-grid.min.js"></script>
+    <script src="/assets/js/pdfmake.min.js"></script>
+
     <script src="/assets/js/vfs_fonts.js"></script>
+    <script src="/assets/js/moment.min.js"></script>
     <script src="/assets/js/amazeui.min.js"></script>
     <script src="/assets/js/amazeui.datatables.min.js"></script>
     <script src="/assets/js/dataTables.responsive.min.js"></script>

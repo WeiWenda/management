@@ -1,43 +1,68 @@
 <!-- 内容区域 -->
-<style>
-  .am-selected-group {
-    width: 527.5px;
-  }
-  .background-deloge{
-   background-color: rgb(248, 248, 248);
- }
- .header-filtered {
-  color: blue;
-}
-.grid {
-  height: 600px;
-}
-</style>
-<div class="row" >
-	<div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
-		<div class=" background-deloge widget am-cf">
-			<div class="widget-head am-cf">
-				<div class="widget-title  am-cf">专利列表</div>
-			</div>
-			<div class="widget-body  am-fr" ng-controller="adminList">
+<script type="text/javascript">
+  cjsApp.controller("adminList", ['$scope', '$rootScope','$http', 'uiGridConstants', 'pageData','initSelect','$interval','$q','initList','i18nService',
+    function($scope, $rootScope,$http,uiGridConstants,pageData,initSelect,$interval,$q,initList,i18nService) {
+      i18nService.setCurrentLang("zh-cn");
+      window.pdfMake.fonts = {微软雅黑: {normal: 'msyh.ttf', bold: 'msyh.ttf', italics: 'msyh.ttf', bolditalics: 'msyh.ttf'} }; 
+      $rootScope.$on("SomeChangeUp",function(event,msg){
+        $rootScope.$broadcast("SomeChangeDown",msg);
+      });
+      $scope.$on("SomeChangeDown",function(event,msg){
+         refreshPage($scope,pageData,initList,function(){
+            zipAtribute($scope.gridOptions.data,'owner','name');
+          });
+      });
+      refreshPage($scope,pageData,initList,function(){
+        zipAtribute($scope.gridOptions.data,'owner','name');
+      });
+      
 
-				<div class="am-u-sm-12">
-					<div class="am-form-group">
-						<div class="am-btn-toolbar">
-							<div class="am-btn-group am-btn-group-xs">
-								<a  data-am-modal="{target: '#addNew'}" type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
-								
-							</div>
-						</div>
-					</div>
-				</div>
-       <div class="am-u-sm-12">
-        <div id="grid" ui-grid="gridOptions" class="grid" ui-grid-pagination ui-grid-exporter ui-grid-selection ui-grid-pinning ui-grid-resize-columns ui-grid-move-columns ui-grid-grouping>
+      initDelOption($scope, $http,pageData,initList);
+
+      initSelectOptions($scope,initSelect,2,'direction','name');
+
+      initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
+
+      $scope.gridOptions.columnDefs= [
+      { name:'专利名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
+      { name:'申请人',field: 'zipowner',filter:{condition:findZip,placeholder:'多人用\',\'分隔'} ,headerCellClass:$scope.highlightFilteredHeader},
+      { name:'研究方向',field: 'direction.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
+      {name:'申请日期',field:'apply_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart},{condition:checkEnd}],
+        filterHeaderTemplate:pageData.timeFilterTemplate,
+        headerCellClass:$scope.highlightFilteredHeader},
+      {name:'授权日期',field:'authorized_time',cellFilter:'date:"yyyy-MM-dd"',
+      filters:[{condition:checkStart},{condition:checkEnd}],
+        filterHeaderTemplate:pageData.timeFilterTemplate,
+        headerCellClass:$scope.highlightFilteredHeader},
+      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ];
+    }]);
+  </script>
+  <div class="row" >
+   <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+    <div class=" background-deloge widget am-cf">
+     <div class="widget-head am-cf">
+      <div class="widget-title  am-cf">专利列表</div>
+    </div>
+    <div class="widget-body  am-fr" ng-controller="adminList">
+
+      <div class="am-u-sm-12">
+       <div class="am-form-group">
+        <div class="am-btn-toolbar">
+         <div class="am-btn-group am-btn-group-xs">
+          <a  data-am-modal="{target: '#addNew'}" type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</a>
 
         </div>
       </div>
     </div>
   </div>
+  <div class="am-u-sm-12">
+    <div id="grid" ui-grid="gridOptions" class="grid" ui-grid-pagination ui-grid-exporter ui-grid-selection ui-grid-pinning ui-grid-resize-columns ui-grid-move-columns ui-grid-grouping>
+
+    </div>
+  </div>
+</div>
+</div>
+</div>
 </div>
 
 <!--添加新用户模态窗口-->
@@ -126,7 +151,6 @@
       </div>
     </div>
   </form>
-</div>
 </div>
 </div>
 </div>

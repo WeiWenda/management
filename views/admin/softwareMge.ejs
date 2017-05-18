@@ -1,12 +1,31 @@
 <!-- 内容区域 -->
-<style>
-.am-selected-group {
-    width: 527.5px;
-}
-.background-deloge{
-	background-color: rgb(248, 248, 248);
-}
-</style>
+<script type="text/javascript">
+  cjsApp.controller("adminList", ['$scope', '$rootScope','$http', 'uiGridConstants', 'pageData','initSelect','$interval','$q','initList','i18nService',
+    function($scope, $rootScope,$http,uiGridConstants,pageData,initSelect,$interval,$q,initList,i18nService) {
+      i18nService.setCurrentLang("zh-cn");
+      window.pdfMake.fonts = {微软雅黑: {normal: 'msyh.ttf', bold: 'msyh.ttf', italics: 'msyh.ttf', bolditalics: 'msyh.ttf'} }; 
+      $rootScope.$on("SomeChangeUp",function(event,msg){
+        $rootScope.$broadcast("SomeChangeDown",msg);
+    });
+      $scope.$on("SomeChangeDown",function(event,msg){
+       refreshPage($scope,pageData,initList,function(){});
+   });
+      refreshPage($scope,pageData,initList,function(){});
+      initDelOption($scope, $http,pageData,initList);
+
+      initSelectOptions($scope,initSelect,1,'direction','name');
+
+      initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
+
+      $scope.gridOptions.columnDefs= [
+      { name:'软件名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
+      { name:'研究方向',field: 'direction.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
+      {name:'完成日期',field:'finish_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart},{condition:checkEnd}],
+      filterHeaderTemplate:pageData.timeFilterTemplate,
+      headerCellClass:$scope.highlightFilteredHeader},
+      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ];
+  }]);
+</script>
 <div class="row">
 	<div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
 		<div class=" background-deloge widget am-cf">
@@ -14,7 +33,7 @@
 				<div class="widget-title  am-cf">软件著作权列表</div>
 			</div>
 			<div class="widget-body  am-fr" ng-controller="adminList">
-				<div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+				<div class="am-u-sm-12">
 					<div class="am-form-group">
 						<div class="am-btn-toolbar">
 							<div class="am-btn-group am-btn-group-xs">
@@ -24,125 +43,79 @@
 						</div>
 					</div>
 				</div>
-				<div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
-					<div class="am-form am-form-group tpl-table-list-select"  init-selects="direction">
-						<select data-am-selected="{btnSize: 'sm'}">
-						<option >请选择研究方向</option>
-						  <option value="{{direction._id}}" ng-repeat="direction in selects">{{direction.name}}</option>
-						</select>
-					</div>
-				</div>
-				<div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
-					<div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-						<input type="text" class="am-form-field ">
-						<span class="am-input-group-btn">
-						<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
-						</span>
-					</div>
-				</div>
+                <div class="am-u-sm-12">
+                    <div id="grid" ui-grid="gridOptions" class="grid" ui-grid-pagination ui-grid-exporter ui-grid-selection ui-grid-pinning ui-grid-resize-columns ui-grid-move-columns ui-grid-grouping>
 
-				<div class="am-u-sm-12">
-					<table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
-						<thead>
-							<tr>
-								<th>软件名称</th>
-                                <th>研究方向</th>
-								<th>完成日期</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="gradeX" ng-repeat="software in data">
-								<td>{{software.name}}</td>
-								<td>{{software.direction.name}}</td>
-								<td>{{software.finish_time | date:"yyyy-MM-dd"}}</td>
-								<td>
-									<div class="tpl-table-black-operation">
-										<a data-whatever="{{software._id}}" data-am-modal="{target: '#addNew'}">
-											<i class="am-icon-pencil"></i> 编辑
-										</a>
-										<a href="javascript:;" class="tpl-table-black-operation-del" ng-click="delOneItem(software._id)">
-											<i class="am-icon-trash"></i> 删除
-										</a>
-                                        <a href="/admin/manage/<%= bigCategory%>/picture?id={{ software.file_path}}" target="_blank" > <i class="am-icon-paperclip"></i> 查看原件</a>
-									</div>
-								</td>
-							</tr>
-							<!-- more data -->
-						</tbody>
-					</table>
-				</div>
-				<div class="am-u-lg-12 am-cf">
-					<% include pagination%>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<!--添加新用户模态窗口-->
-    <div class="am-modal" tabindex="-1" id="addNew" ng-controller="openModal">
-	  <div class="am-modal-dialog">
-        <div class="widget am-cf">
-            <div class="widget-head am-cf">
-                <div class="widget-title am-fl">软件著作权信息</div>
-                <div class="widget-function am-fr">
-                   <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                    </div>
                 </div>
             </div>
-            <div class="widget-body am-fr">
-                <form class="am-form tpl-form-border-form tpl-form-border-br" name="myForm" ng-submit="processForm(myForm.$valid)">
-                    <div class="am-form-group">
-                        <label for="name" class="am-u-sm-3 am-form-label">软件名称<span class="tpl-form-line-small-title"></span></label>
-                        <div class="am-u-sm-9">
-                            <input type="text" name="name" ng-class="{'am-field-valid':myForm.name.$valid,'am-field-error':myForm.name.$invalid}" class="tpl-form-input" name="name" ng-model="formData.name" placeholder="请输入专利名称" required>
-                        </div>
-                    </div>
-                    <div class="am-form-group">
-                        <label for="direction" class="am-u-sm-3 am-form-label">研究方向<span class="tpl-form-line-small-title"></span></label>
-                        <div class="am-u-sm-9" init-selects="direction">
-                            <ui-select  ng-model="formData.direction" theme="bootstrap" >
-                                <ui-select-match placeholder="请选择研究方向">{{$select.selected.name}}</ui-select-match>
-                                <ui-select-choices repeat="direction._id as direction in selects | propsFilter: {name: $select.search}">
-                                  <div ng-bind-html="direction.name | highlight: $select.search"></div>
-                              </ui-select-choices>
-                          </ui-select>
-                      </div>
-                      </div>
-                      <div class="am-form-group">
-                        <label for="finish_time" class="am-u-sm-3 am-form-label">完成日期<span class="tpl-form-line-small-title"></span></label>
-                        <div class="am-u-sm-9">
-                            <input ng-class="{'am-field-valid':myForm.finish_time.$valid,'am-field-error':myForm.finish_time.$invalid}"  name="finish_time"  type="text" ng-model="formData.finish_time" placeholder="选择完成日期" uib-datepicker-popup is-open="finish_time.popup.opened" datepicker-options="dateOptions" ng-click="finish_time.open()" clear-text="清空" close-text="关闭" current-text="今天" date-picker="finish_time" ng-required="true" />
-                        </div>
-                    </div>
-                    <div class="am-form-group">
-                        <label for="register_number" class="am-u-sm-3 am-form-label">登记号<span class="tpl-form-line-small-title"></span></label>
-                        <div class="am-u-sm-9"> 
-                            <input type="text" class="tpl-form-input"   ng-model="formData.register_number"  placeholder="请输入登记号">
-                        </div>
-                    </div>
-                    <div class="am-form-group">
-                        <label for="comments" class="am-u-sm-3 am-form-label">备注<span class="tpl-form-line-small-title"></span></label>
-                        <div class="am-u-sm-9">
-                            <input type="text" class="tpl-form-input" name="comments" ng-model="formData.comments" placeholder="请输入备注">
-                        </div>
-                    </div>
-                    <div class="am-form-group am-form-file">
-                        <label for="file_path" class="am-u-sm-3 am-form-label">上传原件<span class="tpl-form-line-small-title"></span></label>
-                        <input id="doc-form-file" type="file" file-model="formData.file">
-                        <div class="am-u-sm-9">
-                        <input type="text" ng-model="formData.file_name" class="tpl-form-input" placeholder="点击选择文件">
-                        </div>
-                    </div>
-                    
-                    <div class="am-form-group">
-                        <div class="am-u-sm-9 am-u-sm-push-3">
-                            <button type="submit" ng-class="{'am-disabled':myForm.$invalid}" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
-                        </div>
-                    </div>
-                </form>
+        </div>
+    </div>
+</div>
+
+<!--添加新用户模态窗口-->
+<div class="am-modal" tabindex="-1" id="addNew" ng-controller="openModal">
+ <div class="am-modal-dialog">
+    <div class="widget am-cf">
+        <div class="widget-head am-cf">
+            <div class="widget-title am-fl">软件著作权信息</div>
+            <div class="widget-function am-fr">
+             <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+         </div>
+     </div>
+     <div class="widget-body am-fr">
+        <form class="am-form tpl-form-border-form tpl-form-border-br" name="myForm" ng-submit="processForm(myForm.$valid)">
+            <div class="am-form-group">
+                <label for="name" class="am-u-sm-3 am-form-label">软件名称<span class="tpl-form-line-small-title"></span></label>
+                <div class="am-u-sm-9">
+                    <input type="text" name="name" ng-class="{'am-field-valid':myForm.name.$valid,'am-field-error':myForm.name.$invalid}" class="tpl-form-input" name="name" ng-model="formData.name" placeholder="请输入专利名称" required>
+                </div>
             </div>
-	    </div>
-	  </div>
-	</div>
+            <div class="am-form-group">
+                <label for="direction" class="am-u-sm-3 am-form-label">研究方向<span class="tpl-form-line-small-title"></span></label>
+                <div class="am-u-sm-9" init-selects="direction">
+                    <ui-select  ng-model="formData.direction" theme="bootstrap" >
+                        <ui-select-match placeholder="请选择研究方向">{{$select.selected.name}}</ui-select-match>
+                        <ui-select-choices repeat="direction._id as direction in selects | propsFilter: {name: $select.search}">
+                          <div ng-bind-html="direction.name | highlight: $select.search"></div>
+                      </ui-select-choices>
+                  </ui-select>
+              </div>
+          </div>
+          <div class="am-form-group">
+            <label for="finish_time" class="am-u-sm-3 am-form-label">完成日期<span class="tpl-form-line-small-title"></span></label>
+            <div class="am-u-sm-9">
+                <input ng-class="{'am-field-valid':myForm.finish_time.$valid,'am-field-error':myForm.finish_time.$invalid}"  name="finish_time"  type="text" ng-model="formData.finish_time" placeholder="选择完成日期" uib-datepicker-popup is-open="finish_time.popup.opened" datepicker-options="dateOptions" ng-click="finish_time.open()" clear-text="清空" close-text="关闭" current-text="今天" date-picker="finish_time" ng-required="true" />
+            </div>
+        </div>
+        <div class="am-form-group">
+            <label for="register_number" class="am-u-sm-3 am-form-label">登记号<span class="tpl-form-line-small-title"></span></label>
+            <div class="am-u-sm-9"> 
+                <input type="text" class="tpl-form-input"   ng-model="formData.register_number"  placeholder="请输入登记号">
+            </div>
+        </div>
+        <div class="am-form-group">
+            <label for="comments" class="am-u-sm-3 am-form-label">备注<span class="tpl-form-line-small-title"></span></label>
+            <div class="am-u-sm-9">
+                <input type="text" class="tpl-form-input" name="comments" ng-model="formData.comments" placeholder="请输入备注">
+            </div>
+        </div>
+        <div class="am-form-group am-form-file">
+            <label for="file_path" class="am-u-sm-3 am-form-label">上传原件<span class="tpl-form-line-small-title"></span></label>
+            <input id="doc-form-file" type="file" file-model="formData.file">
+            <div class="am-u-sm-9">
+                <input type="text" ng-model="formData.file_name" class="tpl-form-input" placeholder="点击选择文件">
+            </div>
+        </div>
+
+        <div class="am-form-group">
+            <div class="am-u-sm-9 am-u-sm-push-3">
+                <button type="submit" ng-class="{'am-disabled':myForm.$invalid}" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+</div>
 </div>
 

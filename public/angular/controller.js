@@ -2,17 +2,20 @@
  * Created by cbj on 2016/1/5.
  * cjs自定义控制器
  */
-var cjsApp = angular.module('adminApp', ['ngSanitize', 'ui.bootstrap', 'ui.select', 'ui.grid','ui.grid.exporter','ui.grid.selection','ui.grid.pagination','ui.grid.pinning','ui.grid.resizeColumns', 'ui.grid.moveColumns','ui.grid.grouping']);
-cjsApp.factory('pageData',
-function() {
-    return {
-        bigCategory: $("#currentCate").val(),
-        siteInfo : $('#siteInfo').val()
-    }
-});
+ var cjsApp = angular.module('adminApp', ['ngSanitize', 'ui.bootstrap', 'ui.select', 'ui.grid','ui.grid.exporter','ui.grid.selection','ui.grid.pagination','ui.grid.pinning','ui.grid.resizeColumns', 'ui.grid.moveColumns','ui.grid.grouping']);
+ cjsApp.factory('pageData',
+    function() {
+        var bigCategory = $("#currentCate").val();
+        return {
+            bigCategory: bigCategory,
+            siteInfo : $('#siteInfo').val(),
+            timeFilterTemplate:'<div class="ui-grid-filter-container"><input type="text" class="ui-grid-filter-input" placeholder="起" date-am-picker ng-model="col.filters[0].term" readonly/><p/><input type="text" class="ui-grid-filter-input" placeholder="止" date-am-picker ng-model="col.filters[1].term" readonly/></div>',
+            opeTemplate:'<div class="tpl-table-black-operation"> <a data-whatever="{{row.entity._id}}" data-am-modal="{target: \'#addNew\'}"> <i class="am-icon-pencil"></i> 编辑 </a> <a href="javascript:;" class="tpl-table-black-operation-del" ng-click="grid.appScope.delOneItem(row.entity._id)"> <i class="am-icon-trash"></i> 删除 </a> <a href="/admin/manage/'+bigCategory+'/picture?id={{ row.entity.file_path}}" target="_blank" > <i class="am-icon-paperclip"></i> 查看原件</a> </div>'
+        }
+    });
 
-cjsApp.factory('getItemService', ['$http',
-function($http) {
+ cjsApp.factory('getItemService', ['$http',
+    function($http) {
     //获取单个对象信息
     var getItemRequest = function(currentPage, targetId) {
         var requestPath = "/admin/manage/" + currentPage + "/item?uid=" + targetId;
@@ -24,8 +27,8 @@ function($http) {
         }
     }
 }]);
-cjsApp.factory('initSelect', ['$http',
-function($http) { 
+ cjsApp.factory('initSelect', ['$http',
+    function($http) { 
     //获取单个对象信息
     var getListRequest = function(request) {
         var requestPath = "/admin/manage/"+request+"/findAll"
@@ -37,8 +40,8 @@ function($http) {
         }
     }
 }]);
-cjsApp.factory('initList', ['$http',
-function($http) { 
+ cjsApp.factory('initList', ['$http',
+    function($http) { 
     //获取单个对象信息
     var getListRequest = function(request) {
         var requestPath = "/admin/manage/getDocumentList/"+request
@@ -51,49 +54,40 @@ function($http) {
     }
 }]);
 
-// cjsApp.factory('webSocketData',
-// function() {
-//     var ws = io.connect('/');
-//     ws.on('connect',
-//     function(msg) {});
-//     var logs = [];
-//     ws.on('logChange',
-//     function(msg) {
-//         // logs.push(msg);
-//         $('#loging').append("<span class=\"am-text-success\" >" + msg.time + "  </span>" + "<span class=\"am-text-secondary\" >" + msg.level + "  </span>" + "<span class=\"am-text-primary\" >" + msg.type + "  </span>" + "<span class=\"am-text-default\" >" + msg.msg + "  </span>");
-//         $('#scroll').animate({
-//             scrollTop: $('#loging').height()
-//         },
-//         50);
-//     });
-//     var methods = {
-//         logArray: function() {
-//             return logs;
-//         }
-//     };
-//     return methods;
-// });
-cjsApp.directive('fileModel', ['$parse',
-function($parse) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            var model = $parse(attrs.fileModel);
-            var modelSetter = model.assign;
+ cjsApp.directive('fileModel', ['$parse',
+    function($parse) {
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
 
-            element.bind('change',
-            function() {
-                scope.$apply(function() {
-                    modelSetter(scope, element[0].files[0]);
-                    scope.formData.file_name = element[0].files[0].name;
+                element.bind('change',
+                    function() {
+                        scope.$apply(function() {
+                            modelSetter(scope, element[0].files[0]);
+                            scope.formData.file_name = element[0].files[0].name;
+                        });
+                    });
+            }
+        };
+    }]);
+ cjsApp.directive('dateAmPicker',['$filter',function($filter){
+    return {
+        restrict : "A",
+        require: 'ngModel',
+        link : function(scope, element, attrs,ctrl){
+            element.datepicker().on('changeDate.datepicker.amui', function(event) {
+                scope.$apply(function(){
+                    ctrl.$setViewValue(event.date);
+                    element.val($filter('date')(event.date,'yyyy-MM-dd'));
                 });
-            });
+            })     
         }
-    };
+    }
 }]);
 
-
-cjsApp.directive('datePicker',function() {
+ cjsApp.directive('datePicker',function() {
     return{
         require: 'ngModel',
         restrict: 'A',
@@ -114,39 +108,39 @@ cjsApp.directive('datePicker',function() {
 
             scope[attr.datePicker]={
                 open : function() {
-                scope[attr.datePicker].popup.opened = true;
+                    scope[attr.datePicker].popup.opened = true;
                 },popup : {
-                opened: false
-            }
+                    opened: false
+                }
             }
         }
     }
 });
 
-cjsApp.filter('propsFilter',
-function() {
-    return function(items, props) {
-        var out = [];
+ cjsApp.filter('propsFilter',
+    function() {
+        return function(items, props) {
+            var out = [];
 
-        if (angular.isArray(items)) {
-            var keys = Object.keys(props);
-            items.forEach(function(item) {
-                var itemMatches = false;
+            if (angular.isArray(items)) {
+                var keys = Object.keys(props);
+                items.forEach(function(item) {
+                    var itemMatches = false;
 
-                for (var i = 0; i < keys.length; i++) {
-                    var prop = keys[i];
-                    var text = props[prop].toLowerCase();
-                    if(item[prop] && item[prop].toString().toLowerCase().indexOf(text) !== -1) {
-                        itemMatches = true;
-                        break;
+                    for (var i = 0; i < keys.length; i++) {
+                        var prop = keys[i];
+                        var text = props[prop].toLowerCase();
+                        if(item[prop] && item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+                            itemMatches = true;
+                            break;
                         }  
-                }
+                    }
 
-                if (itemMatches) {
-                    out.push(item);
-                }
-            });
-        } else {
+                    if (itemMatches) {
+                        out.push(item);
+                    }
+                });
+            } else {
             // Let the output be the input untouched
             out = items;
         }
@@ -154,7 +148,7 @@ function() {
         return out;
     };
 });
-cjsApp.directive("initSelects", ['initSelect',
+ cjsApp.directive("initSelects", ['initSelect',
     function(initSelect) {
         return {
             restrict: 'A',
@@ -166,32 +160,27 @@ cjsApp.directive("initSelects", ['initSelect',
                 })
             }
         }
-}]);
+    }]);
 // cjsApp.controller("adminLoging",['$scope','webSocketData',function($scope,webSocketData){
 //     $scope.logarrays = webSocketData.logArray();
 // }]);
-cjsApp.controller("adminList", ['$scope', '$rootScope','$http', 'uiGridConstants', 'pageData','initSelect','$interval','$q','initList',
-function($scope, $rootScope,$http,uiGridConstants,pageData,initSelect,$interval,$q,initList) {
-    window.pdfMake.fonts = {微软雅黑: {normal: 'msyh.ttf', bold: 'msyh.ttf', italics: 'msyh.ttf', bolditalics: 'msyh.ttf'} }; 
-    $rootScope.$on("SomeChangeUp",function(event,msg){
-        console.log("parent"+msg);
-        $rootScope.$broadcast("SomeChangeDown",msg);
-    });
-    $scope.$on("SomeChangeDown",function(event,msg){
-        refreshPage($scope,pageData,initList);
-    });
-    refreshPage($scope,pageData,initList);
-
-    initDelOption($scope, $http, '您确认要删除选中的'+pageData.siteInfo+'吗？');
-    initSelectOptions($scope,initSelect,2,'direction','name');
-
-    initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
-    
-}]);
+cjsApp.controller('adminShortList', ['$scope', '$http', 'pageData','initList',
+    function($scope, $http, pageData,initList) {
+        $("#dataLoading").modal('open');
+        initList.itemInfo(pageData.bigCategory).then(function(result){
+            result=result.data;
+            $scope.data = result.docs;
+            $("#dataLoading").modal('close');
+        },function(result){
+            $("#my-alert").modal();
+            $("#alert-modal-msg").text(result.data);
+        });
+        initDelOption($scope, $http,pageData,initList);
+    }]);
 cjsApp.controller('openModal', ['$scope', '$http', 'pageData','getItemService',
-function($scope, $http, pageData, getItemService) {
-    $scope.processForm = function(isValid) {
-        if (false) {
+    function($scope, $http, pageData, getItemService) {
+        $scope.processForm = function(isValid) {
+            if (false) {
             //if(!$scope.formData.group){
             // $.tipsShow({
             //     message : '请选择用户组',
@@ -205,9 +194,9 @@ function($scope, $http, pageData, getItemService) {
             $scope.formData['bigCategory']=pageData.bigCategory;
             console.log($scope.formData);
             angularHttpPost($http, isValid, getTargetPostUrl($scope, pageData.bigCategory), $scope.formData,
-            function(data) {
-                $scope.$emit("SomeChangeUp", data);
-            });
+                function(data) {
+                    $scope.$emit("SomeChangeUp", data);
+                });
         }
 
     };
@@ -219,10 +208,10 @@ function($scope, $http, pageData, getItemService) {
     $('#addNew').modal('toggle');
     
     $('#addNew').bind('open.modal.amui',
-    function(event) {
-        console.log("弹出框");
-        var obj = $(event.relatedTarget);
-        var editId = obj.data('whatever');
+        function(event) {
+            console.log("弹出框");
+            var obj = $(event.relatedTarget);
+            var editId = obj.data('whatever');
         // 如果不为空则为编辑状态
         if (editId) {
             getItemService.itemInfo(pageData.bigCategory, editId).then(function(result) {
@@ -236,10 +225,10 @@ function($scope, $http, pageData, getItemService) {
     });
 }]);
 cjsApp.controller('openTreeModal', ['$scope', '$http', 'pageData','getItemService',
-function($scope, $http, pageData, getItemService) {
-    initPowerList($scope);
-    $scope.processForm = function(isValid) {
-        if (false) {
+    function($scope, $http, pageData, getItemService) {
+        initPowerList($scope);
+        $scope.processForm = function(isValid) {
+            if (false) {
             //if(!$scope.formData.group){
             // $.tipsShow({
             //     message : '请选择用户组',
@@ -254,22 +243,22 @@ function($scope, $http, pageData, getItemService) {
             name : $scope.formData.name,
             power : JSON.stringify($scope.formData.power),
             comments: $scope.formData.comments
-            };
-            angularHttpPost($http, isValid, getTargetPostUrl($scope, pageData.bigCategory),groupData,
+        };
+        angularHttpPost($http, isValid, getTargetPostUrl($scope, pageData.bigCategory),groupData,
             function(data) {
                 $scope.$emit("SomeChangeUp", data);
             });
-        }
+    }
 
-    };
-    $('#addNewAdminGroup').modal({
-        dimmer: 0,
-        closeViaDimmer: 0,
-        width: 600
-    });
-    $('#addNewAdminGroup').modal('toggle');
-    
-    $('#addNewAdminGroup').bind('open.modal.amui',
+};
+$('#addNewAdminGroup').modal({
+    dimmer: 0,
+    closeViaDimmer: 0,
+    width: 600
+});
+$('#addNewAdminGroup').modal('toggle');
+
+$('#addNewAdminGroup').bind('open.modal.amui',
     function(event) {
         console.log("弹出框");
         $scope.formData = {};

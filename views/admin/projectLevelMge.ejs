@@ -1,4 +1,28 @@
 <!-- 内容区域 -->
+<script type="text/javascript">
+  cjsApp.controller("adminList", ['$scope', '$rootScope','$http', 'uiGridConstants', 'pageData','initSelect','$interval','$q','initList','i18nService',
+    function($scope, $rootScope,$http,uiGridConstants,pageData,initSelect,$interval,$q,initList,i18nService) {
+      i18nService.setCurrentLang("zh-cn");
+      window.pdfMake.fonts = {微软雅黑: {normal: 'msyh.ttf', bold: 'msyh.ttf', italics: 'msyh.ttf', bolditalics: 'msyh.ttf'} }; 
+      $rootScope.$on("SomeChangeUp",function(event,msg){
+        $rootScope.$broadcast("SomeChangeDown",msg);
+    });
+      $scope.$on("SomeChangeDown",function(event,msg){
+       refreshPage($scope,pageData,initList,function(){});
+   });
+      refreshPage($scope,pageData,initList,function(){});
+      
+      initDelOption($scope, $http,pageData,initList);
+
+      initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
+
+      $scope.gridOptions.columnDefs= [
+      { name:'项目名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
+      { name:'级别',field: 'level',filter:{type: uiGridConstants.filter.SELECT,selectOptions: [{ value: '国家级',label:'国家级'},{ value: '省部级',label:'省部级'},{ value: '横向科研',label:'横向科研'},{ value: '国际合作',label:'国际合作'},{ value: '其他',label:'其他'}]}, headerCellClass: $scope.highlightFilteredHeader },
+      { name:'备注',field: 'comments', headerCellClass: $scope.highlightFilteredHeader },
+      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ];
+  }]);
+</script>
 <div class="row" >
 	<div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
 		<div class="widget am-cf">
@@ -7,7 +31,7 @@
 			</div>
 			<div class="widget-body  am-fr" ng-controller="adminList">
 
-				<div class="am-u-sm-12 am-u-md-6 am-u-lg-9" >
+				<div class="am-u-sm-12" >
 					<div class="am-form-group">
 						<div class="am-btn-toolbar">
 							<div class="am-btn-group am-btn-group-xs">
@@ -17,98 +41,60 @@
 						</div>
 					</div>
 				</div>
-				<div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
-					<div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-						<input type="text" class="am-form-field ">
-						<span class="am-input-group-btn">
-						<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
-						</span>
-					</div>
-				</div>
+                <div class="am-u-sm-12">
+                    <div id="grid" ui-grid="gridOptions" class="grid" ui-grid-pagination ui-grid-exporter ui-grid-selection ui-grid-pinning ui-grid-resize-columns ui-grid-move-columns ui-grid-grouping>
 
-				<div class="am-u-sm-12">
-					<table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
-						<thead>
-							<tr>
-								<th>项目名称</th>
-								<th>级别</th>
-								<th>备注</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="gradeX" ng-repeat="projectlevel in data">
-								<td>{{projectlevel.name}}</td>
-								<td>{{projectlevel.level}}</td>
-								<td>{{projectlevel.comments}}</td>
-								<td>
-									<div class="tpl-table-black-operation">
-										<a data-whatever="{{projectlevel._id}}" data-am-modal="{target: '#addNew'}">
-											<i class="am-icon-pencil"></i> 编辑
-										</a>
-										<a href="javascript:;" class="tpl-table-black-operation-del" ng-click="delOneItem(projectlevel._id)">
-											<i class="am-icon-trash"></i> 删除
-										</a>
-									</div>
-								</td>
-							</tr>
-							<!-- more data -->
-						</tbody>
-					</table>
-				</div>
-				<div class="am-u-lg-12 am-cf">
-					<% include pagination%>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!--添加新用户模态窗口-->
-    <div class="am-modal" tabindex="-1" id="addNew" ng-controller="openModal">
-	  <div class="am-modal-dialog">
-        <div class="widget am-cf">
-            <div class="widget-head am-cf">
-                <div class="widget-title am-fl">项目级别</div>
-                <div class="widget-function am-fr">
-                     <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+                    </div>
                 </div>
             </div>
-            <div class="widget-body am-fr">
-                <form class="am-form tpl-form-border-form tpl-form-border-br" name="myForm" ng-submit="processForm(myForm.$valid)">
-                    <div class="am-form-group">
-                        <label for="name" class="am-u-sm-3 am-form-label">项目名称<span class="tpl-form-line-small-title"></span></label>
-                        <div class="am-u-sm-9">
-                         <input type="text" name="name" ng-class="{'am-field-valid':myForm.name.$valid,'am-field-error':myForm.name.$invalid}" class="tpl-form-input" ng-model="formData.name" placeholder="请输入项目名称" required>
-                        </div>
-                    </div>
-                    <div class="am-form-group">
-                        <label for="level" class="am-u-sm-3 am-form-label">项目级别<span class="tpl-form-line-small-title"></span></label>
-                        <div class="am-u-sm-9">
-                            <select data-am-selected="{btnSize: 'sm',btnWidth:'100%'}" ng-model="formData.level">
-                              <option value="国家级">国家级</option>
-                              <option value="省部级">省部级</option>
-                              <option value="横向科研">横向科研</option>
-                              <option value="国际合作">国际合作</option>
-                              <option value="其他">其他</option>
-                            </select>
-                        </div>
-                    </div>
- 					<div class="am-form-group">
-                        <label for="comments" class="am-u-sm-3 am-form-label">备注</label>
-                        <div class="am-u-sm-9">
-                            <textarea class="" rows="10" id="user-intro" placeholder="请输入备注内容" name="comments" ng-model="formData.comments"></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="am-form-group">
-                        <div class="am-u-sm-9 am-u-sm-push-3">
-                            <button type="submit" ng-class="{'am-disabled':myForm.$invalid}" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-	    </div>
-	  </div>
-	</div>
-	
+        </div>
+    </div>
+</div>
+
+<!--添加新用户模态窗口-->
+<div class="am-modal" tabindex="-1" id="addNew" ng-controller="openModal">
+ <div class="am-modal-dialog">
+    <div class="widget am-cf">
+        <div class="widget-head am-cf">
+            <div class="widget-title am-fl">项目级别</div>
+            <div class="widget-function am-fr">
+               <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close>&times;</a>
+           </div>
+       </div>
+       <div class="widget-body am-fr">
+        <form class="am-form tpl-form-border-form tpl-form-border-br" name="myForm" ng-submit="processForm(myForm.$valid)">
+            <div class="am-form-group">
+                <label for="name" class="am-u-sm-3 am-form-label">项目名称<span class="tpl-form-line-small-title"></span></label>
+                <div class="am-u-sm-9">
+                   <input type="text" name="name" ng-class="{'am-field-valid':myForm.name.$valid,'am-field-error':myForm.name.$invalid}" class="tpl-form-input" ng-model="formData.name" placeholder="请输入项目名称" required>
+               </div>
+           </div>
+           <div class="am-form-group">
+            <label for="level" class="am-u-sm-3 am-form-label">项目级别<span class="tpl-form-line-small-title"></span></label>
+            <div class="am-u-sm-9">
+                <select data-am-selected="{btnSize: 'sm',btnWidth:'100%'}" ng-model="formData.level">
+                  <option value="国家级">国家级</option>
+                  <option value="省部级">省部级</option>
+                  <option value="横向科研">横向科研</option>
+                  <option value="国际合作">国际合作</option>
+                  <option value="其他">其他</option>
+              </select>
+          </div>
+      </div>
+      <div class="am-form-group">
+        <label for="comments" class="am-u-sm-3 am-form-label">备注</label>
+        <div class="am-u-sm-9">
+            <textarea class="" rows="10" id="user-intro" placeholder="请输入备注内容" name="comments" ng-model="formData.comments"></textarea>
+        </div>
+    </div>
+    
+    <div class="am-form-group">
+        <div class="am-u-sm-9 am-u-sm-push-3">
+            <button type="submit" ng-class="{'am-disabled':myForm.$invalid}" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+        </div>
+    </div>
+</form>
+</div>
+</div>
+</div>
 </div>

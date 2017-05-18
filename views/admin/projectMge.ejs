@@ -1,12 +1,38 @@
 <!-- 内容区域 -->
-<style>
-    .am-selected-group {
-        width: 527.5px;
-    }
-    .background-deloge{
-       background-color: rgb(248, 248, 248);
-   }
-</style>
+<script type="text/javascript">
+  cjsApp.controller("adminList", ['$scope', '$rootScope','$http', 'uiGridConstants', 'pageData','initSelect','$interval','$q','initList','i18nService',
+    function($scope, $rootScope,$http,uiGridConstants,pageData,initSelect,$interval,$q,initList,i18nService) {
+      i18nService.setCurrentLang("zh-cn");
+      window.pdfMake.fonts = {微软雅黑: {normal: 'msyh.ttf', bold: 'msyh.ttf', italics: 'msyh.ttf', bolditalics: 'msyh.ttf'} }; 
+      $rootScope.$on("SomeChangeUp",function(event,msg){
+        $rootScope.$broadcast("SomeChangeDown",msg);
+      });
+      $scope.$on("SomeChangeDown",function(event,msg){
+         refreshPage($scope,pageData,initList,function(){});
+      });
+      refreshPage($scope,pageData,initList,function(){});
+      
+      initDelOption($scope, $http,pageData,initList);
+
+      initSelectOptions($scope,initSelect,3,'project_level','name');
+
+      initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
+
+      $scope.gridOptions.columnDefs= [
+      { name:'项目编号',field: 'number', headerCellClass: $scope.highlightFilteredHeader },
+      { name:'项目名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
+      { name:'负责人',field: 'principal.name', headerCellClass: $scope.highlightFilteredHeader },
+      { name:'项目类型',field: 'type.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
+      {name:'起始时间',field:'start_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart},{condition:checkEnd}],
+        filterHeaderTemplate:pageData.timeFilterTemplate,
+        headerCellClass:$scope.highlightFilteredHeader},
+      {name:'截止时间',field:'end_time',cellFilter:'date:"yyyy-MM-dd"',
+      filters:[{condition:checkStart},{condition:checkEnd}],
+        filterHeaderTemplate:pageData.timeFilterTemplate,
+        headerCellClass:$scope.highlightFilteredHeader},
+      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ];
+    }]);
+  </script>
 <div class="row">
 	<div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
 		<div class=" background-deloge widget am-cf">
@@ -15,7 +41,7 @@
 			</div>
 			<div class="widget-body  am-fr" ng-controller="adminList">
 
-				<div class="am-u-sm-12 am-u-md-6 am-u-lg-6">
+				<div class="am-u-sm-12">
 					<div class="am-form-group">
 						<div class="am-btn-toolbar">
 							<div class="am-btn-group am-btn-group-xs">
@@ -25,61 +51,11 @@
 						</div>
 					</div>
 				</div>
-				<div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
-					<div class="am-form am-form-group tpl-table-list-select" init-selects="direction">
-						<select data-am-selected="{btnSize: 'sm'}">
-                          <option >请选择研究方向</option>
-                          <option value="{{direction._id}}" ng-repeat="direction in selects">{{direction.name}}</option>
-                      </select>
-                  </div>
-              </div>
-              <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
-               <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-                  <input type="text" class="am-form-field ">
-                  <span class="am-input-group-btn">
-                      <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
-                  </span>
-              </div>
-          </div>
+				<div class="am-u-sm-12">
+    <div id="grid" ui-grid="gridOptions" class="grid" ui-grid-pagination ui-grid-exporter ui-grid-selection ui-grid-pinning ui-grid-resize-columns ui-grid-move-columns ui-grid-grouping>
 
-          <div class="am-u-sm-12">
-           <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
-              <thead>
-                 <tr>
-                    <th> 项目编号</th>
-                    <th>项目名称</th>
-                    <th>负责人</th>
-                    <th>项目类型</th>
-                    <th>起始时间</th>
-                    <th>截止时间</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-             <tr class="gradeX" ng-repeat="project in data">
-                <td>{{project.number}}</td>
-                <td>{{project.name}}</td>
-                <td>{{ project.principal.name}}</td>
-                <td>{{ project.type.name }}</td>
-                <td>{{project.start_time | date:"yyyy-MM-dd"}}</td>
-                <td>{{project.end_time | date:"yyyy-MM-dd"}}</td>
-                <td>
-                   <div class="tpl-table-black-operation">
-                      <a data-whatever="{{project._id}}" data-am-modal="{target: '#addNew'}">
-                         <i class="am-icon-pencil"></i> 编辑
-                     </a>
-                     <a href="javascript:;" class="tpl-table-black-operation-del" ng-click="delOneItem(project._id)">
-                         <i class="am-icon-trash"></i> 删除
-                     </a>
-                 </div>
-             </td>
-         </tr>
-         <!-- more data -->
-     </tbody>
- </table>
-</div>
-<div class="am-u-lg-12 am-cf">
-   <% include pagination%>
+    </div>
+  </div>
 </div>
 </div>
 </div>
@@ -162,7 +138,6 @@
     </div>
 </div>
 </form>
-</div>
 </div>
 </div>
 </div>

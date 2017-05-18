@@ -1,4 +1,27 @@
 <!-- 内容区域 -->
+<script type="text/javascript">
+  cjsApp.controller("adminList", ['$scope', '$rootScope','$http', 'uiGridConstants', 'pageData','initSelect','$interval','$q','initList','i18nService',
+    function($scope, $rootScope,$http,uiGridConstants,pageData,initSelect,$interval,$q,initList,i18nService) {
+      i18nService.setCurrentLang("zh-cn");
+      window.pdfMake.fonts = {微软雅黑: {normal: 'msyh.ttf', bold: 'msyh.ttf', italics: 'msyh.ttf', bolditalics: 'msyh.ttf'} }; 
+      $rootScope.$on("SomeChangeUp",function(event,msg){
+        $rootScope.$broadcast("SomeChangeDown",msg);
+      });
+      $scope.$on("SomeChangeDown",function(event,msg){
+         refreshPage($scope,pageData,initList,function(){});
+      });
+      refreshPage($scope,pageData,initList,function(){});
+      
+      initDelOption($scope, $http,pageData,initList);
+
+      initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
+      $scope.gridOptions.columnDefs= [
+      { name:'奖项名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
+      { name:'级别',field: 'level',filter:{type: uiGridConstants.filter.SELECT,selectOptions: [{ value: '国家级',label:'国家级'},{ value: '省部级',label:'省部级'},{ value: '国家奖学金',label:'国家奖学金'},{ value: '社会奖学金',label:'社会奖学金'},{ value: '其他',label:'其他'}]}, headerCellClass: $scope.highlightFilteredHeader },
+       { name:'备注',field: 'comments', headerCellClass: $scope.highlightFilteredHeader },
+      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ];
+    }]);
+  </script>
 <div class="row">
 	<div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
 		<div class="widget am-cf">
@@ -7,7 +30,7 @@
 			</div>
 			<div class="widget-body  am-fr" ng-controller="adminList">
 
-				<div class="am-u-sm-12 am-u-md-6 am-u-lg-9">
+				<div class="am-u-sm-12">
 					<div class="am-form-group">
 						<div class="am-btn-toolbar">
 							<div class="am-btn-group am-btn-group-xs">
@@ -16,51 +39,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
-					<div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-						<input type="text" class="am-form-field ">
-						<span class="am-input-group-btn">
-						<button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search" type="button"></button>
-						</span>
-					</div>
-				</div>
+			 <div class="am-u-sm-12">
+    <div id="grid" ui-grid="gridOptions" class="grid" ui-grid-pagination ui-grid-exporter ui-grid-selection ui-grid-pinning ui-grid-resize-columns ui-grid-move-columns ui-grid-grouping>
 
-				<div class="am-u-sm-12">
-					<table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black " id="example-r">
-						<thead>
-							<tr>
-								<th>奖项名称</th>
-								<th>级别</th>
-								<th>备注</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="gradeX" ng-repeat="awardlevel in data">
-								<td>{{awardlevel.name}}</td>
-								<td>{{awardlevel.level}}</td>
-								<td>{{awardlevel.comments}}</td>
-								<td>
-									<div class="tpl-table-black-operation">
-										<a data-whatever="{{awardlevel._id}}" data-am-modal="{target: '#addNew'}">
-											<i class="am-icon-pencil"></i> 编辑
-										</a>
-										<a href="javascript:;" class="tpl-table-black-operation-del" ng-click="delOneItem(awardlevel._id)">
-											<i class="am-icon-trash"></i> 删除
-										</a>
-									</div>
-								</td>
-							</tr>
-							<!-- more data -->
-						</tbody>
-					</table>
-				</div>
-				<div class="am-u-lg-12 am-cf">
-					<% include pagination%>
-				</div>
+    </div>
+  </div>
 			</div>
 		</div>
 	</div>
+</div>
 
 	<!--添加新用户模态窗口-->
     <div class="am-modal" tabindex="-1" id="addNew" ng-controller="openModal">
@@ -109,5 +96,3 @@
 	    </div>
 	  </div>
 	</div>
-	
-</div>

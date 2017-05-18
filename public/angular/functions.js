@@ -1,22 +1,47 @@
-function zipAtribute(attr,data){
+function findZip(term,value,row,column){
+    var names = term.split(',');
+    var flag = true;
+    names.forEach(function(name){
+        if(value.indexOf(name) < 0){
+             flag=false;
+        }     
+    });
+    return flag;
+}
+
+function checkStart(term, value) {
+        var now = moment(value);
+        if(term) {
+            if(moment(term).isAfter(now, 'day')) return false;
+        } 
+        return true;
+    }
+
+    function checkEnd(term, value) {
+        var now = moment(value);
+        if(term) {
+            if(moment(term).isBefore(now, 'day')) return false;
+        } 
+        return true;
+    }
+function zipAtribute(data,attr,subattr){
     for (var outi=0;outi<data.length;outi++){
         var items = data[outi][attr];
         var toAdd ='';
         for(var i=0;i<items.length-1;i++){
-            toAdd += items[i].name+',';
+            toAdd += items[i][subattr]+',';
         }
-        toAdd += items[items.length-1].name;
+        toAdd += items[items.length-1][subattr];
         data[outi]['zip'+attr]= toAdd;
     }
 }
 
-function refreshPage($scope,pageData,initList){
+function refreshPage($scope,pageData,initList,callback){
     $("#dataLoading").modal('open');
     initList.itemInfo(pageData.bigCategory).then(function(result){
         result=result.data;
-        zipAtribute('owner',result.docs)
-        $scope.data = result.docs;
         $scope.gridOptions.data = result.docs;
+        callback();
         console.log(result.docs);
         $("#dataLoading").modal('close');
     },function(result){
@@ -52,6 +77,7 @@ function initGridOptions($scope,uiGridConstants,pageData,$interval,$q){
   }, 100, 1); 
     return deferred.promise;
 };
+
 $scope.gridOptions = {
     exporterMenuCsv:true,
     enableGridMenu:true,
@@ -59,13 +85,6 @@ $scope.gridOptions = {
     showGridFooter: true,
     enableFiltering :true,
     enableSorting: true,
-    columnDefs: [
-    { name:'专利名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
-    { name:'申请人',field: 'zipowner' ,headerCellClass:$scope.highlightFilteredHeader},
-    { name:'研究方向',field: 'direction.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
-    {name:'申请日期',field:'apply_time',type:'date',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:uiGridConstants.filter.LESS_THEN,placeholder:'less than'},{condition:uiGridConstants.filter.GREATER_THAN,placeholder:'greater than'}],headerCellClass:$scope.highlightFilteredHeader},
-    {name:'授权日期',field:'authorized_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:uiGridConstants.filter.LESS_THEN,placeholder:'less than'},{condition:uiGridConstants.filter.GREATER_THAN,placeholder:'greater than'}],headerCellClass:$scope.highlightFilteredHeader},
-    { name: '操作',cellTemplate:'<div class="tpl-table-black-operation"> <a data-whatever="{{row.entity._id}}" data-am-modal="{target: \'#addNew\'}"> <i class="am-icon-pencil"></i> 编辑 </a> <a href="javascript:;" class="tpl-table-black-operation-del" ng-click="delOneItem(row.entity._id)"> <i class="am-icon-trash"></i> 删除 </a> <a href="/admin/manage/'+pageData.bigCategory+'/picture?id={{ row.entity.file_path}}" target="_blank" > <i class="am-icon-paperclip"></i> 查看原件</a> </div>', width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ],
     onRegisterApi: function( gridApi ) {
         $scope.gridApi = gridApi;
         $scope.gridApi.core.on.sortChanged( $scope, function( grid, sort ) {
@@ -148,13 +167,13 @@ function getTargetPostUrl($scope,bigCategory){
 }
 
 //初始化删除操作
-function initDelOption($scope,$http,info){
-
+function initDelOption($scope,$http,pageData,initList){
+    var info ='您确认要删除选中的'+pageData.siteInfo+'吗？';
     // 单条记录删除
     $scope.delOneItem = function(id){
         initCheckIfDo($scope,id,info,function(currentID){
-            angularHttpGet($http,"/admin/manage/"+$('#currentCate').val()+"/del?uid="+currentID,function(){
-                initPagination($scope,$http);
+            angularHttpGet($http,"/admin/manage/"+pageData.bigCategory+"/del?uid="+currentID,function(){
+                refreshPage($scope,pageData,initList)
             });
         });
     };
@@ -168,7 +187,7 @@ function initDelOption($scope,$http,info){
         var targetIds = $('#targetIds').val();
         if(targetIds && targetIds.split(',').length > 0){
             initCheckIfDo($scope,$('#targetIds').val(),info,function(currentID){
-                angularHttpGet($http,"/admin/manage/"+$('#currentCate').val()+"/batchDel?ids="+currentID+"&expandIds="+$('#expandIds').val(),function(){
+                angularHttpGet($http,"/admin/manage/"+pageData.bigCategory+"/batchDel?ids="+currentID+"&expandIds="+$('#expandIds').val(),function(){
                     initPagination($scope,$http);
                 });
             });
