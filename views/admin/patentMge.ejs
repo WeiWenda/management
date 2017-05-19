@@ -81,7 +81,7 @@
        <!-- am-field-valid am-field-error  -->
        <label for="name" class="am-u-sm-3 am-form-label">专利名称<span class="tpl-form-line-small-title"></span></label>
        <div class="am-u-sm-9">
-        <input type="text" name="name" ng-class="{'am-field-valid':myForm.name.$valid,'am-field-error':myForm.name.$invalid}" class="tpl-form-input" ng-model="formData.name" placeholder="请输入专利名称" required>
+        <input type="text" name="name" ng-class="{'am-field-valid':myForm.name.$valid,'am-field-error':myForm.name.$invalid}" class="tpl-form-input" ng-model="formData.name" placeholder="请输入专利名称" check-repeat="name" />
       </div>
     </div>
     <div class="am-form-group">
@@ -110,7 +110,7 @@
     <div class="am-form-group">
       <label for="apply_time" class="am-u-sm-3 am-form-label">申请日期<span class="tpl-form-line-small-title"></span></label>
       <div class="am-u-sm-9">
-        <input ng-class="{'am-field-valid':myForm.apply_time.$valid,'am-field-error':myForm.apply_time.$invalid}" type="text" name="apply_time"  ng-model="formData.apply_time" placeholder="选择申请日期" uib-datepicker-popup is-open="apply_time.popup.opened" datepicker-options="dateOptions" ng-click="apply_time.open()" ng-required="true" clear-text="清空" close-text="关闭" current-text="今天" date-picker="apply_time" />
+        <input ng-class="{'am-field-valid':myForm.apply_time.$valid,'am-field-error':myForm.apply_time.$invalid}" type="text" name="apply_time"  ng-model="formData.apply_time" placeholder="选择申请日期" uib-datepicker-popup is-open="apply_time.popup.opened" datepicker-options="dateOptions" ng-click="apply_time.open()" clear-text="清空" ng-required="true" close-text="关闭" current-text="今天" date-picker="apply_time" />
       </div>
     </div>
     <div class="am-form-group">

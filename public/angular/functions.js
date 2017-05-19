@@ -40,6 +40,7 @@ function refreshPage($scope,pageData,initList,callback){
     $("#dataLoading").modal('open');
     initList.itemInfo(pageData.bigCategory).then(function(result){
         result=result.data;
+        $scope.$parent.data = result.docs;
         $scope.gridOptions.data = result.docs;
         callback();
         console.log(result.docs);

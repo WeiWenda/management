@@ -69,7 +69,7 @@
                     <div class="am-form-group">
                         <label for="user-name" class="am-u-sm-3 am-form-label">用户组名<span class="tpl-form-line-small-title"></span></label>
                         <div class="am-u-sm-9">
-                            <input type="text" class="tpl-form-input" name="name" ng-model="formData.name" placeholder="请输入用户名">
+                            <input type="text" ng-class="{'am-field-valid':myForm.name.$valid,'am-field-error':myForm.name.$invalid}" class="tpl-form-input" name="name" ng-model="formData.name" placeholder="请输入用户组名" check-repeat="name" required>
                         </div>
                     </div>
 
