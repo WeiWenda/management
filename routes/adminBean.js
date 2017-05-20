@@ -16,8 +16,6 @@ var Award = require("../models/Award");
 var Paper = require("../models/Paper");
 
 
-
-
 var Direction = require("../models/Direction");
 var Person = require("../models/Person");
 var CCFLevel = require("../models/CCFLevel");

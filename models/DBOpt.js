@@ -2,21 +2,27 @@
  *Created by cbj on 2017/1/4.
  *mongodb数据库操作
  **/
-var url = require('url');
-var mongoose = require('mongoose');
-var fs = require('fs');
-var Grid = require('gridfs-stream');
-mongoose.Promise = require('bluebird');
-var settings = require('../settings');
+ var url = require('url');
+ var mongoose = require('mongoose');
+ var fs = require('fs');
+ var Grid = require('gridfs-stream');
+ mongoose.Promise = require('bluebird');
+ var settings = require('../settings');
 //后台管理用户
 var AdminUser = require('../models/AdminUser');
 var AdminGroup = require('../models/AdminGroup');
+
 var Patent = require('../models/Patent');
 var Project = require("../models/Project");
 var Paper = require("../models/Paper");
 var Award = require("../models/Award");
-
 var SoftwareCopyright = require("../models/SoftwareCopyright");
+
+var Direction = require("../models/Direction");
+var Person = require("../models/Person");
+var CCFLevel = require("../models/CCFLevel");
+var AwardLevel = require("../models/AwardLevel");
+var ProjectLevel = require("../models/ProjectLevel");
 
 //短id
 var shortid = require('shortid');
@@ -39,10 +45,10 @@ var getFile = db.model('getFile', mongooseSchema);
 var gfs = Grid(db.db);
 
  //mongoose.connect('mongodb://'+settings.USERNAME+':'+settings.PASSWORD+'@'+settings.HOST+':'+settings.PORT+'/'+settings.DB+'');
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function (callback) {
+ db.on('error', console.error.bind(console, 'connection error:'));
+ db.once('open', function (callback) {
     var gfs = Grid(db.db);
-  	console.log("连接mongodb");
+    console.log("连接mongodb");
   	//初始化管理员用户信息
 	//验证用户名密码
     AdminUser.findOne({'userName': 'admin'}).exec(function(err, user){
@@ -50,7 +56,7 @@ db.once('open', function (callback) {
             console.log("初始化管理员用户信息失败");
         }
         if(user){
-           	console.log("管理员用户已存在");
+            console.log("管理员用户已存在");
         }else{
             var groupID = shortid.generate();
             var adminGroup = new AdminGroup();
@@ -80,7 +86,7 @@ db.once('open', function (callback) {
                     });
                 }
             });
-			
+
         }
     });
 });
@@ -97,27 +103,26 @@ var DBOpt = {
         });
     },
     pagination : function(obj,req,res){
-       
+
         query=obj.find({});
-        query.sort({'date': -1});
 
         if(obj === AdminUser){
-            query.populate('group');
+            query.populate('group').sort({'createtime': -1});
         }
         if(obj === Patent ){
-            query.populate('direction').populate('owner');
+            query.populate('direction').populate('owner').sort({'authorized_time': -1});
         }
         if(obj === SoftwareCopyright){
-            query.populate('direction');
+            query.populate('direction').sort({'authorized_time': -1});
         }
         if(obj === Project){
-            query.populate('type').populate('principal');
+            query.populate('type').populate('principal').sort({'start_time': -1});
         }
         if(obj === Award){
-            query.populate('type').populate('winner');
+            query.populate('type').populate('winner').sort({'time': -1});
         }
         if(obj === Paper){
-            query.populate('type').populate('direction').populate('author');
+            query.populate('type').populate('direction').populate('author').populate('project').sort({'publish_time': -1});
         }
         query.exec(function(err,docs){
             if(err){
@@ -133,14 +138,126 @@ var DBOpt = {
         var params = url.parse(req.url,true);
         var targetId = params.query.uid;
         if(shortid.isValid(targetId)){
-            obj.remove({_id : params.query.uid},function(err,result){
-                if(err){
-                    res.end(err);
-                }else{
-                    console.log(logMsg+" success!");
-                    res.end("success");
-                }
-            })
+            if(obj === Direction){
+                Patent.count({direction:targetId},function(err,count){
+                    if(count > 0 )
+                        res.status(400).end(settings.system_foreign_key);
+                    else
+                        SoftwareCopyright.count({direction:targetId},function(err,count){
+                            if(count > 0)
+                                res.status(400).end(settings.system_foreign_key);
+                            else 
+                                Paper.count({direction:targetId},function(err,count){
+                                    if(count > 0 )
+                                        res.status(400).end(settings.system_foreign_key);
+                                    else
+                                        obj.remove({_id : params.query.uid},function(err,result){
+                                            if(err){
+                                                res.end(err);
+                                            }else{
+                                                console.log(logMsg+" success!");
+                                                res.end("success");
+                                            }
+                                        });
+                                })
+                        })
+                })
+            }
+            if(obj === Person ) {
+                Patent.count({owner:targetId},function(err,count){
+                    if(count > 0 )
+                        res.status(400).end(settings.system_foreign_key);
+                    else
+                        Award.count({winner:targetId},function(err,count){
+                            if(count > 0)
+                                res.status(400).end(settings.system_foreign_key);
+                            else 
+                                Paper.count({author:targetId},function(err,count){
+                                    if(count > 0 )
+                                        res.status(400).end(settings.system_foreign_key);
+                                    else
+                                        Project.count({principal:targetId},function(err,console){
+                                            if(count>0)
+                                                res.status(400).end(settings.system_foreign_key);
+                                            else
+                                                obj.remove({_id : params.query.uid},function(err,result){
+                                                    if(err){
+                                                        res.end(err);
+                                                    }else{
+                                                        console.log(logMsg+" success!");
+                                                        res.end("success");
+                                                    }
+                                                });
+                                        })
+
+                                })
+                        })
+                })
+            }
+            if(obj === CCFLevel){
+                Paper.count({type:targetId},function(err,count){
+                    if(count>0)
+                        res.status(400).end(settings.system_foreign_key);
+                    else
+                     obj.remove({_id : params.query.uid},function(err,result){
+                        if(err){
+                            res.end(err);
+                        }else{
+                            console.log(logMsg+" success!");
+                            res.end("success");
+                        }
+                    });
+
+             })
+            }
+            if(obj === AwardLevel){
+                Award.count({type:targetId},function(err,count){
+                    if(count>0)
+                        res.status(400).end(settings.system_foreign_key);
+                    else
+                     obj.remove({_id : params.query.uid},function(err,result){
+                        if(err){
+                            res.end(err);
+                        }else{
+                            console.log(logMsg+" success!");
+                            res.end("success");
+                        }
+                    });
+
+             })
+            }
+            if(obj === ProjectLevel){
+                Project.count({type:targetId},function(err,count){
+                    if(count>0)
+                        res.status(400).end(settings.system_foreign_key);
+                    else
+                     obj.remove({_id : params.query.uid},function(err,result){
+                        if(err){
+                            res.end(err);
+                        }else{
+                            console.log(logMsg+" success!");
+                            res.end("success");
+                        }
+                    });
+
+             })
+            }
+            if(obj === Project){
+                Paper.count({project:targetId},function(err,count){
+                    if(count>0)
+                        res.status(400).end(settings.system_foreign_key);
+                    else
+                     obj.remove({_id : params.query.uid},function(err,result){
+                        if(err){
+                            res.end(err);
+                        }else{
+                            console.log(logMsg+" success!");
+                            res.end("success");
+                        }
+                    });
+
+             })
+            }
         }else{
             res.end(settings.system_illegal_param);
         }
@@ -192,15 +309,6 @@ var DBOpt = {
             }
         })
     },
-    findAllFiles : function (httpId, callback) {
-        getFile.find({metadata: httpId}, {"filename": '1'}, function (err, docs) {
-            if (err) {
-                callback(err);
-            } else {
-                callback(null, docs);
-            }
-        })
-    },
     loadToMongo : function (name,originalname,httpId,path,callback) {
         var writestream = gfs.createWriteStream({
             filename: name,
@@ -215,8 +323,8 @@ var DBOpt = {
     removeFile:function(name){
         if(name != undefined){
             gfs.remove({filename:name}, function (err) {
-          if (err) return handleError(err);
-            });
+              if (err) return handleError(err);
+          });
         }
     },
     readFile : function (dir, name,res) {
@@ -228,7 +336,7 @@ var DBOpt = {
         fs_write_stream.on('close', function () {
             res.sendFile(path.resolve("tmp/" + dir + "/" + name));
              //http://localhost:8888/admin/manage/patent/picture?id=79bcce41336c6f2cd4c4f64dd9faa45a.jpg
-        });
+         });
     }
 };
 

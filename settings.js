@@ -32,7 +32,7 @@
     projectLevelList : [ 'project_level','项目级别'], 
 
 
-
+    system_foreign_key:'外键约束，不能删除！',
     system_illegal_param:'传入参数不合法',
     system_noPower : '用户没有权限',
     system_Power : "[\"sysTemManage:true\",\"outcomeManage:true\",\"dimensionManage:true\","+

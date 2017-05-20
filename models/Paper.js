@@ -22,6 +22,7 @@ var PaperSchema = new Schema({
     wos_number:String,
     ei_number:String,
     type:{type:String,ref:'CCFLevel'},
+    reference :String,
     comments: {type:String,default:""},
     direction: {
         type : String,

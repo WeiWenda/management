@@ -83,10 +83,9 @@ router.get('/manage/loging', function(req, res) {
 router.post('/doLogin', function(req, res){
 	var userName = req.body.userName;
 	var password = req.body.password;
-	if(true){
-		if(validator.isUserName(userName) && validator.isPsd(password)){
-            //验证用户名密码
-            AdminUser.findOne({'userName': userName}).populate('group').exec(function(err, user){
+	if(validator.isUserName(userName) && validator.isPsd(password)){
+        //验证用户名密码
+        AdminUser.findOne({'userName': userName}).populate('group').exec(function(err, user){
                 if(err){
                     res.end(err);
                 }
@@ -99,24 +98,16 @@ router.post('/doLogin', function(req, res){
                             req.session.adminPower = user.group.power;
                             // 存入操作日志
                             SystemLog.addLoginLogs(req,res,adminBean.getClienIp(req));
+                            console.log("登录成功");
                             res.end("success");
-                            log.info('登录成功');
-                        }else{
-                            console.log("登录失败");
-                            res.end("用户名或密码错误"); 
                         }
                     });
-                }else{
-                    console.log("登录失败");
-                    res.end("用户名或密码错误"); 
                 }
-            });
-		}
-	}else{
-		console.log("登录失败");
-		res.end("用户名或密码错误");
-	}
-});
+            });     
+        } 
+		// console.log("登录失败");
+		// res.end("用户名或密码错误");
+	});
 
 // 管理员退出
 router.get('/logout', function(req, res) {
@@ -126,12 +117,12 @@ router.get('/logout', function(req, res) {
     res.redirect("/admin");
 });
 //-------------------------获取图片-------------------------
+//前端会根据是否上传过附件决定是否显示链接
 router.get('/manage/:defaultUrl/picture',function(req,res){
     var dir = req.params.defaultUrl;
     var params = url.parse(req.url,true);
     var name = params.query.id;
     DBOpt.readFile(dir,name,res);
-    
 });
 //-------------------------获取单个对象数据开始-------------------------
 router.get('/manage/:defaultUrl/item',function(req,res){
@@ -141,8 +132,8 @@ router.get('/manage/:defaultUrl/item',function(req,res){
     var targetId = params.query.uid;
 
     if(targetObj == AdminUser){
+        //使用getOneItem中间截获返回结果，findOne不能截获
         AdminUser.getOneItem(res,targetId,function(user){
-            user.group = user.group._id;
             user.password = "";
             return res.json(user);
         });
@@ -160,7 +151,6 @@ router.get('/manage/:defaultUrl/item',function(req,res){
 router.get('/manage/getDocumentList/:defaultUrl',function(req,res){
     var targetObj = adminBean.getTargetObj(req.params.defaultUrl);
     DBOpt.pagination(targetObj,req, res);
-
 });
 
 
@@ -175,16 +165,16 @@ router.get('/manage/:defaultUrl/del',function(req,res){
 
     if(targetObj == AdminUser){
         if(params.query.uid == req.session.adminUserInfo._id){
-            res.end('不能删除当前登录的管理员！');
+            res.status(400).end('不能删除当前登录的管理员！');
         }else{
             DBOpt.del(targetObj,req,res,"del one obj success");
         }
     }else if(targetObj == AdminGroup){
-        // if(params.query.uid == req.session.adminUserInfo.group._id){
-        //     res.end('当前用户拥有的权限信息不能删除！');
-        // }else{
+        if(params.query.uid == req.session.adminUserInfo.group._id){
+            res.status(400).end('当前用户拥有的权限信息不能删除！');
+        }else{
             DBOpt.del(targetObj,req,res,"del one obj success");
-        // }
+        }
     }else{
             targetObj.findOne({_id : params.query.uid},function(err,data){
                 if(data && ('file_path' in data)){
@@ -196,70 +186,25 @@ router.get('/manage/:defaultUrl/del',function(req,res){
     }
 
 });
-
-//批量删除对象
-// router.get('/manage/:defaultUrl/batchDel',function(req,res){
-//     var currentPage = req.params.defaultUrl;
-//     var params = url.parse(req.url,true);
-//     var targetObj = adminFunc.getTargetObj(currentPage);
-//     var ids = params.query.ids;
-//     var idsArr = ids.split(',');
-//     if(targetObj == Message || targetObj == AdminGroup || targetObj == AdminUser || targetObj == Notify){
-//         res.end(settings.system_batch_delete_not_allowed);
-//     }else if(targetObj == UserNotify){
-//         //管理员删除系统消息
-//         if(currentPage == settings.sysTemBackStageNotice[0]){
-//             var nids = params.query.expandIds;
-//             var nidsArr = nids.split(',');
-//             if(nidsArr.length > 0){
-//                 for(var i=0;i<nidsArr.length;i++){
-//                     adminFunc.delNotifiesById(req,res,nidsArr[i]);
-//                 }
-//                 //更新消息数
-//                 adminFunc.getAdminNotices(req,res,function(noticeObj){
-//                     req.session.adminNotices = noticeObj;
-//                     res.end('success');
-//                 });
-//             }
-//         }
-//     }else{
-//         targetObj.remove({'_id':{$in: idsArr}},function(err){
-//             if(err){
-//                 res.end(err);
-//             }else{
-//                 res.end("success");
-//             }
-//         });
-
-//     }
-
-// });
-
-//-------------------------对象删除结束-------------------------
-
 //-------------------------更新单条记录(执行更新)开始--------------------
 router.post('/manage/:defaultUrl/modify',function(req,res){
     var currentPage = req.params.defaultUrl;
     var targetObj = adminBean.getTargetObj(currentPage);
-    var params = url.parse(req.url,true);
+    req.body = req.query;
 
     if(targetObj == AdminUser){
-        req.body = req.query;
-        // req.body.password = DbOpt.encrypt(req.body.password,settings.encrypt_key);
         pass.hash(req.body.password, function(err, salt, hash){
             req.body.password = hash;
             req.body.salt = salt;
             DBOpt.updateOneByID(targetObj,req, res,"update one obj success")
-        });
-        
+        }); 
     }else{
-        req.body = req.query;
         if('file' in req.files){
             console.log("change file in mongo");
             targetObj.findOne({_id : req.body._id},function(err,data){
                 DBOpt.removeFile(data.file_path);
             });
-             // 保存文件到GridFS 
+             // 保存文件到GridFS，必须在保存完成后返回res,否则响应不同步
             var file = req.files['file'];
             req.body["file_path"] = file.name;
             DBOpt.loadToMongo(file.name,file.originalname,req.body.bigCategory,file.path,function(){
@@ -273,10 +218,10 @@ router.post('/manage/:defaultUrl/modify',function(req,res){
 //-------------------------更新单条记录(执行更新)结束--------------------
 
 //-------------------------获取所有数据开始--------------------
+//一般用于下拉列表的显示，特点是不需要populate
 router.get('/manage/:defaultUrl/findAll',function(req,res){
     var currentPage = req.params.defaultUrl;
     var targetObj = adminBean.getTargetObj(currentPage);
-    var params = url.parse(req.url,true);
     DBOpt.findAll(targetObj,req, res,"findAll one obj success")
 });
 //-------------------------获取所有数据结束--------------------
@@ -284,11 +229,10 @@ router.get('/manage/:defaultUrl/findAll',function(req,res){
 router.post('/manage/:defaultUrl/addOne',function(req,res){
     var currentPage = req.params.defaultUrl;
     var targetObj = adminBean.getTargetObj(currentPage);
+    req.body = req.query;
     if(targetObj == AdminUser){
-        req.body = req.query;
         addOneAdminUser(req,res);
     }else{
-        req.body = req.query;
         if('file' in req.files){
             console.log("save file to mongo");
              // 保存文件到GridFS 
@@ -311,59 +255,23 @@ function addOneAdminUser(req,res){
     var errors;
     var userName = req.body.userName;
     if(validator.isUserName(userName)){
-
-        AdminUser.findOne({userName:req.body.userName},function(err,user){
-
-            if(user){
-                errors = "该用户名已存在！";
-                res.end(errors);
-            }else{
-
-                // if(!req.body.group){
-                //     errors = "请选择用户组！";
-                // }
-                if(errors){
-                    res.end(errors)
-                }else{
-                    // 密码加密
-                    //req.body.password = DbOpt.encrypt(req.body.password,settings.encrypt_key);
-                    //req.body.group = new AdminGroup({_id : req.body.group});
-                    pass.hash(req.body.password, function(err, salt, hash){
-                        req.body.password = hash;
-                        req.body.salt = salt;
-                        DBOpt.addOne(AdminUser,req, res);
-                    });
-                }
-            }
-        })
+        pass.hash(req.body.password, function(err, salt, hash){
+            req.body.password = hash;
+            req.body.salt = salt;
+            DBOpt.addOne(AdminUser,req, res);
+        });
     }else{
-
-        res.end(settings.system_illegal_param);
+        res.status(400).end(settings.system_illegal_param);
     }
-
 }
 
-
 function setPageInfo(req,res,module){
-
-    var searchKey = '';
-    //area是为了独立查询一个表其中的部分数据而设立的参数
-    var area = '';
-    if(req.url){
-        var params = url.parse(req.url,true);
-        searchKey = params.query.searchKey;
-        area = req.query.area;
-    }
-    console.log(req.originalUrl);
     
     return {
         siteInfo : module[1],
         bigCategory : module[0],
-        searchKey : searchKey,
-        area : area,
         currentLink : req.originalUrl,
         layout : 'admin/index'
     }
-
 }
 module.exports = router;

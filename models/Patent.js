@@ -27,16 +27,6 @@ var PatentSchema = new Schema({
         ref : 'Direction'
     }
 });
-PatentSchema.statics = {
-    getOneItem: function(res, targetId, callBack){
-        Patent.findOne({'_id': targetId}).populate('owner').populate('direction').exec(function(err, patent){
-            if(err){
-                res.end(err);
-            }
-            callBack(patent);
-        })
-    }
-};
 
 var Patent = mongoose.model("Patent", PatentSchema);
 

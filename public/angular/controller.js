@@ -10,7 +10,7 @@
             bigCategory: bigCategory,
             siteInfo: $('#siteInfo').val(),
             timeFilterTemplate: '<div class="ui-grid-filter-container"><input type="text" class="ui-grid-filter-input" placeholder="起" date-am-picker ng-model="col.filters[0].term" readonly/><p/><input type="text" class="ui-grid-filter-input" placeholder="止" date-am-picker ng-model="col.filters[1].term" readonly/></div>',
-            opeTemplate: '<div class="tpl-table-black-operation"> <a data-whatever="{{row.entity._id}}" data-am-modal="{target: \'#addNew\'}"> <i class="am-icon-pencil"></i> 编辑 </a> <a href="javascript:;" class="tpl-table-black-operation-del" ng-click="grid.appScope.delOneItem(row.entity._id)"> <i class="am-icon-trash"></i> 删除 </a> <a href="/admin/manage/' + bigCategory + '/picture?id={{ row.entity.file_path}}" target="_blank" > <i class="am-icon-paperclip"></i> 查看原件</a> </div>'
+            opeTemplate: '<div class="tpl-table-black-operation"> <a data-whatever="{{row.entity._id}}" data-am-modal="{target: \'#addNew\'}"> <i class="am-icon-pencil"></i> 编辑 </a> <a href="javascript:;" class="tpl-table-black-operation-del" ng-click="grid.appScope.delOneItem(row.entity._id)"> <i class="am-icon-trash"></i> 删除 </a> <a ng-show="{{row.entity.file_path != undfined}}" href="/admin/manage/' + bigCategory + '/picture?id={{ row.entity.file_path}}" target="_blank" > <i class="am-icon-paperclip"></i> 查看原件</a> </div>'
         }
     });
 
@@ -214,17 +214,16 @@
 // cjsApp.controller("adminLoging",['$scope','webSocketData',function($scope,webSocketData){
 //     $scope.logarrays = webSocketData.logArray();
 // }]);
-cjsApp.controller('adminShortList', ['$scope', '$http', 'pageData', 'initList',
-    function($scope, $http, pageData, initList) {
-        $("#dataLoading").modal('open');
-        initList.itemInfo(pageData.bigCategory).then(function(result) {
-            result = result.data;
-            $scope.data = result.docs;
-            $("#dataLoading").modal('close');
-        }, function(result) {
-            $("#my-alert").modal();
-            $("#alert-modal-msg").text(result.data);
+cjsApp.controller('adminShortList', ['$scope', '$rootScope','$http', 'pageData', 'initList',
+    function($scope,$rootScope, $http, pageData, initList) {
+        $rootScope.$on("SomeChangeUp",function(event,msg){
+            $rootScope.$broadcast("SomeChangeDown",msg);
         });
+        $scope.$on("SomeChangeDown",function(event,msg){
+           refreshPage($scope,pageData,initList,function(){});
+       });
+        $("#dataLoading").modal('open');
+        refreshPage($scope,pageData,initList,function(){});
         initDelOption($scope, $http, pageData, initList);
     }
     ]);
