@@ -117,7 +117,7 @@
 
 
             scope.dateOptions = {
-                maxDate: new Date(2020, 5, 22),
+                maxDate: new Date(2030, 12, 31),
                 startingDay: 1,
                 initDate: new Date()
             };
