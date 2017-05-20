@@ -176,7 +176,7 @@ var DBOpt = {
                                     if(count > 0 )
                                         res.status(400).end(settings.system_foreign_key);
                                     else
-                                        Project.count({principal:targetId},function(err,console){
+                                        Project.count({principal:targetId},function(err,count){
                                             if(count>0)
                                                 res.status(400).end(settings.system_foreign_key);
                                             else
