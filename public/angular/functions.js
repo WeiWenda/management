@@ -81,6 +81,7 @@ function initGridOptions($scope,uiGridConstants,pageData,$interval,$q){
 };
 
 $scope.gridOptions = {
+    rowHeight:40,
     exporterMenuCsv:true,
     enableGridMenu:true,
     gridMenuTitleFilter:fakeI18n,
