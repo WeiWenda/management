@@ -83,7 +83,7 @@
             <label for="principal" class="am-u-sm-3 am-form-label">负责人<span class="tpl-form-line-small-title"></span></label>
             <div class="am-u-sm-9" init-selects="person">
                 <ui-select  ng-model="formData.principal" theme="bootstrap" >
-                    <ui-select-match placeholder="请选择研究方向">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-match placeholder="请选择负责人">{{$select.selected.name}}</ui-select-match>
                     <ui-select-choices repeat="person._id as person in selects | propsFilter: {name: $select.search, english_name: $select.search}">
                       <div ng-bind-html="person.name +' '+ person.english_name | highlight: $select.search"></div>
                   </ui-select-choices>
@@ -94,7 +94,7 @@
         <label for="type" class="am-u-sm-3 am-form-label">项目类型<span class="tpl-form-line-small-title"></span></label>
         <div class="am-u-sm-9" init-selects="project_level">
             <ui-select  ng-model="formData.type" theme="bootstrap" >
-                <ui-select-match placeholder="请选择研究方向">{{$select.selected.name}}</ui-select-match>
+                <ui-select-match placeholder="请选择项目类型">{{$select.selected.name}}</ui-select-match>
                 <ui-select-choices repeat="type._id as type in selects | propsFilter: {name: $select.search}">
                   <div ng-bind-html="type.name | highlight: $select.search"></div>
               </ui-select-choices>
