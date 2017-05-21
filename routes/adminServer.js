@@ -125,6 +125,7 @@ router.get('/manage/:defaultUrl/picture',function(req,res){
     if(name){
         DBOpt.readFile(dir,name,res);
     }else{
+        res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
         res.end('<p>找不到文件！</p>');
     }
 });
