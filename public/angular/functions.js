@@ -27,12 +27,18 @@ function checkEnd(term, value) {
 function zipAtribute(data,attr,subattr){
     for (var outi=0;outi<data.length;outi++){
         var items = data[outi][attr];
-        var toAdd ='';
-        for(var i=0;i<items.length-1;i++){
-            toAdd += items[i][subattr]+',';
+        
+        if(items.length >0){
+            var toAdd ='';
+            for(var i=0;i<items.length-1;i++){
+                toAdd += items[i][subattr]+',';
+            }
+            toAdd += items[items.length-1][subattr];
+            data[outi]['zip'+attr]= toAdd;
+        }else{
+            data[outi]['zip'+attr]= '';
         }
-        toAdd += items[items.length-1][subattr];
-        data[outi]['zip'+attr]= toAdd;
+        
     }
 }
 
@@ -44,7 +50,7 @@ function refreshPage($scope,pageData,initList,callback){
         if($scope.gridOptions)
             $scope.gridOptions.data = result.docs;
         callback();
-        console.log(result.docs);
+        // console.log(result.docs);
         $("#dataLoading").modal('close');
     },function(result){
         $("#my-alert").modal();
@@ -60,7 +66,7 @@ function initSelectOptions($scope,initSelect,colNum,collect,col){
             item['value']= item[col];
             item['label']= item[col];
         }
-        console.log(result);
+        // console.log(result);
         $scope.gridOptions.columnDefs[colNum].filter['selectOptions']=result;
     });
 }

@@ -258,6 +258,16 @@ var DBOpt = {
 
              })
             }
+            if(obj === Paper || obj === Patent  || obj === SoftwareCopyright    || obj === Award ){
+                 obj.remove({_id : params.query.uid},function(err,result){
+                        if(err){
+                            res.end(err);
+                        }else{
+                            console.log(logMsg+" success!");
+                            res.end("success");
+                        }
+                    });
+            }
         }else{
             res.end(settings.system_illegal_param);
         }
