@@ -21,7 +21,7 @@
       { name:'简称',field: 'abbreviation', headerCellClass: $scope.highlightFilteredHeader },
       { name:'论文级别',field: 'level',filter:{type: uiGridConstants.filter.SELECT,selectOptions: [{ value: 'A类期刊',label:'A类期刊'},{ value: 'B类期刊',label:'B类期刊'},{ value: 'C类期刊',label:'C类期刊'},{ value: 'A类会议',label:'A类会议'},{ value: 'B类会议',label:'B类会议'},{ value: 'C类会议',label:'C类会议'},{ value: '国内期刊',label:'国内期刊'},{ value: '国内会议',label:'国内会议'},{ value: '其他',label:'其他'}]}, headerCellClass: $scope.highlightFilteredHeader },
       { name:'备注',field: 'comments', headerCellClass: $scope.highlightFilteredHeader },
-      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ];
+      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true,enableFiltering:false }  ];
   }]);
 </script>
 <div class="row">

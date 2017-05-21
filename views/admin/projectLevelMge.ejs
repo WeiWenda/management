@@ -20,7 +20,7 @@
       { name:'项目名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
       { name:'级别',field: 'level',filter:{type: uiGridConstants.filter.SELECT,selectOptions: [{ value: '国家级',label:'国家级'},{ value: '省部级',label:'省部级'},{ value: '横向科研',label:'横向科研'},{ value: '国际合作',label:'国际合作'},{ value: '其他',label:'其他'}]}, headerCellClass: $scope.highlightFilteredHeader },
       { name:'备注',field: 'comments', headerCellClass: $scope.highlightFilteredHeader },
-      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ];
+      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true,enableFiltering:false }  ];
   }]);
 </script>
 <div class="row" >
