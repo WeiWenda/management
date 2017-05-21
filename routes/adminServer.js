@@ -122,7 +122,11 @@ router.get('/manage/:defaultUrl/picture',function(req,res){
     var dir = req.params.defaultUrl;
     var params = url.parse(req.url,true);
     var name = params.query.id;
-    DBOpt.readFile(dir,name,res);
+    if(name){
+        DBOpt.readFile(dir,name,res);
+    }else{
+        res.end('<p>找不到文件！</p>');
+    }
 });
 //-------------------------获取单个对象数据开始-------------------------
 router.get('/manage/:defaultUrl/item',function(req,res){
