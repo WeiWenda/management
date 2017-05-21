@@ -20,7 +20,7 @@
       $scope.gridOptions.columnDefs= [
       { name:'软件名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
       { name:'研究方向',field: 'direction.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
-      {name:'完成日期',field:'finish_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart},{condition:checkEnd}],
+      {name:'完成日期',field:'finish_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart,placeholder:'起'},{condition:checkEnd,placeholder:'止'}],
       filterHeaderTemplate:pageData.timeFilterTemplate,
       headerCellClass:$scope.highlightFilteredHeader},
       { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ];

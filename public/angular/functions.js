@@ -72,11 +72,13 @@ function initSelectOptions($scope,initSelect,colNum,collect,col){
 }
 function initGridOptions($scope,uiGridConstants,pageData,$interval,$q){
     $scope.highlightFilteredHeader = function( row, rowRenderIndex, col, colRenderIndex ) {
-        if( col.filters[0].term ){
-          return 'header-filtered';
-      } else {
-          return '';
-      }
+        var toReturn ='';
+        col.filters.forEach(function(filter){
+            if(filter.term){
+                toReturn = 'header-filtered';
+            }
+        })
+        return toReturn;
   };
   var fakeI18n = function( title ){
     var deferred = $q.defer();

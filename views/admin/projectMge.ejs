@@ -23,11 +23,11 @@
       { name:'项目名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
       { name:'负责人',field: 'principal.name', headerCellClass: $scope.highlightFilteredHeader },
       { name:'项目类型',field: 'type.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
-      {name:'起始时间',field:'start_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart},{condition:checkEnd}],
+      {name:'起始时间',field:'start_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart,placeholder:'起'},{condition:checkEnd,placeholder:'止'}],
         filterHeaderTemplate:pageData.timeFilterTemplate,
         headerCellClass:$scope.highlightFilteredHeader},
       {name:'截止时间',field:'end_time',cellFilter:'date:"yyyy-MM-dd"',
-      filters:[{condition:checkStart},{condition:checkEnd}],
+     filters:[{condition:checkStart,placeholder:'起'},{condition:checkEnd,placeholder:'止'}],
         filterHeaderTemplate:pageData.timeFilterTemplate,
         headerCellClass:$scope.highlightFilteredHeader},
       { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ];

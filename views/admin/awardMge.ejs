@@ -27,7 +27,7 @@
       { name:'获奖名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
       { name:'获奖者姓名',field: 'zipwinner',filter:{condition:findZip,placeholder:'多人用\',\'分隔'} ,headerCellClass:$scope.highlightFilteredHeader},
       { name:'获奖类型',field: 'type.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
-      {name:'获奖日期',field:'time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart},{condition:checkEnd}],
+      {name:'获奖日期',field:'time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart,placeholder:'起'},{condition:checkEnd,placeholder:'止'}],
       filterHeaderTemplate:pageData.timeFilterTemplate,
       headerCellClass:$scope.highlightFilteredHeader},
       { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true }  ];
@@ -83,7 +83,7 @@
      <div class="am-form-group">
       <label for="winner" class="am-u-sm-3 am-form-label">获奖者姓名<span class="tpl-form-line-small-title"></span></label>
       <div class="am-u-sm-9" init-selects="person">
-        <ui-select multiple  ng-model="formData.winner" sortable="true" theme="bootstrap"  close-on-select="false" >
+        <ui-select multiple  ng-model="formData.winner" sortable="true" theme="bootstrap"  close-on-select="false" style="background-color:#4B5357;">
           <ui-select-match placeholder="请选择申请人">{{$item.name}} &lt;{{$item.english_name}}&gt;</ui-select-match>
           <ui-select-choices repeat="person._id as person in selects | propsFilter: {name: $select.search, english_name: $select.search}">
             <div ng-bind-html="person.name +' '+ person.english_name | highlight: $select.search"></div>

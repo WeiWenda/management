@@ -29,7 +29,7 @@
       { name:'论文名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
       { name:'作者',field: 'zipauthor',filter:{condition:findZip,placeholder:'多人用\',\'分隔'} ,headerCellClass:$scope.highlightFilteredHeader},
       { name:'研究方向',field: 'direction.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
-      {name:'发表日期',field:'publish_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart},{condition:checkEnd}],
+      {name:'发表日期',field:'publish_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart,placeholder:'起'},{condition:checkEnd,placeholder:'止'}],
       filterHeaderTemplate:pageData.timeFilterTemplate,
       headerCellClass:$scope.highlightFilteredHeader},
       { name:'会议/刊物',field: 'type.abbreviation', headerCellClass: $scope.highlightFilteredHeader },
@@ -86,7 +86,7 @@
       <div class="am-form-group">
         <label for="author" class="am-u-sm-3 am-form-label">作者<span class="tpl-form-line-small-title"></span></label>
         <div class="am-u-sm-9" init-selects="person">
-          <ui-select multiple  ng-model="formData.author" sortable="true" theme="bootstrap"  close-on-select="false" >
+          <ui-select multiple  ng-model="formData.author" sortable="true" theme="bootstrap"  close-on-select="false" style="background-color:#4B5357;">
             <ui-select-match placeholder="请选择作者">{{$item.name}} &lt;{{$item.english_name}}&gt;</ui-select-match>
             <ui-select-choices repeat="person._id as person in selects | propsFilter: {name: $select.search, english_name: $select.search}">
               <div ng-bind-html="person.name +' '+ person.english_name | highlight: $select.search"></div>
