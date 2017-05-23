@@ -12,7 +12,7 @@
       });
       refreshPage($scope,pageData,initList,function(){},$timeout);
       
-      initDelOption($scope, $http,pageData,initList);
+      initDelOption($scope, $http,pageData,initList,$timeout);
 
       initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
       $scope.gridOptions.columnDefs= [

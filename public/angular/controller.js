@@ -223,7 +223,7 @@ cjsApp.controller('adminShortList', ['$scope', '$rootScope','$http', 'pageData',
            refreshPage($scope,pageData,initList,function(){},$timeout);
        });
         refreshPage($scope,pageData,initList,function(){},$timeout);
-        initDelOption($scope, $http, pageData, initList);
+        initDelOption($scope, $http, pageData, initList,$timeout);
     }
     ]);
 cjsApp.controller('openModal', ['$scope', '$http', 'pageData', 'getItemService',

@@ -170,13 +170,13 @@ function getTargetPostUrl($scope,bigCategory){
 }
 
 //初始化删除操作
-function initDelOption($scope,$http,pageData,initList){
+function initDelOption($scope,$http,pageData,initList,$timeout){
     var info ='您确认要删除选中的'+pageData.siteInfo+'吗？';
     // 单条记录删除
     $scope.delOneItem = function(id){
         initCheckIfDo($scope,id,info,function(currentID){
             angularHttpGet($http,"/admin/manage/"+pageData.bigCategory+"/del?uid="+currentID,function(){
-                refreshPage($scope,pageData,initList,function(){});
+                refreshPage($scope,pageData,initList,function(){},$timeout);
             });
         });
     };
