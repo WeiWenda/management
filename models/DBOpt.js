@@ -258,7 +258,7 @@ var DBOpt = {
 
              })
             }
-            if(obj === Paper || obj === Patent  || obj === SoftwareCopyright    || obj === Award ){
+            if(obj === Paper || obj === Patent  || obj === SoftwareCopyright    || obj === Award || obj === adminuser || obj === adminGroup){
                  obj.remove({_id : params.query.uid},function(err,result){
                         if(err){
                             res.end(err);
