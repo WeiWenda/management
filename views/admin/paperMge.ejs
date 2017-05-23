@@ -112,7 +112,7 @@
       <div class="am-form-group">
         <label for="type" class="am-u-sm-3 am-form-label">会议/刊物<span class="tpl-form-line-small-title"></span></label>
         <div class="am-u-sm-9" init-selects="ccf">
-          <ui-select  ng-model="formData.type" theme="bootstrap" style="background-color:#4B5357;">
+          <ui-select  ng-model="formData.type" theme="bootstrap">
             <ui-select-match placeholder="请选择会议/刊物">{{$select.selected.abbreviation}} <em>{{$select.selected.name }}</em></ui-select-match>
             <ui-select-choices repeat="type._id as type in selects | propsFilter: {name: $select.search ,abbreviation:$select.search}">
               <div ng-bind-html=" '<strong>['+ type.abbreviation +'] </strong>'+ type.name | highlight: $select.search "></div>
@@ -135,7 +135,7 @@
       <div class="am-form-group">
         <label for="project" class="am-u-sm-3 am-form-label">标注项目资助<span class="tpl-form-line-small-title"></span></label>
         <div class="am-u-sm-9" init-selects="project">
-          <ui-select multiple  ng-model="formData.project" sortable="true" theme="bootstrap"  close-on-select="false" >
+          <ui-select multiple  ng-model="formData.project" sortable="true" theme="bootstrap"  close-on-select="false" style="background-color:#4B5357;" >
             <ui-select-match placeholder="请选择标注项目资助">{{$item.name}} &lt;{{$item.number}}&gt;</ui-select-match>
             <ui-select-choices repeat="project._id as project in selects | propsFilter: {number: $select.search, name: $select.search}">
               <div ng-bind-html="project.number +' '+ project.name | highlight: $select.search"></div>
