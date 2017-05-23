@@ -173,33 +173,30 @@ function getTargetPostUrl($scope,bigCategory){
 //初始化删除操作
 function initDelOption($scope,$http,pageData,initList,$timeout){
     var info ='您确认要删除选中的'+pageData.siteInfo+'吗？';
-    // 单条记录删除
-    $scope.delOneItem = function(id){
-        initCheckIfDo($scope,id,info,function(currentID){
-            angularHttpGet($http,"/admin/manage/"+pageData.bigCategory+"/del?uid="+currentID,function(){
+    $('#checkIfDo').modal({dimmer:true,
+        relatedTarget: this,
+        onConfirm: function(e) {
+            angularHttpGet($http,"/admin/manage/"+pageData.bigCategory+"/del?uid="+$scope.targetId,function(){
                 refreshPage($scope,pageData,initList,function(){},$timeout);
             });
-        });
+        }
+    })
+    $('#checkIfDo').modal('toggle');
+
+     $('#checkIfDo').bind('open.modal.amui', function (event) {
+        $(this).find('.modal-msg').text(info);
+    });
+    // 单条记录删除
+    $scope.delOneItem = function(id){
+        console.log('get'+id);
+        $scope.targetId = id;
+        $('#checkIfDo').modal('open');
     };
 }
 
 //提示用户操作窗口
 function initCheckIfDo($scope,targetId,msg,callBack){
-    $('#checkIfDo').on('open.modal.amui', function (event) {
-        if(targetId){
-            $scope.targetID = targetId;
-        }
-        $(this).find('.modal-msg').text(msg);
-    });
-    $('#checkIfDo').modal({dimmer:true,
-        relatedTarget: this,
-        onConfirm: function(e) {
-            // console.log($scope.targetID);
-            callBack($scope.targetID);
-        },
-        onCancel: function(e) {
-        }
-    });
+    
 }
 
 //初始化管理员权限列表
