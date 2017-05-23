@@ -1,5 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+<style type="text/css">  
+        *{  
+            margin: 0px;  
+            padding: 0px;  
+        }  
+        video{  
+            z-index: -1900;
+            position: fixed;  
+            right: 0px;  
+            bottom: 0px;  
+            min-width: 100%;  
+            min-height: 100%;  
+            height: auto;  
+            width: auto;  
+            /*加滤镜*/  
+            /*-webkit-filter: grayscale(100%);  */
+            /*filter:grayscale(100%);*/  
+        }  
+        source{  
+            min-width: 100%;  
+            min-height: 100%;  
+            height: auto;  
+            width: auto;  
+        }  
+    </style>  
 
 <head>
     <meta charset="utf-8">
@@ -21,6 +46,13 @@
 </head>
 
 <body data-type="login" ng-app="adminLogin" ng-controller="login">
+<video autoplay="autoplay" id='v1' loop="loop">  
+    <source  src="/assets/img/background.mp4" type="video/mp4" >;  
+</video> 
+    <script>
+    var video= document.getElementById('v1');
+    video.playbackRate = 0.9;
+</script>
     <script src="/assets/js/theme.js"></script>
     <div class="am-g tpl-g">
         <!-- 风格切换 -->
