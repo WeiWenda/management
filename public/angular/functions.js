@@ -42,16 +42,17 @@ function zipAtribute(data,attr,subattr){
     }
 }
 
-function refreshPage($scope,pageData,initList,callback){
-    $("#dataLoading").modal('open');
+function refreshPage($scope,pageData,initList,callback,$timeout){
+    $("#dataloading").modal('open');
     initList.itemInfo(pageData.bigCategory).then(function(result){
-        result=result.data;
-        $scope.$parent.data = result.docs;
-        if($scope.gridOptions)
-            $scope.gridOptions.data = result.docs;
-        callback();
-        // console.log(result.docs);
-        $("#dataLoading").modal('close');
+        $timeout(function(){
+            result=result.data;
+            $scope.$parent.data = result.docs;
+            if($scope.gridOptions)
+                $scope.gridOptions.data = result.docs;
+            $("#dataloading").modal('close');
+            callback();
+        },500);
     },function(result){
         $("#my-alert").modal();
         $("#alert-modal-msg").text(result.data);
@@ -238,6 +239,10 @@ function initPowerList($scope){
         $scope.formData.power = nodesArr;
     }
     $.fn.zTree.init($("#groupPowerTree"), setting, zNodes);
+}
+function openLoading(){
+    console.log('stat');
+    $('#dataloading').modal('open');
 }
 
 //ztree 节点取消选中

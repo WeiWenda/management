@@ -1,7 +1,8 @@
 <!-- 内容区域 -->
 <script type="text/javascript">
-  cjsApp.controller("adminList", ['$scope', '$rootScope','$http', 'uiGridConstants', 'pageData','initSelect','$interval','$q','initList','i18nService',
-    function($scope, $rootScope,$http,uiGridConstants,pageData,initSelect,$interval,$q,initList,i18nService) {
+  cjsApp.controller("adminList", ['$scope', '$rootScope','$http', 'uiGridConstants', 'pageData','initSelect','$interval','$q','initList','i18nService','$timeout',
+    function($scope, $rootScope,$http,uiGridConstants,pageData,initSelect,$interval,$q,initList,i18nService,$timeout) {
+     
       i18nService.setCurrentLang("zh-cn");
       window.pdfMake.fonts = {微软雅黑: {normal: 'msyh.ttf', bold: 'msyh.ttf', italics: 'msyh.ttf', bolditalics: 'msyh.ttf'} }; 
       $rootScope.$on("SomeChangeUp",function(event,msg){
@@ -10,11 +11,11 @@
       $scope.$on("SomeChangeDown",function(event,msg){
          refreshPage($scope,pageData,initList,function(){
             zipAtribute($scope.gridOptions.data,'owner','name');
-          });
+          },$timeout);
       });
       refreshPage($scope,pageData,initList,function(){
         zipAtribute($scope.gridOptions.data,'owner','name');
-      });
+      },$timeout);
       
 
       initDelOption($scope, $http,pageData,initList);

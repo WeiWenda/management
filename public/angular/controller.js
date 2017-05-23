@@ -214,16 +214,15 @@
 // cjsApp.controller("adminLoging",['$scope','webSocketData',function($scope,webSocketData){
 //     $scope.logarrays = webSocketData.logArray();
 // }]);
-cjsApp.controller('adminShortList', ['$scope', '$rootScope','$http', 'pageData', 'initList',
-    function($scope,$rootScope, $http, pageData, initList) {
+cjsApp.controller('adminShortList', ['$scope', '$rootScope','$http', 'pageData', 'initList','$timeout',
+    function($scope,$rootScope, $http, pageData, initList,$timeout) {
         $rootScope.$on("SomeChangeUp",function(event,msg){
             $rootScope.$broadcast("SomeChangeDown",msg);
         });
         $scope.$on("SomeChangeDown",function(event,msg){
-           refreshPage($scope,pageData,initList,function(){});
+           refreshPage($scope,pageData,initList,function(){},$timeout);
        });
-        $("#dataLoading").modal('open');
-        refreshPage($scope,pageData,initList,function(){});
+        refreshPage($scope,pageData,initList,function(){},$timeout);
         initDelOption($scope, $http, pageData, initList);
     }
     ]);

@@ -19,12 +19,11 @@
     <link rel="stylesheet" href="/assets/css/select.min.css" />
     <link rel="stylesheet" href="/assets/css/ui-grid.min.css" />
 
-    <link rel="stylesheet" href="/assets/css/amazeui.datatables.min.css" />
     <link rel="stylesheet" href="/assets/css/app.css">
     <link rel="stylesheet" href="/assets/css/zTreeStyle.css" type="text/css">
     <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/angular.js"></script>
-    <script src="/assets/js/angular-sanitize.js"></script>
+    <script src="/assets/js/angular.min.js"></script>
+    <script src="/assets/js/angular-sanitize.min.js"></script>
     <script src="/angular/controller.js"></script>
 </head>
 <!-- ng-app="adminApp" -->
@@ -90,12 +89,12 @@
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/userMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/userMge' }">
+                    <a href="/admin/manage/userMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/userMge' }" >
                         <i class="am-icon-table sidebar-nav-link-logo"></i> 用户管理
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/groupMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/groupMge' }">
+                    <a href="/admin/manage/groupMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/groupMge' }"  >
                         <i class="am-icon-calendar sidebar-nav-link-logo"></i> 用户组管理
                     </a>
                 </li>
@@ -106,53 +105,53 @@
                 </li> -->
                 <li class="sidebar-nav-heading">成果管理<span class="sidebar-nav-heading-info"> </span></li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/patentMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/patentMge' }">
+                    <a href="/admin/manage/patentMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/patentMge' }"  >
                         <i class="am-icon-diamond sidebar-nav-link-logo"></i> 专利
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/softwareMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/softwareMge' }">
+                    <a href="/admin/manage/softwareMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/softwareMge' }"  >
                         <i class="am-icon-diamond sidebar-nav-link-logo"></i> 软件著作权
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/paperMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/paperMge' }">
+                    <a href="/admin/manage/paperMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/paperMge' }"  >
                         <i class="am-icon-diamond sidebar-nav-link-logo"></i> 学术论文
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/projectMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/projectMge' }">
+                    <a href="/admin/manage/projectMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/projectMge' }"  >
                         <i class="am-icon-diamond sidebar-nav-link-logo"></i> 科研项目
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/awardMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/awardMge' }">
+                    <a href="/admin/manage/awardMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/awardMge' }"  >
                         <i class="am-icon-diamond sidebar-nav-link-logo"></i> 科研获奖
                     </a>
                 </li>
                 <li class="sidebar-nav-heading">维度管理<span class="sidebar-nav-heading-info"> </span></li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/directionMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/directionMge' }">
+                    <a href="/admin/manage/directionMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/directionMge' }"  >
                         <i class="am-icon-diamond sidebar-nav-link-logo"></i> 研究方向
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/personMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/personMge' }">
+                    <a href="/admin/manage/personMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/personMge' }"  >
                         <i class="am-icon-diamond sidebar-nav-link-logo"></i> 研究人员
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/ccfMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/ccfMge' }">
+                    <a href="/admin/manage/ccfMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/ccfMge' }"  >
                         <i class="am-icon-diamond sidebar-nav-link-logo"></i> 论文级别
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/awardLevelMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/awardLevelMge' }">
+                    <a href="/admin/manage/awardLevelMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/awardLevelMge' }"  >
                         <i class="am-icon-diamond sidebar-nav-link-logo"></i> 奖项级别
                     </a>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="/admin/manage/projectLevelMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/projectLevelMge' }">
+                    <a href="/admin/manage/projectLevelMge" ng-class="{'active': '<%= currentLink%>' == '/admin/manage/projectLevelMge' }"  >
                         <i class="am-icon-diamond sidebar-nav-link-logo"></i> 项目级别
                     </a>
                 </li>
@@ -183,10 +182,7 @@
     <script src="/assets/js/vfs_fonts.js"></script>
     <script src="/assets/js/moment.min.js"></script>
     <script src="/assets/js/amazeui.min.js"></script>
-    <script src="/assets/js/amazeui.datatables.min.js"></script>
-    <script src="/assets/js/dataTables.responsive.min.js"></script>
     <script src="/assets/js/app.js"></script>
-    <script src="/assets/js/socket.io.js"></script>
     <script src="/angular/functions.js"></script>
     <script type="text/javascript" src="/assets/js/jquery.ztree.core.js"></script>
     <script type="text/javascript" src="/assets/js/jquery.ztree.excheck.js"></script>
