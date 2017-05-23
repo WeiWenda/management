@@ -220,10 +220,9 @@ cjsApp.controller('adminShortList', ['$scope', '$rootScope','$http', 'pageData',
             $rootScope.$broadcast("SomeChangeDown",msg);
         });
         $scope.$on("SomeChangeDown",function(event,msg){
-           refreshPage($scope,pageData,initList,function(){},$timeout);
+           refreshPage($scope,pageData,initList,function(){},$timeout,$http);
        });
-        refreshPage($scope,pageData,initList,function(){},$timeout);
-        initDelOption($scope, $http, pageData, initList,$timeout);
+        refreshPage($scope,pageData,initList,function(){},$timeout,$http);
     }
     ]);
 cjsApp.controller('openModal', ['$scope', '$http', 'pageData', 'getItemService',

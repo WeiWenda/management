@@ -8,12 +8,10 @@
         $rootScope.$broadcast("SomeChangeDown",msg);
       });
       $scope.$on("SomeChangeDown",function(event,msg){
-         refreshPage($scope,pageData,initList,function(){},$timeout);
+         refreshPage($scope,pageData,initList,function(){},$timeout,$http);
       });
-      refreshPage($scope,pageData,initList,function(){},$timeout);
+      refreshPage($scope,pageData,initList,function(){},$timeout,$http);
       
-      initDelOption($scope, $http,pageData,initList,$timeout);
-
       initSelectOptions($scope,initSelect,3,'project_level','name');
 
       initGridOptions($scope,uiGridConstants,pageData,$interval,$q);

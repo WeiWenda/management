@@ -10,14 +10,11 @@
       $scope.$on("SomeChangeDown",function(event,msg){
        refreshPage($scope,pageData,initList,function(){
         zipAtribute($scope.gridOptions.data,'winner','name');
-      },$timeout);
+      },$timeout,$http);
      });
       refreshPage($scope,pageData,initList,function(){
         zipAtribute($scope.gridOptions.data,'winner','name');
-      },$timeout);
-      
-
-      initDelOption($scope, $http,pageData,initList,$timeout);
+      },$timeout,$http);
 
       initSelectOptions($scope,initSelect,2,'award_level','name');
 

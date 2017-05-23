@@ -42,7 +42,7 @@ function zipAtribute(data,attr,subattr){
     }
 }
 
-function refreshPage($scope,pageData,initList,callback,$timeout){
+function refreshPage($scope,pageData,initList,callback,$timeout,$http){
     $("#dataloading").modal('open');
     initList.itemInfo(pageData.bigCategory).then(function(result){
         $timeout(function(){
@@ -50,6 +50,7 @@ function refreshPage($scope,pageData,initList,callback,$timeout){
             $scope.$parent.data = result.docs;
             if($scope.gridOptions)
                 $scope.gridOptions.data = result.docs;
+            initDelOption($scope,$http,pageData,initList,$timeout);
             $("#dataloading").modal('close');
             callback();
         },500);
