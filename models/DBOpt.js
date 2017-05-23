@@ -113,7 +113,7 @@ var DBOpt = {
             query.populate('direction').populate('owner').sort({'authorized_time': -1});
         }
         if(obj === SoftwareCopyright){
-            query.populate('direction').sort({'authorized_time': -1});
+            query.populate('direction').sort({'finish_time': -1});
         }
         if(obj === Project){
             query.populate('type').populate('principal').sort({'start_time': -1});
