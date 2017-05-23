@@ -55,6 +55,7 @@ function refreshPage($scope,pageData,initList,callback,$timeout,$http){
             callback();
         },500);
     },function(result){
+        $("#dataloading").modal('close');
         $("#my-alert").modal();
         $("#alert-modal-msg").text(result.data);
     });
@@ -188,7 +189,7 @@ function initDelOption($scope,$http,pageData,initList,$timeout){
     });
     // 单条记录删除
     $scope.delOneItem = function(id){
-        console.log('get'+id);
+        // console.log('get'+id);
         $scope.targetId = id;
         $('#checkIfDo').modal('open');
     };
