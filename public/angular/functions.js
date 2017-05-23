@@ -190,12 +190,11 @@ function initCheckIfDo($scope,targetId,msg,callBack){
             $scope.targetID = targetId;
         }
         $(this).find('.modal-msg').text(msg);
-    }).on('close.modal.amui', function (event) {
-        $scope.targetID ="";
     });
     $('#checkIfDo').modal({dimmer:true,
         relatedTarget: this,
         onConfirm: function(e) {
+            // console.log($scope.targetID);
             callBack($scope.targetID);
         },
         onCancel: function(e) {
