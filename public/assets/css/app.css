@@ -503,7 +503,7 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
   margin-bottom: 8px;
 }
 .widget-body-md {
-  height: 200px;
+  /*height: 400px;*/
 }
 .widget-body-lg {
   min-height: 330px;
