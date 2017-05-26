@@ -17,6 +17,7 @@
       initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
 
       $scope.gridOptions.columnDefs= [
+      { name:'登记号',field: 'register_number', headerCellClass: $scope.highlightFilteredHeader },
       { name:'软件名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
       { name:'研究方向',field: 'direction.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
       {name:'完成日期',field:'finish_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart,placeholder:'起'},{condition:checkEnd,placeholder:'止'}],

@@ -22,6 +22,7 @@
       initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
 
       $scope.gridOptions.columnDefs= [
+      { name:'授权号',field: 'authorized_number', headerCellClass: $scope.highlightFilteredHeader },
       { name:'专利名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
       { name:'申请人',field: 'zipowner',filter:{condition:findZip,placeholder:'多人用\',\'分隔'} ,headerCellClass:$scope.highlightFilteredHeader},
       { name:'研究方向',field: 'direction.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
