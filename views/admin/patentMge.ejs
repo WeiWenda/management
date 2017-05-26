@@ -16,8 +16,6 @@
       refreshPage($scope,pageData,initList,function(){
         zipAtribute($scope.gridOptions.data,'owner','name');
       },$timeout,$http);
- 
-      initSelectOptions($scope,initSelect,2,'direction','name');
 
       initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
 
@@ -34,6 +32,12 @@
         filterHeaderTemplate:pageData.timeFilterTemplate,
         headerCellClass:$scope.highlightFilteredHeader},
       { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true ,enableFiltering:false}  ];
+      
+      initSelectOptions($scope,initSelect,2,'direction','name');
+
+      
+
+     
     }]);
   </script>
   <div class="row" >
