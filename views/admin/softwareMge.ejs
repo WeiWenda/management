@@ -12,10 +12,8 @@
    });
       refreshPage($scope,pageData,initList,function(){},$timeout,$http);
       
-      
-
       initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
-     $scope.gridOptions.columnDefs= [
+      $scope.gridOptions.columnDefs= [
           { name:'登记号',field: 'register_number', headerCellClass: $scope.highlightFilteredHeader },
           { name:'软件名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
           { name:'研究方向',field: 'direction.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
@@ -24,7 +22,7 @@
           headerCellClass:$scope.highlightFilteredHeader},
           { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true,enableFiltering:false }  ];
 
-      initSelectOptions($scope,initSelect,1,'direction','name');
+      initSelectOptions($scope,initSelect,2,'direction','name');
      
   }]);
 </script>
