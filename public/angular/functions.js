@@ -61,7 +61,7 @@ function refreshPage($scope,pageData,initList,callback,$timeout,$http,uiGridCons
                 $scope.gridOptions.data = result.docs;
                 $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.ALL );
             }
-            initDelOption($scope,$http,pageData,initList,$timeout);
+            initDelOption($scope,$http,pageData,initList,$timeout,uiGridConstants);
             $("#dataloading").modal('close');
             callback();
         },500);
@@ -183,13 +183,13 @@ function getTargetPostUrl($scope,bigCategory){
 }
 
 //初始化删除操作
-function initDelOption($scope,$http,pageData,initList,$timeout){
+function initDelOption($scope,$http,pageData,initList,$timeout,uiGridConstants){
     var info ='您确认要删除选中的'+pageData.siteInfo+'吗？';
     $('#checkIfDo').modal({dimmer:true,
         relatedTarget: this,
         onConfirm: function(e) {
             angularHttpGet($http,"/admin/manage/"+pageData.bigCategory+"/del?uid="+$scope.targetId,function(){
-                refreshPage($scope,pageData,initList,function(){},$timeout);
+                refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
             });
         }
     })
