@@ -55,8 +55,8 @@ function refreshPage($scope,pageData,initList,callback,$timeout,$http,uiGridCons
     initList.itemInfo(pageData.bigCategory).then(function(result){
         $timeout(function(){
             result=result.data;
-            // $scope.$parent.data = result.docs;
-            $scope.data = result.docs;
+            $scope.$parent.data = result.docs;
+            // $scope.data = result.docs;
             if($scope.gridOptions){
                 $scope.gridOptions.data = result.docs;
                 $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.ALL );
