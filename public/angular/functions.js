@@ -9,6 +9,13 @@ function findZip(term,value,row,column){
     return flag;
 }
 
+function findShoulu(term,value,row,column){
+    if((term == 0 && value == '' )|| (term == 1 && value != '' ))
+        return true;
+    else
+        return false;
+}
+
 function checkStart(term, value) {
     var now = moment(value);
     if(term) {

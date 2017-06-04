@@ -24,6 +24,7 @@
       { name:'获奖名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
       { name:'获奖者姓名',field: 'zipwinner',filter:{condition:findZip,placeholder:'多人用\',\'分隔'} ,headerCellClass:$scope.highlightFilteredHeader},
       { name:'获奖类型',field: 'type.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
+      { name:'级别',field: 'type.level',filter:{type: uiGridConstants.filter.SELECT,selectOptions: [{ value: '国家级',label:'国家级'},{ value: '省部级',label:'省部级'},{ value: '国家奖学金',label:'国家奖学金'},{ value: '社会奖学金',label:'社会奖学金'},{ value: '其他',label:'其他'}]}, headerCellClass: $scope.highlightFilteredHeader },
       {name:'获奖日期',field:'time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart,placeholder:'起'},{condition:checkEnd,placeholder:'止'}],
       filterHeaderTemplate:pageData.timeFilterTemplate,
       headerCellClass:$scope.highlightFilteredHeader},

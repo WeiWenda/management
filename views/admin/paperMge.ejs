@@ -31,6 +31,10 @@
       filterHeaderTemplate:pageData.timeFilterTemplate,
       headerCellClass:$scope.highlightFilteredHeader},
       { name:'会议/刊物',field: 'type.abbreviation', headerCellClass: $scope.highlightFilteredHeader },
+      { name:'级别',field: 'type.level',filter:{type: uiGridConstants.filter.SELECT,placeholder:'选择论文级别',selectOptions: [{ value: 'A类期刊',label:'A类期刊'},{ value: 'B类期刊',label:'B类期刊'},{ value: 'C类期刊',label:'C类期刊'},{ value: 'A类会议',label:'A类会议'},{ value: 'B类会议',label:'B类会议'},{ value: 'C类会议',label:'C类会议'},{ value: '国内期刊',label:'国内期刊'},{ value: '国内会议',label:'国内会议'},{ value: '其他',label:'其他'}]},headerCellClass: $scope.highlightFilteredHeader}, 
+      { name:'SCI',field: 'wos_number',filter:{condition:findShoulu,type: uiGridConstants.filter.SELECT,selectOptions:[{value: '1',label:'收录'},{value: '0',label:'未收录'}]},headerCellClass: $scope.highlightFilteredHeader }, 
+      { name:'EI',field: 'ei_number',filter:{condition:findShoulu,type: uiGridConstants.filter.SELECT,selectOptions:[{ value: '1',label:'收录'},{ value: '0',label:'未收录'}]}, 
+      headerCellClass: $scope.highlightFilteredHeader },
       { name:'标注项目资助',field: 'zipproject', headerCellClass: $scope.highlightFilteredHeader },
       { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true,enableFiltering:false}  ];
     }]);
