@@ -8,9 +8,9 @@
         $rootScope.$broadcast("SomeChangeDown",msg);
     });
       $scope.$on("SomeChangeDown",function(event,msg){
-       refreshPage($scope,pageData,initList,function(){},$timeout,$http);
+       refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
    });
-      refreshPage($scope,pageData,initList,function(){},$timeout,$http);
+      refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
 
       initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
 

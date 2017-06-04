@@ -11,13 +11,13 @@
         refreshPage($scope,pageData,initList,function(){
           zipAtribute($scope.gridOptions.data,'author','name');
           zipAtribute($scope.gridOptions.data,'project','number');
-        },$timeout,$http);
+        },$timeout,$http,uiGridConstants);
         
       });
       refreshPage($scope,pageData,initList,function(){
         zipAtribute($scope.gridOptions.data,'author','name');
         zipAtribute($scope.gridOptions.data,'project','number');
-      },$timeout,$http);
+      },$timeout,$http,uiGridConstants);
 
       initSelectOptions($scope,initSelect,2,'direction','name');
 

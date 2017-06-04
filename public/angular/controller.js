@@ -214,15 +214,15 @@
 // cjsApp.controller("adminLoging",['$scope','webSocketData',function($scope,webSocketData){
 //     $scope.logarrays = webSocketData.logArray();
 // }]);
-cjsApp.controller('adminShortList', ['$scope', '$rootScope','$http', 'pageData', 'initList','$timeout',
-    function($scope,$rootScope, $http, pageData, initList,$timeout) {
+cjsApp.controller('adminShortList', ['$scope', '$rootScope','$http', 'pageData', 'initList','$timeout','uiGridConstants',
+    function($scope,$rootScope, $http, pageData, initList,$timeout,uiGridConstants) {
         $rootScope.$on("SomeChangeUp",function(event,msg){
             $rootScope.$broadcast("SomeChangeDown",msg);
         });
         $scope.$on("SomeChangeDown",function(event,msg){
-           refreshPage($scope,pageData,initList,function(){},$timeout,$http);
+           refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
        });
-        refreshPage($scope,pageData,initList,function(){},$timeout,$http);
+        refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
     }
     ]);
 cjsApp.controller('openModal', ['$scope', '$http', 'pageData', 'getItemService',
