@@ -10,7 +10,7 @@
             bigCategory: bigCategory,
             siteInfo: $('#siteInfo').val(),
             timeFilterTemplate: "<div class=\"ui-grid-filter-container\" ng-style=\"col.extraStyle\" ng-repeat=\"colFilter in col.filters\" ng-class=\"{'ui-grid-filter-cancel-button-hidden' : colFilter.disableCancelFilterButton === true }\"><input readonly type=\"text\" date-am-picker class=\"ui-grid-filter-input ui-grid-filter-input-{{$index}}\" ng-model=\"colFilter.term\" ng-attr-placeholder=\"{{colFilter.placeholder || ''}}\" aria-label=\"{{colFilter.ariaLabel || aria.defaultFilterLabel}}\"><div role=\"button\" class=\"ui-grid-filter-button\" ng-click=\"removeFilter(colFilter, $index)\" ng-if=\"!colFilter.disableCancelFilterButton\" ng-disabled=\"colFilter.term === undefined || colFilter.term === null || colFilter.term === ''\" ng-show=\"colFilter.term !== undefined && colFilter.term !== null && colFilter.term !== ''\"><i class=\"ui-grid-icon-cancel\" ui-grid-one-bind-aria-label=\"aria.removeFilter\">&nbsp;</i></div></div>",
-            opeTemplate: '<div class="tpl-table-black-operation"> <a data-whatever="{{row.entity._id}}" data-am-modal="{target: \'#addNew\'}"> <i class="am-icon-pencil"></i> 编辑 </a> <a href="javascript:;" class="tpl-table-black-operation-del" ng-click="grid.appScope.delOneItem(row.entity._id)"> <i class="am-icon-trash"></i> 删除 </a> <a ng-show="{{row.entity.file_path != undfined}}" href="/admin/manage/' + bigCategory + '/picture?id={{ row.entity.file_path}}" target="_blank" > <i class="am-icon-paperclip"></i> 查看原件</a> </div>'
+            opeTemplate: '<div class="tpl-table-black-operation"> <a ng-click="grid.appScope.editOneItem(row.entity._id)"> <i class="am-icon-pencil"></i> 编辑 </a> <a href="javascript:;" class="tpl-table-black-operation-del" ng-click="grid.appScope.delOneItem(row.entity._id)"> <i class="am-icon-trash"></i> 删除 </a> <a ng-show="{{row.entity.file_path != undfined}}" href="/admin/manage/' + bigCategory + '/picture?id={{ row.entity.file_path}}" target="_blank" > <i class="am-icon-paperclip"></i> 查看原件</a> </div>'
         }
     });
 
@@ -220,23 +220,33 @@ cjsApp.controller('adminShortList', ['$scope', '$rootScope','$http', 'pageData',
             $rootScope.$broadcast("SomeChangeDown",msg);
         });
         $scope.$on("SomeChangeDown",function(event,msg){
-           refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
-       });
+         refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
+     });
         refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
     }
     ]);
-cjsApp.controller('openModal', ['$scope', '$http', 'pageData', 'getItemService',
-    function($scope, $http, pageData, getItemService) {
+cjsApp.controller('openModal', ['$scope', '$http', 'pageData', 'getItemService','$rootScope',
+    function($scope, $http, pageData, getItemService,$rootScope) {
+        $rootScope.$on("OpenModalUp",function(event,msg){
+            $rootScope.$broadcast("OpenModalDown",msg);
+        });
+        $scope.$on("OpenModalDown",function(event,msg){
+            $('#addNew').modal({
+                    dimmer: 0,
+                    closeViaDimmer: 0,
+                    width: 600
+                });
+            if (msg) {
+                getItemService.itemInfo(pageData.bigCategory, msg).then(function(result) {
+                    $scope.formData = result.data;
+                    console.log($scope.formData);
+                })
+            } else {
+                $scope.formData = {};
+            }
+        });
         $scope.processForm = function(isValid) {
             if (false) {
-                //if(!$scope.formData.group){
-                // $.tipsShow({
-                //     message : '请选择用户组',
-                //     type : 'warning' ,
-                //     callBack : function(){
-                //         return;
-                //     }
-                // });
             } else {
                 //用于向Mongo中保存图片的metadata
                 $scope.formData['bigCategory'] = pageData.bigCategory;
@@ -248,29 +258,6 @@ cjsApp.controller('openModal', ['$scope', '$http', 'pageData', 'getItemService',
             }
 
         };
-        $('#addNew').modal({
-            dimmer: 0,
-            closeViaDimmer: 0,
-            width: 600
-        });
-        $('#addNew').modal('toggle');
-
-        $('#addNew').bind('open.modal.amui',
-            function(event) {
-                console.log("弹出框");
-                var obj = $(event.relatedTarget);
-                var editId = obj.data('whatever');
-                // 如果不为空则为编辑状态
-                if (editId) {
-                    getItemService.itemInfo(pageData.bigCategory, editId).then(function(result) {
-                        $scope.formData = result.data;
-                        console.log($scope.formData);
-                    })
-                } else {
-                    $scope.formData = {};
-                }
-                $scope.$apply();
-            });
     }
     ]);
 cjsApp.controller('openTreeModal', ['$scope', '$http', 'pageData', 'getItemService',

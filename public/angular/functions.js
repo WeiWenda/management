@@ -3,9 +3,9 @@ function findZip(term,value,row,column){
     var flag = true;
     names.forEach(function(name){
         if(value.indexOf(name) < 0){
-           flag=false;
-       }     
-   });
+         flag=false;
+     }     
+ });
     return flag;
 }
 
@@ -93,33 +93,33 @@ function initGridOptions($scope,uiGridConstants,pageData,$interval,$q){
             }
         })
         return toReturn;
-  };
-  var fakeI18n = function( title ){
-    var deferred = $q.defer();
-    $interval( function() {
-      deferred.resolve( 'col: ' + title );
-  }, 100, 1); 
-    return deferred.promise;
-};
+    };
+    var fakeI18n = function( title ){
+        var deferred = $q.defer();
+        $interval( function() {
+          deferred.resolve( 'col: ' + title );
+      }, 100, 1); 
+        return deferred.promise;
+    };
 
-$scope.gridOptions = {
-    rowHeight:40,
-    exporterMenuCsv:true,
-    enableGridMenu:true,
-    gridMenuTitleFilter:fakeI18n,
-    showGridFooter: true,
-    enableFiltering :true,
-    enableSorting: true,
-    onRegisterApi: function( gridApi ) {
-        $scope.gridApi = gridApi;
-        $scope.gridApi.core.on.sortChanged( $scope, function( grid, sort ) {
-            $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
-        });
-    },
-    paginationPageSizes: [10, 25, 50, 75],
-    paginationPageSize: 10,
-    exporterPdfDefaultStyle : {font:'微软雅黑',fontSize: 9}
-};
+    $scope.gridOptions = {
+        rowHeight:40,
+        exporterMenuCsv:true,
+        enableGridMenu:true,
+        gridMenuTitleFilter:fakeI18n,
+        showGridFooter: true,
+        enableFiltering :true,
+        enableSorting: true,
+        onRegisterApi: function( gridApi ) {
+            $scope.gridApi = gridApi;
+            $scope.gridApi.core.on.sortChanged( $scope, function( grid, sort ) {
+                $scope.gridApi.core.notifyDataChange( uiGridConstants.dataChange.COLUMN );
+            });
+        },
+        paginationPageSizes: [10, 25, 50, 75],
+        paginationPageSize: 10,
+        exporterPdfDefaultStyle : {font:'微软雅黑',fontSize: 9}
+    };
 }
 
 //angularJs https Post方法封装
@@ -185,30 +185,25 @@ function getTargetPostUrl($scope,bigCategory){
 //初始化删除操作
 function initDelOption($scope,$http,pageData,initList,$timeout,uiGridConstants){
     var info ='您确认要删除选中的'+pageData.siteInfo+'吗？';
-    $('#checkIfDo').modal({dimmer:true,
-        relatedTarget: this,
-        onConfirm: function(e) {
-            angularHttpGet($http,"/admin/manage/"+pageData.bigCategory+"/del?uid="+$scope.targetId,function(){
-                refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
-            });
-        }
-    })
-    $('#checkIfDo').modal('toggle');
-
-     $('#checkIfDo').bind('open.modal.amui', function (event) {
+    $('#checkIfDo').bind('open.modal.amui', function (event) {
         $(this).find('.modal-msg').text(info);
     });
     // 单条记录删除
     $scope.delOneItem = function(id){
-        // console.log('get'+id);
+        console.log('get'+id);
         $scope.targetId = id;
-        $('#checkIfDo').modal('open');
+        $('#checkIfDo').modal({dimmer:true,
+            relatedTarget: this,
+            onConfirm: function(e) {
+                angularHttpGet($http,"/admin/manage/"+pageData.bigCategory+"/del?uid="+$scope.targetId,function(){
+                    refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
+                });
+            }
+        });
     };
-}
-
-//提示用户操作窗口
-function initCheckIfDo($scope,targetId,msg,callBack){
-    
+    $scope.editOneItem = function(id){
+       $scope.$emit("OpenModalUp", id);
+   };
 }
 
 //初始化管理员权限列表
@@ -248,10 +243,6 @@ function initPowerList($scope){
         $scope.formData.power = nodesArr;
     }
     $.fn.zTree.init($("#groupPowerTree"), setting, zNodes);
-}
-function openLoading(){
-    console.log('stat');
-    $('#dataloading').modal('open');
 }
 
 //ztree 节点取消选中
