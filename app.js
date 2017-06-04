@@ -72,7 +72,13 @@ io.on('connection', function(client){
     })
 
 })
-
+var router = express.Router();
+router.caseSensitive = true;
+/*所有/admin请求都先到这里*/
+router.get("/", function(req, res, next){
+    res.redirect("/admin/")
+});
+app.use('/',router);
 /*指定路由控制*/
 app.use('/admin', admin);
 app.use('/admin', adminServer);
