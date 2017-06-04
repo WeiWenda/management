@@ -10,7 +10,8 @@ function findZip(term,value,row,column){
 }
 
 function findShoulu(term,value,row,column){
-    if((term == 0 && value == '' )|| (term == 1 && value != '' ))
+    console.log(value);
+    if((term == 0 && (!value || value == '') )|| (term == 1 && value && value != '' ))
         return true;
     else
         return false;
