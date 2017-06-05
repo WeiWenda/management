@@ -75,6 +75,11 @@ var adminBean = {
         return power;
     },
     getClienIp : function(req){
+        console.log(req.ip);
+        console.log(req.headers['x-forwarded-for']);
+        console.log(req.connection.remoteAddress);
+        console.log(req.socket.remoteAddress);
+
         return req.headers['x-forwarded-for'] ||
             req.connection.remoteAddress ||
             req.socket.remoteAddress ||
