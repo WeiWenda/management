@@ -36,7 +36,8 @@
       { name:'EI',field: 'ei_number',filter:{condition:findShoulu,type: uiGridConstants.filter.SELECT,selectOptions:[{ value: '1',label:'收录'},{ value: '0',label:'未收录'}]}, 
       headerCellClass: $scope.highlightFilteredHeader },
       { name:'标注项目资助',field: 'zipproject', headerCellClass: $scope.highlightFilteredHeader },
-      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true,enableFiltering:false}  ];
+      { name: '操作',cellTemplate:pageData.opeTemplate, width: '25%',minWidth:200,enableColumnResizing: false, pinnedRight:true,enableFiltering:false},
+      { name: 'Google引用',field:'reference',visible: false}   ];
     }]);
   </script>
   <div class="row">
