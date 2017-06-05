@@ -6,6 +6,7 @@ var url = require('url');
 var settings = require("../settings");
 //数据库操作
 var DBOpt = require("../models/DBOpt");
+var SystemLogs = require("../models/SystemLog");
 var AdminUser = require("../models/AdminUser");
 var AdminGroup = require("../models/AdminGroup");
 
@@ -28,7 +29,9 @@ var ProjectLevel = require("../models/ProjectLevel");
 var adminBean = {
 	getTargetObj : function(currentPage){
         var targetObj;
-        if(currentPage === 'sysTemManage_user' ){
+        if(currentPage === 'index' ){
+            targetObj = SystemLogs;
+        }else if(currentPage === 'sysTemManage_user' ){
             targetObj = AdminUser;
         }else if(currentPage === 'sysTemManage_uGroup' ){
             targetObj = AdminGroup;

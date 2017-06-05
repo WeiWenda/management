@@ -24,6 +24,9 @@ var CCFLevel = require("../models/CCFLevel");
 var AwardLevel = require("../models/AwardLevel");
 var ProjectLevel = require("../models/ProjectLevel");
 
+//后台日志管理
+var SystemLog = require("../models/SystemLog");
+
 //短id
 var shortid = require('shortid');
 //密码加密
@@ -43,7 +46,12 @@ var mongooseSchema = new mongoose.Schema({
 }, {collection: "fs.files", versionKey: ""});
 var getFile = db.model('getFile', mongooseSchema);
 var gfs = Grid(db.db);
-
+function getClienIp(req){
+    return req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        req.connection.socket.remoteAddress;
+}
  //mongoose.connect('mongodb://'+settings.USERNAME+':'+settings.PASSWORD+'@'+settings.HOST+':'+settings.PORT+'/'+settings.DB+'');
  db.on('error', console.error.bind(console, 'connection error:'));
  db.once('open', function (callback) {
@@ -98,14 +106,16 @@ var DBOpt = {
             if(err){
                 res.end(err);
             }else{
-                res.end("success");
+                SystemLog.addAddLogs(req,res,getClienIp(req)); res.end("success");
             }
         });
     },
     pagination : function(obj,req,res){
 
         query=obj.find({});
-
+        if(obj === SystemLog){
+            query.sort({'date': -1});
+        }
         if(obj === AdminUser){
             query.populate('group').sort({'createtime': -1});
         }
@@ -134,9 +144,10 @@ var DBOpt = {
             }
         })
     },
-    del : function(obj,req,res,logMsg){
+    del : function(obj,req,res,logMsg,targetId){
         var params = url.parse(req.url,true);
         var targetId = params.query.uid;
+        SystemLog.addRemoveLogs(req,res,getClienIp(req),obj);
         if(shortid.isValid(targetId)){
             if(obj === Direction){
                 Patent.count({direction:targetId},function(err,count){
@@ -284,6 +295,7 @@ var DBOpt = {
                 if(err){
                     res.end(err);
                 }else{
+                    SystemLog.addUpdateLogs(req,res,getClienIp(req));
                     console.log(logMsg+" success!");
                     res.end("success");
                 }

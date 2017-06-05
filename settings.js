@@ -13,7 +13,7 @@
  	PASSWOED: '',
 
 
- 	SYSTEMMANAGE : ['sysTemManage','cjs后台管理'],  // 后台模块(系统管理)
+ 	SYSTEMMANAGE : ['index','后台管理'],  // 后台模块(系统管理)
     adminUsersList : ['sysTemManage_user','用户'],
     adminGroupList : ['sysTemManage_uGroup','用户组'],
     adminLoging : ['sysTemManage_loging','实时日志'],
@@ -36,6 +36,8 @@
     system_illegal_param:'传入参数不合法',
     system_noPower : '用户没有权限',
     system_Power : "[\"sysTemManage:true\",\"outcomeManage:true\",\"dimensionManage:true\","+
+
+    "\"sysTemManage_index:true\",\"sysTemManage_index_view:true\","+
 
     "\"sysTemManage_user:true\", \"sysTemManage_user_add:true\", "+
     "\"sysTemManage_user_view:true\", \"sysTemManage_user_modify:true\", \"sysTemManage_user_del:true\", "+

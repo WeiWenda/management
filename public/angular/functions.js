@@ -259,6 +259,8 @@ function setAdminPowerTreeData(){
     return [
     { id:'sysTemManage', pId:0, name:"系统管理", open:false},
 
+    { id:'index', pId:'sysTemManage', name:"日志查看", open:false},
+    { id:'index_view', pId:'index', name:"查看"},
 
     { id:'sysTemManage_user', pId:'sysTemManage', name:"系统用户管理", open:false},
     { id:'sysTemManage_user_add', pId:'sysTemManage_user', name:"新增"},

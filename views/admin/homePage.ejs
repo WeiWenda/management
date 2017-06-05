@@ -63,6 +63,23 @@
         </div>
     </div>
 </div> -->
+<script type="text/javascript">
+  cjsApp.controller("adminList", ['$scope', '$rootScope','$http', 'uiGridConstants', 'pageData','initSelect','$interval','$q','initList','i18nService','$timeout',
+    function($scope, $rootScope,$http,uiGridConstants,pageData,initSelect,$interval,$q,initList,i18nService,$timeout) {
+      i18nService.setCurrentLang("zh-cn");
+      window.pdfMake.fonts = {微软雅黑: {normal: 'msyh.ttf', bold: 'msyh.ttf', italics: 'msyh.ttf', bolditalics: 'msyh.ttf'} }; 
+      refreshPage($scope,pageData,initList,function(){},$timeout,$http,uiGridConstants);
+
+      initGridOptions($scope,uiGridConstants,pageData,$interval,$q);
+
+      $scope.gridOptions.columnDefs= [
+      { name:'操作类型',field: 'type', headerCellClass: $scope.highlightFilteredHeader },
+      {name:'时间戳',field:'date',filters:[{condition:checkStart,placeholder:'起'},{condition:checkEnd,placeholder:'止'}],
+      filterHeaderTemplate:pageData.timeFilterTemplate,
+      headerCellClass:$scope.highlightFilteredHeader},
+      { name:'详情',field: 'logs', headerCellClass: $scope.highlightFilteredHeader }];
+  }]);
+</script>
 <style type="text/css">  
     .am-panel{
         background-color: #4B5357;
@@ -78,36 +95,50 @@
     }
 </style>
 <div class="row am-cf">
-    <div class="am-u-sm-12 am-u-md-4">
-        <div class="widget am-cf">
-            <div class="widget-head am-cf">
-                <div class="widget-title am-fl">系统公告</div>
-                <div class="widget-function am-fr">
-                    <!-- <a href="javascript:;" class="am-icon-cog"></a> -->
-                </div>
+    <div class="am-u-sm-12 am-u-md-9">
+        <div class=" background-deloge widget am-cf">
+           <div class="widget-head am-cf">
+           <div class="widget-title  am-cf">系统日志</div>
+          </div>
+          <div class="widget-body  am-fr" ng-controller="adminList">
+          <div class="am-u-sm-12">
+            <div id="grid" ui-grid="gridOptions" class="grid" ui-grid-pagination ui-grid-exporter ui-grid-selection ui-grid-pinning ui-grid-resize-columns ui-grid-move-columns ui-grid-grouping>
+
             </div>
-            <div class="widget-body-md widget-body tpl-amendment-echarts am-fr" id="tpl-echarts">
-                <div class="am-panel-group" id="accordion">
-                    <div class="am-panel am-panel-default">
-                        <div class="am-panel-hd">
-                          <h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-5'}">  更新公告</h4>
-                      </div>
-                      <div id="do-not-say-5" class="am-panel-collapse am-in">
-                          <div class="am-panel-bd">
-                              <table class="am-table">
-                                <thead>
-                                    <tr>
-                                        <th>上线时间</th>
-                                        <th>版本号</th>
-                                        <th>更新内容</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>2017-06-01</td>
-                                    <td>v1</td>
-                                    <td>提供专利、软件著作权、论文、项目、获奖的维护管理，以及研究方向、人员、会议/期刊、奖项类型、项目类型的维度管理，提供4种权限的用户，分别是超级管理员（可以管理权限）、成果管理员（可以管理科研成果）、维度管理员（可以管理维度表）、统计用户（只读权限）</td>
+        </div>
+    </div>
+</div>
+</div>
+<div class="am-u-sm-12 am-u-md-3">
+    <div class="widget am-cf">
+        <div class="widget-head am-cf">
+            <div class="widget-title am-fl">系统公告</div>
+            <div class="widget-function am-fr">
+                <!-- <a href="javascript:;" class="am-icon-cog"></a> -->
+            </div>
+        </div>
+        <div class="widget-body-md widget-body tpl-amendment-echarts am-fr" id="tpl-echarts">
+            <div class="am-panel-group" id="accordion">
+                <div class="am-panel am-panel-default">
+                    <div class="am-panel-hd">
+                      <h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-5'}">  更新公告</h4>
+                  </div>
+                  <div id="do-not-say-5" class="am-panel-collapse am-in">
+                      <div class="am-panel-bd">
+                          <table class="am-table">
+                            <thead>
+                                <tr>
+                                    <th>上线时间</th>
+                                    <th>版本号</th>
+                                    <th>更新内容</th>
                                 </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>2017-06-01</td>
+                                <td>v1</td>
+                                <td>提供专利、软件著作权、论文、项目、获奖的维护管理，以及研究方向、人员、会议/期刊、奖项类型、项目类型的维度管理，提供4种权限的用户，分别是超级管理员（可以管理权限）、成果管理员（可以管理科研成果）、维度管理员（可以管理维度表）、统计用户（只读权限）</td>
+                            </tr>
                             <!--   <tr>
                                 <td>2017-06-01</td>
                                 <td>v1</td>
@@ -156,13 +187,13 @@
   </div>
   <div id="do-not-say-3" class="am-panel-collapse am-collapse">
       <div class="am-panel-bd">
-         <p>1.在成果添加或修改时，出现对应维度记录不存在的情况时，需要换一个浏览器登录到维度管理员权限下，进行维度表的添加。</p>
-         <p>2.5张成果表中，除备注字段不重要外，其余所有字段都有其录入的必要性，请不要因为偷懒而影响到最终的统计效果。</p>
-         <p>3.表单验证时拒绝了name重复的新记录，出现这种情况时，请优先选择修改已存在的记录，而不要随意加后缀前缀，造成重复统计。
-         </div>
-     </div>
- </div>
- <div class="am-panel am-panel-default">
+       <p>1.在成果添加或修改时，出现对应维度记录不存在的情况时，需要换一个浏览器登录到维度管理员权限下，进行维度表的添加。</p>
+       <p>2.5张成果表中，除备注字段不重要外，其余所有字段都有其录入的必要性，请不要因为偷懒而影响到最终的统计效果。</p>
+       <p>3.表单验证时拒绝了name重复的新记录，出现这种情况时，请优先选择修改已存在的记录，而不要随意加后缀前缀，造成重复统计。
+       </div>
+   </div>
+</div>
+<div class="am-panel am-panel-default">
     <div class="am-panel-hd">
       <h4 class="am-panel-title" data-am-collapse="{parent: '#accordion', target: '#do-not-say-4'}">统计用户须知</h4>
   </div>
