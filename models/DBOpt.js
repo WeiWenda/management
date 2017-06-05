@@ -47,10 +47,7 @@ var mongooseSchema = new mongoose.Schema({
 var getFile = db.model('getFile', mongooseSchema);
 var gfs = Grid(db.db);
 function getClienIp(req){
-    return req.headers['x-forwarded-for'] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        req.connection.socket.remoteAddress;
+    return req.connection.remoteAddress;
 }
  //mongoose.connect('mongodb://'+settings.USERNAME+':'+settings.PASSWORD+'@'+settings.HOST+':'+settings.PORT+'/'+settings.DB+'');
  db.on('error', console.error.bind(console, 'connection error:'));
