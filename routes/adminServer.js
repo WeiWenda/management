@@ -91,7 +91,7 @@ router.get('/visit',function(req,res){
             // 存入操作日志
             SystemLog.addLoginLogs(req,res,adminBean.getClienIp(req));
             console.log("登录成功");
-            res.render('admin/paperMge',setPageInfo(req,res,settings.paperList));
+            res.redirect('/admin/manage/paperMge');
         };
     });
 });  
