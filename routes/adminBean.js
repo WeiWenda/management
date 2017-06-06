@@ -79,8 +79,9 @@ var adminBean = {
         // console.log(req.headers['x-forwarded-for']);
         // console.log(req.connection.remoteAddress);
         // console.log(req.socket.remoteAddress);
+        return req.headers['x-forwarded-for'];    
 
-        return req.connection.remoteAddress ;    
+        // return req.connection.remoteAddress ;    
     },
 }
 
