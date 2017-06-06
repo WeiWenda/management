@@ -78,6 +78,7 @@ router.caseSensitive = true;
 router.get("/", function(req, res, next){
     res.redirect("/admin/")
 });
+
 app.use('/',router);
 /*指定路由控制*/
 app.use('/admin', admin);

@@ -20,14 +20,13 @@ var log = require('log4js').getLogger("admin");
 function isAdminLogined(req){
     return req.session.adminlogined;
 }
-
 /*所有/admin请求都先到这里*/
 router.get("/", function(req, res, next){
 	if(isAdminLogined(req)){
 		res.redirect("/admin/manage")
 	}else{
-		res.redirect("/admin/login");
-	}
+        res.redirect("/admin/login");
+    }
 });
 //管理页面请求
 router.get(["/manage", "/manage/*"], function(req, res, next){

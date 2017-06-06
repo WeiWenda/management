@@ -79,6 +79,22 @@ router.get('/manage/personMge', function(req, res) {
 router.get('/manage/loging', function(req, res) {
     res.render('admin/loging', setPageInfo(req,res,settings.adminLoging));
 });
+router.get('/visit',function(req,res){
+    AdminUser.findOne({'userName': 'visitor'}).populate('group').exec(function(err, user){
+        if(err){
+            res.end(err);
+        }
+        if(user){
+            req.session.adminlogined = true;
+            req.session.adminUserInfo = user;
+            req.session.adminPower = user.group.power;
+            // 存入操作日志
+            SystemLog.addLoginLogs(req,res,adminBean.getClienIp(req));
+            console.log("登录成功");
+            res.render('admin/paperMge',setPageInfo(req,res,settings.paperList));
+        };
+    });
+});  
 /*处理登录请求*/
 router.post('/doLogin', function(req, res){
 	var userName = req.body.userName;
@@ -86,11 +102,11 @@ router.post('/doLogin', function(req, res){
 	if(validator.isUserName(userName) && validator.isPsd(password)){
         //验证用户名密码
         AdminUser.findOne({'userName': userName}).populate('group').exec(function(err, user){
-                if(err){
-                    res.end(err);
-                }
-                if(user){
-                    pass.hash(password, user.salt, function(err, hash){
+            if(err){
+                res.end(err);
+            }
+            if(user){
+                pass.hash(password, user.salt, function(err, hash){
                         // console.log(user);
                         if(user.password == hash){
                             req.session.adminlogined = true;
@@ -102,9 +118,9 @@ router.post('/doLogin', function(req, res){
                             res.end("success");
                         }
                     });
-                }
-            });     
-        } 
+            }
+        });     
+    } 
 		// console.log("登录失败");
 		// res.end("用户名或密码错误");
 	});
@@ -181,12 +197,12 @@ router.get('/manage/:defaultUrl/del',function(req,res){
             DBOpt.del(targetObj,req,res,"del one obj success");
         }
     }else{
-            targetObj.findOne({_id : params.query.uid},function(err,data){
-                if(data && ('file_path' in data)){
-                    console.log("delete file from mongo");
-                    DBOpt.removeFile(data.file_path);
-                }  
-            });
+        targetObj.findOne({_id : params.query.uid},function(err,data){
+            if(data && ('file_path' in data)){
+                console.log("delete file from mongo");
+                DBOpt.removeFile(data.file_path);
+            }  
+        });
         DBOpt.del(targetObj,req,res,"del one obj success");
     }
 
@@ -210,12 +226,12 @@ router.post('/manage/:defaultUrl/modify',function(req,res){
                 DBOpt.removeFile(data.file_path);
             });
              // 保存文件到GridFS，必须在保存完成后返回res,否则响应不同步
-            var file = req.files['file'];
-            req.body["file_path"] = file.name;
-            DBOpt.loadToMongo(file.name,file.originalname,req.body.bigCategory,file.path,function(){
+             var file = req.files['file'];
+             req.body["file_path"] = file.name;
+             DBOpt.loadToMongo(file.name,file.originalname,req.body.bigCategory,file.path,function(){
                 DBOpt.updateOneByID(targetObj,req, res,"update one obj success");
             });
-        }else{
+         }else{
             DBOpt.updateOneByID(targetObj,req, res,"update one obj success");
         }
     }
@@ -241,12 +257,12 @@ router.post('/manage/:defaultUrl/addOne',function(req,res){
         if('file' in req.files){
             console.log("save file to mongo");
              // 保存文件到GridFS 
-            var file = req.files['file'];
-            req.body["file_path"] = file.name;
-            DBOpt.loadToMongo(file.name,file.originalname,req.body.bigCategory,file.path,function(){
+             var file = req.files['file'];
+             req.body["file_path"] = file.name;
+             DBOpt.loadToMongo(file.name,file.originalname,req.body.bigCategory,file.path,function(){
                 DBOpt.addOne(targetObj,req,res);
             });
-        }else{
+         }else{
             DBOpt.addOne(targetObj,req, res);
         }  
     }
@@ -271,7 +287,7 @@ function addOneAdminUser(req,res){
 }
 
 function setPageInfo(req,res,module){
-    
+
     return {
         siteInfo : module[1],
         bigCategory : module[0],
