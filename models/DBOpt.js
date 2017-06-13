@@ -48,7 +48,6 @@ var getFile = db.model('getFile', mongooseSchema);
 var gfs = Grid(db.db);
 function getClienIp(req){
         return req.headers['x-forwarded-for'];    
-    
     // return req.connection.remoteAddress;
 }
  //mongoose.connect('mongodb://'+settings.USERNAME+':'+settings.PASSWORD+'@'+settings.HOST+':'+settings.PORT+'/'+settings.DB+'');

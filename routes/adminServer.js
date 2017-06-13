@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 router.caseSensitive = true;
 var url = require('url');
+
 var pass = require('../utils/pass');
 var log = require('log4js').getLogger("adminServer");
-
 //站点配置
 var settings = require("../settings");
 //数据校验
@@ -27,7 +27,6 @@ var Award  = require("../models/Award");
 var SystemLog = require("../models/SystemLog");
 //密码加密
 var pass = require('../utils/pass');
-
 /*跳转到到登录页面*/
 router.get("/login", function(req, res, net){
 	res.render('admin/login');
@@ -94,7 +93,25 @@ router.get('/visit',function(req,res){
             res.redirect('/admin/manage/paperMge');
         };
     });
-});  
+}); 
+// var phantom=require('node-phantom');
+// router.get('/sci',function(request,response){
+//     phantom.create(function(err,ph) {
+//       return ph.createPage(function(err,page) {
+//         return page.open("http://tilomitra.com/repository/screenscrape/ajax.html", function(err,status) {
+//           console.log("opened site? ", status);
+//         });
+//       });
+//     });
+//     // var params = url.parse(req.url,true);
+//     // var querykey = params.query.q;
+// });
+// router.get('/ei',function(req,res){
+//     var params = url.parse(req.url,true);
+//     var querykey = params.query.q;
+//     res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
+//     res.end('<p>'+querykey+'</p>');
+// });
 /*处理登录请求*/
 router.post('/doLogin', function(req, res){
 	var userName = req.body.userName;
