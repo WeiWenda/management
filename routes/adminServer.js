@@ -144,7 +144,7 @@ router.get('/ei',function(req,res){
     'Origin': 'https://www.engineeringvillage.com',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36'
     };
-    request.post('https://www.engineeringvillage.com/search/submit.url'+'?CID=searchSubmit&searchtype=Quick&usageOrigin=searchform&editSearch=&usageZone=quicksearch&category=quicksearch&resetDataBase=1&database=1&searchWord1='++'&section1=NO-LIMIT&boolean1=AND&searchWord2=&section2=NO-LIMIT&boolean2=AND&searchWord3=&section3=NO-LIMIT&resetvar=1&doctype=NO-LIMIT&treatmentType=NO-LIMIT&language=NO-LIMIT&yearselect=yearrange&startYear=1969&endYear=2017&stringYear=CSY1884CST1969&updatesNo=1&sort=relevance&angularReq=true')
+    request.post('https://www.engineeringvillage.com/search/submit.url'+'?CID=searchSubmit&searchtype=Quick&usageOrigin=searchform&editSearch=&usageZone=quicksearch&category=quicksearch&resetDataBase=1&database=1&searchWord1='+querykey+'&section1=NO-LIMIT&boolean1=AND&searchWord2=&section2=NO-LIMIT&boolean2=AND&searchWord3=&section3=NO-LIMIT&resetvar=1&doctype=NO-LIMIT&treatmentType=NO-LIMIT&language=NO-LIMIT&yearselect=yearrange&startYear=1969&endYear=2017&stringYear=CSY1884CST1969&updatesNo=1&sort=relevance&angularReq=true')
     .set(base_headers)
     .end((err,response1)=>{
         // console.log(response1);
