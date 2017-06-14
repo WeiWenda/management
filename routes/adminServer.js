@@ -94,24 +94,63 @@ router.get('/visit',function(req,res){
         };
     });
 }); 
-// var phantom=require('node-phantom');
-// router.get('/sci',function(request,response){
-//     phantom.create(function(err,ph) {
-//       return ph.createPage(function(err,page) {
-//         return page.open("http://tilomitra.com/repository/screenscrape/ajax.html", function(err,status) {
-//           console.log("opened site? ", status);
-//         });
-//       });
-//     });
-//     // var params = url.parse(req.url,true);
-//     // var querykey = params.query.q;
-// });
-// router.get('/ei',function(req,res){
-//     var params = url.parse(req.url,true);
-//     var querykey = params.query.q;
-//     res.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});
-//     res.end('<p>'+querykey+'</p>');
-// });
+var request=require('superagent');
+router.get('/sci',function(req,res){
+    var params = url.parse(req.url,true);
+    var querykey = params.query.q;
+    const base_headers = {
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    'Accept-Encoding':'gzip, deflate',
+    'Accept-Language':'zh-CN,zh;q=0.8',
+    'Cache-Control':'max-age=0',
+    'Connection':'keep-alive',
+    'Host':'apps.webofknowledge.com',
+    'Origin': 'http://apps.webofknowledge.com',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36'
+    };
+    request.get('http://apps.webofknowledge.com')
+    .end((err,response)=>{
+        var cookie = response.redirects[response.redirects.length-1];
+        var params = url.parse(cookie,true);
+        var sid = params.query.SID;
+        // var jsessionid = params.pathname.match(/jsessionid=(.+)/)[1];
+        request.post('http://apps.webofknowledge.com/UA_GeneralSearch.do')
+        .set(base_headers)
+        // .set('Cookie',JSON.stringify({'SID':sid,'JSESSIONID':jsessionid,'CUSTOMER':'Xian Jiaotong University','E_GROUP_NAME':'Xian Jiaotong University'}))
+        .type('form')
+        .send({
+            'fieldCount':1,
+            'action':'search',
+            'product':'UA',
+            'search_mode':'GeneralSearch',
+            'SID':sid,
+            'value(input1)':querykey,
+            'value(select1)':'TS'
+        })
+        .end((err,response1)=>{
+            res.redirect(response1.redirects[0]);
+        });
+    }) 
+});
+router.get('/ei',function(req,res){
+    var params = url.parse(req.url,true);
+    var querykey = params.query.q;
+    const base_headers = {
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Encoding':'gzip, deflate, br',
+    'Accept-Language':'zh-CN,zh;q=0.8',
+    'Connection':'keep-alive',
+    'Host':'www.engineeringvillage.com',
+    'Origin': 'https://www.engineeringvillage.com',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36'
+    };
+    request.post('https://www.engineeringvillage.com/search/submit.url'+'?CID=searchSubmit&searchtype=Quick&usageOrigin=searchform&editSearch=&usageZone=quicksearch&category=quicksearch&resetDataBase=1&database=1&searchWord1=df&section1=NO-LIMIT&boolean1=AND&searchWord2=&section2=NO-LIMIT&boolean2=AND&searchWord3=&section3=NO-LIMIT&resetvar=1&doctype=NO-LIMIT&treatmentType=NO-LIMIT&language=NO-LIMIT&yearselect=yearrange&startYear=1969&endYear=2017&stringYear=CSY1884CST1969&updatesNo=1&sort=relevance&angularReq=true')
+    .set(base_headers)
+    .end((err,response1)=>{
+        console.log(response1);
+        res.redirect(response1.redirects[0]);
+    });
+}); 
 /*处理登录请求*/
 router.post('/doLogin', function(req, res){
 	var userName = req.body.userName;
