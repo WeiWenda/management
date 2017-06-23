@@ -30,7 +30,7 @@
  			}
  		});
  	},
-        addRemoveLogs : function(req, res, tragetIp,obj){
+        addRemoveLogs : function(req, res, tragetIp,obj,callback){
         var loginLog = new SystemLog();
         loginLog.type = 'remove';
         var currentPage = req.params.defaultUrl;
@@ -47,6 +47,7 @@
                         }
                     });
                 }
+                callback();
             });
         
     },

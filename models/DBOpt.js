@@ -145,8 +145,9 @@ var DBOpt = {
     del : function(obj,req,res,logMsg,targetId){
         var params = url.parse(req.url,true);
         var targetId = params.query.uid;
-        SystemLog.addRemoveLogs(req,res,getClienIp(req),obj);
-        if(shortid.isValid(targetId)){
+        SystemLog.addRemoveLogs(req,res,getClienIp(req),obj,
+        function(){
+            if(shortid.isValid(targetId)){
             if(obj === Direction){
                 Patent.count({direction:targetId},function(err,count){
                     if(count > 0 )
@@ -280,6 +281,8 @@ var DBOpt = {
         }else{
             res.end(settings.system_illegal_param);
         }
+
+        });
     },
     updateOneByID : function(obj,req,res,logMsg){
         var params = url.parse(req.url,true);
