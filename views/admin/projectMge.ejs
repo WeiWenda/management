@@ -20,6 +20,7 @@
       { name:'项目编号',field: 'number', headerCellClass: $scope.highlightFilteredHeader },
       { name:'项目名称',field: 'name', headerCellClass: $scope.highlightFilteredHeader },
       { name:'负责人',field: 'principal.name', headerCellClass: $scope.highlightFilteredHeader },
+      { name:'经费',field: 'money', headerCellClass: $scope.highlightFilteredHeader,visible: false },
       { name:'项目类型',field: 'type.name',filter:{type: uiGridConstants.filter.SELECT},headerCellClass: $scope.highlightFilteredHeader},
       { name:'级别',field: 'type.level',filter:{type: uiGridConstants.filter.SELECT,selectOptions: [{ value: '国家级',label:'国家级'},{ value: '省部级',label:'省部级'},{ value: '横向科研',label:'横向科研'},{ value: '国际合作',label:'国际合作'},{ value: '其他',label:'其他'}]}, headerCellClass: $scope.highlightFilteredHeader },
       {name:'起始时间',field:'start_time',cellFilter:'date:"yyyy-MM-dd"',filters:[{condition:checkStart,placeholder:'起'},{condition:checkEnd,placeholder:'止'}],
